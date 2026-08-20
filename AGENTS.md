@@ -63,3 +63,35 @@
 
 - 模板默认预装核心组件库 `shadcn/ui`，位于`src/components/ui/`目录下
 - Next.js 项目**必须默认**采用 shadcn/ui 组件、风格和规范，**除非用户指定用其他的组件和规范。**
+
+## 系统板块结构
+
+当前已实现「系统总览」板块（`/`，首页）。后续将依次实现：智能决策中心、标准工法库、支护体系配置、装备配置、方案与报告。
+
+### 总览板块组件（src/components/overview/）
+
+| 文件 | 类型 | 职责 |
+|---|---|---|
+| top-bar.tsx | client | 顶栏：品牌 + 导航 + 状态 + 时钟 |
+| overview-header.tsx | server | 页面标题、副标题、徽章 |
+| achievement-board.tsx | server | 现场应用成效指标看板（4 KPI） |
+| project-panel.tsx | server | 示范工程配置应用卡片 |
+| longitudinal-strip.tsx | client | 纵断面衬砌色带（主洞/平导切换 + 选段明细） |
+| support-kpi-grid.tsx | server | 工法与支护统计 KPI |
+| charts-section.tsx | client | 衬砌类型里程柱状图 + 钢架分布环形图 |
+
+### 数据流与接口预留
+
+```
+page.tsx (server) ──► fetchOverview() (src/lib/api.ts)
+                          │
+                          ├─ 当前：返回 src/data/overview.ts 静态数据
+                          └─ 后端就绪后：改为 fetch('/api/overview')
+                          │
+                          v
+                    GET /api/overview (src/app/api/overview/route.ts)
+                          └─ 当前返回同一静态数据源
+```
+
+- 数据契约统一为 `src/lib/types.ts` 中的 `OverviewData`，前端组件只依赖该类型。
+- 后端接入后仅需替换 `fetchOverview` 与 `/api/overview` 内部实现，组件零改动。
