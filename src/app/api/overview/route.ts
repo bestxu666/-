@@ -1,13 +1,12 @@
 import { NextResponse } from 'next/server';
-import { overviewData } from '@/data/overview';
+import { getOverview } from '@/server/overview';
 
 /**
  * GET /api/overview
  *
- * 系统总览数据接口（后端数据源入口）。
- * 当前返回本地静态数据源；接入 Supabase / 数据库后，
- * 在此处替换数据读取逻辑即可，返回体结构（OverviewData）保持不变。
+ * 系统总览数据接口（后端 HTTP 入口）。
+ * 仅负责请求解析与响应封装，业务逻辑下沉到 src/server/ 服务层。
  */
 export async function GET() {
-  return NextResponse.json(overviewData);
+  return NextResponse.json(getOverview());
 }

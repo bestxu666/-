@@ -16,20 +16,33 @@
 │   ├── build.sh            # 构建脚本
 │   ├── dev.sh              # 开发环境启动脚本
 │   ├── prepare.sh          # 预处理脚本
-│   └── start.sh            # 生产环境启动脚本
+│   ├── start.sh            # 生产环境启动脚本
+│   └── validate.sh         # 静态校验脚本
 ├── src/
-│   ├── app/                # 页面路由与布局
-│   ├── components/ui/      # Shadcn UI 组件库
-│   ├── hooks/              # 自定义 Hooks
-│   ├── lib/                # 工具库
-│   │   └── utils.ts        # 通用工具函数 (cn)
-│   └── server.ts           # 自定义服务端入口
+│   ├── app/                # 路由层（Next.js App Router 约定）
+│   │   ├── layout.tsx      #   根布局（前端壳）
+│   │   ├── page.tsx        #   系统总览首页（前端页面）
+│   │   └── api/            #   后端 API 路由（HTTP 入口）
+│   ├── components/         # 前端：UI 组件
+│   │   ├── overview/       #   业务组件（系统总览板块）
+│   │   └── ui/             #   Shadcn UI 基础组件库
+│   ├── hooks/              # 前端：自定义 Hooks
+│   ├── lib/                # 共享：工具 + 类型 + 前端数据访问
+│   │   ├── api.ts          #   前端数据访问层（fetchOverview）
+│   │   ├── types.ts        #   领域类型契约（前后端共用）
+│   │   └── utils.ts        #   通用工具函数 (cn)
+│   ├── data/               # 数据层：静态种子数据
+│   │   └── overview.ts
+│   ├── server/             # 后端：服务端业务逻辑
+│   │   └── overview.ts     #   总览业务服务
+│   └── server.ts           # 后端：自定义 HTTP 服务入口
 ├── next.config.ts          # Next.js 配置
 ├── package.json            # 项目依赖管理
 └── tsconfig.json           # TypeScript 配置
 ```
 
 - 项目文件（如 app 目录、pages 目录、components 等）默认初始化到 `src/` 目录下。
+- 分层约定：**路由层**（`src/app`）→ **服务层**（`src/server`）→ **数据层**（`src/data`）；前端视图在 `src/components` + `src/hooks`，共享契约与工具在 `src/lib`。
 
 ## 包管理规范
 
@@ -83,15 +96,20 @@
 ### 数据流与接口预留
 
 ```
-page.tsx (server) ──► fetchOverview() (src/lib/api.ts)
+page.tsx (server，前端页面)
+   │
+   └──► fetchOverview() (src/lib/api.ts，前端数据访问)
+          │
+          ├─ 当前：直接返回 src/data/overview.ts 静态数据
+          └─ 后端就绪后：改为 fetch('/api/overview')
+                  │
+                  v
+          GET /api/overview (src/app/api/overview/route.ts，HTTP 层)
+                  │
+                  └──► getOverview() (src/server/overview.ts，后端服务层)
                           │
-                          ├─ 当前：返回 src/data/overview.ts 静态数据
-                          └─ 后端就绪后：改为 fetch('/api/overview')
-                          │
-                          v
-                    GET /api/overview (src/app/api/overview/route.ts)
-                          └─ 当前返回同一静态数据源
+                          └──► src/data/overview.ts（数据层，种子数据）
 ```
 
 - 数据契约统一为 `src/lib/types.ts` 中的 `OverviewData`，前端组件只依赖该类型。
-- 后端接入后仅需替换 `fetchOverview` 与 `/api/overview` 内部实现，组件零改动。
+- 后端接入后仅需替换 `fetchOverview` 与 `src/server/overview.ts` 内部实现，路由与组件零改动。
