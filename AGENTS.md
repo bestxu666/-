@@ -79,7 +79,25 @@
 
 ## 系统板块结构
 
-当前已实现「系统总览」板块（`/`，首页）。后续将依次实现：智能决策中心、标准工法库、支护体系配置、装备配置、方案与报告。
+当前已实现「系统总览」板块（`/`，首页）与「智能决策中心」板块（`/decision`）。后续将依次实现：标准工法库、支护体系配置、装备配置、方案与报告。
+
+### 智能决策中心（`/decision`）
+
+四步决策流程，组件位于 `src/components/decision/`，状态编排位于 `src/hooks/use-decision.ts`：
+
+| 文件 | 类型 | 职责 |
+|---|---|---|
+| flow-bar.tsx | client | 四步流程条（可跳转） |
+| decision-workbench.tsx | client | Step1 工作台：模式切换 / 工作面选择 / 18 项地质参数 |
+| method-select.tsx | client | Step2 候选工法卡片（匹配度 + 选择） |
+| support-design.tsx | client | Step3 成拱机理 / 四构件微调 / 安全度仪表 / 雷达图 |
+| scheme-report.tsx | client | Step4 施工配置方案报告表 |
+| decision-placeholder.tsx | client | 未启动推理时的占位提示 |
+
+- 推理逻辑：`src/lib/decision-engine.ts`（前端规则引擎，**与后端接口同构**：工法推理、支护设计、安全校核、出方案）。
+- 静态数据：`src/data/decision.ts`（工法库、工作面、里程、围岩默认参数）。
+- 领域类型：`src/lib/types.ts` 中 `DecisionMode` / `GeoParams` / `MethodMatch` / `SupportComponent` / `SafetyAssessment` / `SchemeReport` 等。
+- **后端接入约定**：后端为 Python 服务，前端统一通过 `/api/decision/*` 同源路径访问（由部署层转发）。接口契约定义在 `src/lib/api.ts`（`inferMethods` / `designSupport` / `recheckSafety` / `generateSchemeApi`），当前这些函数抛出"待后端接入"，页面暂用 `decision-engine.ts` 兜底；后端就绪后把 `use-decision.ts` 中的引擎调用替换为 api.ts 请求即可，组件层零改动。
 
 ### 总览板块组件（src/components/overview/）
 

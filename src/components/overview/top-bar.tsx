@@ -1,14 +1,23 @@
 'use client';
 
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { cn } from '@/lib/utils';
 
-const NAV_ITEMS = [
-  { key: 'overview', label: '系统总览' },
-  { key: 'decision', label: '智能决策中心' },
-  { key: 'equipment', label: '机械装备与工效' },
-  { key: 'methods', label: '标准工法库' },
-  { key: 'support', label: '支护体系与优选库' },
-  { key: 'scheme', label: '方案报告与决策台账' },
+interface NavItem {
+  key: string;
+  label: string;
+  href: string;
+}
+
+const NAV_ITEMS: NavItem[] = [
+  { key: 'overview', label: '系统总览', href: '/' },
+  { key: 'decision', label: '智能决策中心', href: '/decision' },
+  { key: 'equipment', label: '机械装备与工效', href: '/equipment' },
+  { key: 'methods', label: '标准工法库', href: '/methods' },
+  { key: 'support', label: '支护体系与优选库', href: '/support' },
+  { key: 'scheme', label: '方案报告与决策台账', href: '/scheme' },
 ];
 
 const SYSTEM_NAME = '钻爆法隧道全工序机械化施工智能配置系统';
@@ -47,7 +56,7 @@ function BrandLogo() {
 
 export function TopBar() {
   const [clock, setClock] = useState('--:--:--');
-  const [active, setActive] = useState('overview');
+  const pathname = usePathname();
 
   useEffect(() => {
     const update = () => setClock(formatTime(new Date()));
@@ -60,7 +69,7 @@ export function TopBar() {
     <header className="fixed inset-x-0 top-0 z-50 h-[60px] border-b border-line bg-panel/80 backdrop-blur-md">
       <div className="mx-auto flex h-full max-w-[1600px] items-center gap-6 px-6">
         {/* 品牌区 */}
-        <div className="flex min-w-0 items-center gap-2.5">
+        <Link href="/" className="flex min-w-0 items-center gap-2.5">
           <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-brand to-cy shadow-sm">
             <BrandLogo />
           </span>
@@ -72,29 +81,31 @@ export function TopBar() {
               DRILL-BLAST TUNNEL FULL-PROCESS MECHANIZED CONSTRUCTION
             </div>
           </div>
-        </div>
+        </Link>
 
         {/* 导航 */}
         <nav className="flex h-full flex-1 items-center gap-1 overflow-x-auto">
           {NAV_ITEMS.map((item) => {
-            const isActive = item.key === active;
+            const isActive =
+              item.href === '/'
+                ? pathname === '/'
+                : pathname.startsWith(item.href);
             return (
-              <button
+              <Link
                 key={item.key}
-                type="button"
-                onClick={() => setActive(item.key)}
-                className={
-                  'relative flex h-full shrink-0 items-center px-3 text-[13.5px] transition-colors ' +
-                  (isActive
+                href={item.href}
+                className={cn(
+                  'relative flex h-full shrink-0 items-center px-3 text-[13.5px] transition-colors',
+                  isActive
                     ? 'font-semibold text-brand'
-                    : 'text-ink-2 hover:text-ink')
-                }
+                    : 'text-ink-2 hover:text-ink',
+                )}
               >
                 {item.label}
                 {isActive && (
                   <span className="absolute inset-x-2 bottom-0 h-[2px] rounded-full bg-brand" />
                 )}
-              </button>
+              </Link>
             );
           })}
         </nav>
