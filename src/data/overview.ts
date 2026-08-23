@@ -73,12 +73,10 @@ const PILOT_SEGS: TunnelSegment[] = [
 
 /** 系统总览聚合数据 */
 export const overviewData: OverviewData = {
-  title: '工程总览与系统配置应用成效',
-  subtitle:
-    '沙益1号特长隧道（4737m）全工序机械化智能配置应用成效、决策采纳率与全线支护统计',
+  title: '工程总览',
   badges: ['川藏公路G318线', '沙益 1 号示范工程', '开挖进度 100% (已贯通)'],
 
-  achievementTitle: '智能配置系统现场应用成效指标看板 (示范工区全线贯通验证)',
+  achievementTitle: '智能配置系统成效指标看板',
   achievementTag: '累计标定 4737m 主洞 + 4764m 平导',
   achievements: [
     {

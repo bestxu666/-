@@ -237,7 +237,7 @@ export interface DecisionMeta {
 /** 系统总览聚合数据体 */
 export interface OverviewData {
   title: string;
-  subtitle: string;
+  subtitle?: string;
   badges: string[];
   achievementTitle: string;
   achievementTag: string;
