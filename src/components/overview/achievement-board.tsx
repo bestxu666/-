@@ -9,7 +9,7 @@ const TONE_TEXT: Record<AchievementMetric['tone'], string> = {
 
 interface Props {
   achievementTitle: string;
-  achievementTag: string;
+  achievementTag?: string;
   achievements: AchievementMetric[];
 }
 
@@ -25,9 +25,11 @@ export function AchievementBoard({
           <span className="text-[13.5px] font-semibold text-ink">
             {achievementTitle}
           </span>
-          <span className="rounded-full bg-brand-soft px-2 py-0.5 text-[10.5px] text-brand">
-            {achievementTag}
-          </span>
+          {achievementTag ? (
+            <span className="rounded-full bg-brand-soft px-2 py-0.5 text-[10.5px] text-brand">
+              {achievementTag}
+            </span>
+          ) : null}
         </div>
         <span className="text-[11px] text-ink-3">数据更新于当日监控</span>
       </div>

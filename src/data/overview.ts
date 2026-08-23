@@ -74,10 +74,9 @@ const PILOT_SEGS: TunnelSegment[] = [
 /** 系统总览聚合数据 */
 export const overviewData: OverviewData = {
   title: '工程总览',
-  badges: ['川藏公路G318线', '沙益 1 号示范工程', '开挖进度 100% (已贯通)'],
+  badges: ['沙益 1 号示范工程', '开挖进度 100% (已贯通)'],
 
   achievementTitle: '智能配置系统成效指标看板',
-  achievementTag: '累计标定 4737m 主洞 + 4764m 平导',
   achievements: [
     {
       label: '累计完成智能决策循环',

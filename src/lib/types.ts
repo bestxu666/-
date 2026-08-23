@@ -240,7 +240,7 @@ export interface OverviewData {
   subtitle?: string;
   badges: string[];
   achievementTitle: string;
-  achievementTag: string;
+  achievementTag?: string;
   achievements: AchievementMetric[];
   projects: ProjectInfo[];
   tunnel: {
