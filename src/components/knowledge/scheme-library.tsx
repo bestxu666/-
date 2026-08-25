@@ -28,20 +28,20 @@ export function SchemeLibrary({ title, data }: { title: string; data: SupportSch
         <table className="w-full border-collapse text-[12px] min-w-[1100px]">
           <thead>
             <tr className="text-[var(--text-3)] text-left">
-              <th rowSpan={2} className="px-3 py-2.5 font-semibold whitespace-nowrap border-b border-r border-[var(--line)]">序号</th>
+              <th rowSpan={2} className="px-3 py-2.5 font-semibold whitespace-nowrap border-b border-r border-[var(--line)]">方案编号</th>
               <th rowSpan={2} className="px-3 py-2.5 font-semibold whitespace-nowrap border-b border-r border-[var(--line)]">围岩级别</th>
-              <th rowSpan={2} className="px-3 py-2.5 font-semibold whitespace-nowrap border-b border-r border-[var(--line)]">支护类型</th>
-              <th rowSpan={2} className="px-3 py-2.5 font-semibold whitespace-nowrap border-b border-r border-[var(--line)]">埋深(m)</th>
+              <th rowSpan={2} className="px-3 py-2.5 font-semibold whitespace-nowrap border-b border-r border-[var(--line)]">衬砌类型</th>
+              <th rowSpan={2} className="px-3 py-2.5 font-semibold whitespace-nowrap border-b border-r border-[var(--line)]">埋深范围(m)</th>
               <th colSpan={4} className="px-3 py-2 text-center font-semibold whitespace-nowrap border-b border-r border-[var(--line)] text-[var(--brand)]">超前支护</th>
-              <th colSpan={4} className="px-3 py-2 text-center font-semibold whitespace-nowrap border-b border-r border-[var(--line)] text-[var(--info)]">初期支护</th>
+              <th colSpan={3} className="px-3 py-2 text-center font-semibold whitespace-nowrap border-b border-r border-[var(--line)] text-[var(--info)]">初期支护</th>
               <th colSpan={2} className="px-3 py-2 text-center font-semibold whitespace-nowrap border-b border-r border-[var(--line)] text-[var(--violet)]">二次衬砌</th>
               <th colSpan={3} className="px-3 py-2 text-center font-semibold whitespace-nowrap border-b border-[var(--line)] text-[var(--ok)]">开挖工法</th>
             </tr>
             <tr className="text-[var(--text-3)] text-left text-[11px]">
-              <SubHead>类型</SubHead><SubHead>环距</SubHead><SubHead>长度</SubHead><SubHead last>范围</SubHead>
-              <SubHead>锚杆 (间距/长)</SubHead><SubHead>钢架</SubHead><SubHead>喷混</SubHead><SubHead last>钢筋网</SubHead>
-              <SubHead>标号</SubHead><SubHead last>厚度</SubHead>
-              <SubHead>工法</SubHead><SubHead>循环进尺</SubHead><SubHead last>台阶长度</SubHead>
+              <SubHead>类型规格</SubHead><SubHead>环向间距</SubHead><SubHead>单根长</SubHead><SubHead last>适用范围</SubHead>
+              <SubHead>系统锚杆 (横×纵)</SubHead><SubHead>钢拱架型号/间距</SubHead><SubHead last>喷射混凝土</SubHead>
+              <SubHead>混凝土标号</SubHead><SubHead last>厚度</SubHead>
+              <SubHead>开挖模式</SubHead><SubHead>循环进尺</SubHead><SubHead last>台阶长度</SubHead>
             </tr>
           </thead>
           <tbody>
@@ -62,7 +62,7 @@ export function SchemeLibrary({ title, data }: { title: string; data: SupportSch
                 <Td className="font-semibold text-[var(--text)]">{s.type}</Td>
                 <Td className="text-center text-[var(--text-2)] tabular-nums">{s.depth}</Td>
                 <TdBrand>{s.advType}</TdBrand><TdBrand>{s.advRing}</TdBrand><TdBrand>{s.advLen}</TdBrand><TdBrand last>{s.advScope}</TdBrand>
-                <TdInfo>{s.anchor}</TdInfo><TdInfo>{s.steel}</TdInfo><TdInfo>{s.shot}</TdInfo><TdInfo last>Φ6 钢筋网</TdInfo>
+                <TdInfo>{s.anchor}</TdInfo><TdInfo>{s.steel}</TdInfo><TdInfo last>{s.shot}</TdInfo>
                 <TdViolet>{s.conc}</TdViolet><TdViolet last>{s.thick}</TdViolet>
                 <TdOk>{s.mode}</TdOk><TdOk>{s.advRate}</TdOk><TdOk last>{s.benchLen}</TdOk>
               </tr>

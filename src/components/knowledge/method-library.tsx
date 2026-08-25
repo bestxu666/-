@@ -1,23 +1,20 @@
 import type { MethodCard } from "@/lib/types";
 
-const TONE: Record<string, { color: string; border: string; dot: string; label: string }> = {
+const TONE: Record<string, { color: string; border: string; dot: string }> = {
   ok: {
     color: "var(--ok)",
     border: "rgba(61,220,151,0.32)",
     dot: "var(--ok)",
-    label: "推荐 I~III 级",
   },
   brand: {
     color: "var(--brand)",
     border: "rgba(45,212,191,0.34)",
     dot: "var(--brand)",
-    label: "推荐 IV 级",
   },
   warn: {
     color: "var(--warn)",
     border: "rgba(247,185,85,0.34)",
     dot: "var(--warn)",
-    label: "推荐 V 级 / 大变形",
   },
 };
 
@@ -43,13 +40,6 @@ export function MethodLibrary({ title, data }: { title: string; data: MethodCard
                   {m.name}
                 </h4>
               </div>
-              <span
-                className="inline-block px-2 py-0.5 rounded text-[11px] mb-3"
-                style={{ color: t.color, background: "rgba(120,165,230,0.08)", border: `1px solid ${t.border}` }}
-              >
-                {t.label}
-              </span>
-
               <Row label="适用地质" value={m.geology} />
               <Row label="开挖断面" value={m.section} />
               <Row label="工法优势" value={m.advantage} />
