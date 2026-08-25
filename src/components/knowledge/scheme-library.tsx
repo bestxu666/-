@@ -5,10 +5,13 @@ import type { SupportScheme } from "@/lib/types";
 
 type Filter = "all" | "IV" | "V";
 
+const ROCK_CHAR: Record<Filter, string> = { all: "", IV: "Ⅳ", V: "Ⅴ" };
+
 export function SchemeLibrary({ title, data }: { title: string; data: SupportScheme[] }) {
   const [filter, setFilter] = useState<Filter>("all");
 
-  const list = filter === "all" ? data : data.filter((s) => s.rock.includes(filter));
+  const list =
+    filter === "all" ? data : data.filter((s) => s.rock.includes(ROCK_CHAR[filter]));
 
   return (
     <div>
