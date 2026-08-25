@@ -7,6 +7,7 @@ import type {
   MethodMatch,
   OverviewData,
   SafetyAssessment,
+  SchemeHistoryData,
   SchemeReport,
   SupportComponent,
 } from './types';
@@ -45,6 +46,18 @@ export async function fetchOverview(): Promise<OverviewData> {
  */
 export async function fetchKnowledge(): Promise<KnowledgeData> {
   return knowledgeData;
+}
+
+/**
+ * 获取方案报告与历史决策台账数据。
+ *
+ * 后端就绪后：
+ * const res = await fetch('/api/scheme', { cache: 'no-store' });
+ * return (await res.json()) as SchemeHistoryData;
+ */
+export async function fetchSchemeHistory(): Promise<SchemeHistoryData> {
+  const { schemeHistoryData } = await import('@/data/scheme');
+  return schemeHistoryData;
 }
 
 /* ============================================================

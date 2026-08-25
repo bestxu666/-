@@ -339,3 +339,37 @@ export interface KnowledgeData {
   schemeTitle: string;
   schemes: SupportScheme[];
 }
+
+/* ============================================================
+   方案报告与历史决策台账
+   ============================================================ */
+
+/** 单次历史决策记录（对应参考 HTML 的 HISTORY_DB_DATA） */
+export interface HistoryRecord {
+  id: number;
+  /** 决策时间，格式 YYYY-MM-DD HH:mm:ss */
+  time: string;
+  /** 隧道工作面 */
+  face: string;
+  /** 开挖里程桩号 */
+  mile: string;
+  /** 围岩级别，如 "Ⅳ级" / "Ⅴ级" */
+  rock: string;
+  /** 开挖工法 */
+  method: string;
+  /** 衬砌类型 */
+  type: string;
+  /** 安全度评分（0~100） */
+  score: number;
+  /** 单次决策完整配置参数明细 */
+  detail: string;
+}
+
+/** 历史决策台账聚合数据 */
+export interface SchemeHistoryData {
+  title: string;
+  subtitle: string;
+  /** 工作面筛选项 */
+  faces: string[];
+  records: HistoryRecord[];
+}
