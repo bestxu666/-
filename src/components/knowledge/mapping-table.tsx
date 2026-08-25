@@ -63,10 +63,25 @@ const COLUMNS: DataColumn<KnowledgeMapping>[] = [
   },
 ];
 
-export function MappingTable({ data }: { data: KnowledgeMapping[] }) {
+interface MappingTableProps {
+  title: string;
+  tag: string;
+  data: KnowledgeMapping[];
+}
+
+export function MappingTable({ title, tag, data }: MappingTableProps) {
   return (
-    <div className="overflow-hidden rounded-lg border border-line bg-panel/40">
-      <DataTable columns={COLUMNS} data={data} rowKey={(r) => r.code} />
+    <div>
+      <div className="mb-3 flex items-center gap-2">
+        <span className="inline-block h-3.5 w-2 rounded-[2px] bg-brand" />
+        <h3 className="m-0 text-[15px] font-semibold tracking-wide text-ink">{title}</h3>
+        <span className="ml-2 inline-flex items-center rounded-md border border-brand/25 bg-brand/10 px-2 py-0.5 text-[11px] font-medium text-brand">
+          {tag}
+        </span>
+      </div>
+      <div className="overflow-hidden rounded-lg border border-line bg-panel/40">
+        <DataTable columns={COLUMNS} data={data} rowKey={(r) => r.code} />
+      </div>
     </div>
   );
 }

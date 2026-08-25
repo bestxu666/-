@@ -103,13 +103,21 @@
 
 | 文件 | 类型 | 职责 |
 |---|---|---|
-| `src/app/knowledge/page.tsx` | server | 经验数据库页面：地质环境特征→支护知识方案映射表 |
+| `src/app/knowledge/page.tsx` | server | 经验数据库页面：装备配置 / 标准工法 / 知识映射 / 支护方案 |
+| `src/components/knowledge/equipment-table.tsx` | client | 9 种核心装备配置表（含搜索） |
+| `src/components/knowledge/method-library.tsx` | server | 三类标准工法卡片（全断面/台阶/环形预留核心土） |
 | `src/components/knowledge/mapping-table.tsx` | client | 地质环境特征→支护知识方案映射表 |
+| `src/components/knowledge/scheme-library.tsx` | client | 支护体系与优选方案大表（Ⅳ/Ⅴ级围岩筛选，双行表头） |
 | `src/components/knowledge/data-table.tsx` | client | 通用暗色表格（泛型） |
+| `src/components/knowledge/{section-title,tag}.tsx` | server | 板块标题、标签组件 |
 
-- 数据层：`src/data/knowledge.ts`（装备 / 工法 / 映射 / 支护方案种子数据，当前页面仅展示映射表，其余数据保留供后端接入）。
+- 数据层：`src/data/knowledge.ts`（9 装备 + 3 工法 + 8 映射 + 7 支护方案）。
 - 服务/接口：`src/server/knowledge.ts` → `GET /api/knowledge`，`fetchKnowledge()`（`src/lib/api.ts`）。
 - 后端接入后仅需替换服务层实现，返回 `KnowledgeData` 契约，页面零改动。
+
+### 顶部导航（TopBar）
+
+主导航严格对应参考原型四个主 tab：**系统总览 `/`、智能决策中心 `/decision`、经验数据库 `/knowledge`、方案报告与决策台账（占位）**。装备/工法/支护等内容作为经验数据库页内板块，不单独占主导航项。
 
 ### 总览板块组件（src/components/overview/）
 
