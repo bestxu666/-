@@ -59,14 +59,6 @@ export default function DecisionPage() {
               </span>
               智能决策中心
             </h1>
-            <p className="mt-0.5 text-[12.5px] text-ink-3">
-              开挖工法自适应推理 · 压力拱物理先验支护设计 · 多维承载力学校核
-            </p>
-          </div>
-          <div className="flex flex-wrap gap-1.5">
-            <span className="rounded-full bg-brand-soft px-2 py-0.5 text-[11.5px] font-medium text-brand">
-              混合驱动决策引擎
-            </span>
           </div>
         </div>
 

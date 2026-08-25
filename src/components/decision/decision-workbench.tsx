@@ -17,8 +17,8 @@ interface DecisionWorkbenchProps {
 }
 
 const MODE_ITEMS: { key: DecisionMode; label: string; color: string }[] = [
-  { key: 'joint', label: '联合感知决策', color: '#2dd4bf' },
-  { key: 'manual', label: '手动推演决策', color: '#f7b955' },
+  { key: 'joint', label: '联合决策', color: '#2dd4bf' },
+  { key: 'manual', label: '手动决策', color: '#f7b955' },
 ];
 
 /** 数字输入参数配置 */
@@ -102,7 +102,7 @@ export function DecisionWorkbench({
               <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
             </svg>
           </span>
-          <h2>开挖工法与初期支护参数自适应推理引擎</h2>
+          <h2>开挖工法与初期支护参数推理引擎</h2>
         </div>
         <div className="mode-capsule-switch">
           {MODE_ITEMS.map((item) => (
@@ -124,12 +124,12 @@ export function DecisionWorkbench({
         <div>
           {mode === 'joint' ? (
             <>
-              <b>【联合感知决策模式】</b>{' '}
-              已建立与超前预报(TSP/雷达)及现场量测数据链路，选择工作面及开挖里程即可一键协同同步
+              <b>【联合决策模式】</b>{' '}
+              选择工作面及开挖里程即可一键协同同步
             </>
           ) : (
             <>
-              <b>【手动推演决策模式】</b>{' '}
+              <b>【手动决策模式】</b>{' '}
               开放自定义权限，工程师可根据现场地质观察与试验结果，自由修改微调下方 18 项地质力学参数进行推演
             </>
           )}
@@ -146,7 +146,7 @@ export function DecisionWorkbench({
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
               <path d="M21 12a9 9 0 1 1-3-6.7M21 3v6h-6" />
             </svg>
-            同步均一分级数据
+            同步数据
           </button>
         )}
       </div>
