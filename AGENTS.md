@@ -99,6 +99,22 @@
 - 领域类型：`src/lib/types.ts` 中 `DecisionMode` / `GeoParams` / `MethodMatch` / `SupportComponent` / `SafetyAssessment` / `SchemeReport` 等。
 - **后端接入约定**：后端为 Python 服务，前端统一通过 `/api/decision/*` 同源路径访问（由部署层转发）。接口契约定义在 `src/lib/api.ts`（`inferMethods` / `designSupport` / `recheckSafety` / `generateSchemeApi`），当前这些函数抛出"待后端接入"，页面暂用 `decision-engine.ts` 兜底；后端就绪后把 `use-decision.ts` 中的引擎调用替换为 api.ts 请求即可，组件层零改动。
 
+### 经验数据库板块（`/knowledge`）
+
+| 文件 | 类型 | 职责 |
+|---|---|---|
+| `src/app/knowledge/page.tsx` | server | 经验数据库页面：装备配置 / 标准工法 / 知识映射 / 支护方案 |
+| `src/components/knowledge/equipment-table.tsx` | client | 9 种核心装备配置表 |
+| `src/components/knowledge/method-library.tsx` | server | 三类标准工法卡片（全断面/台阶/环形预留核心土） |
+| `src/components/knowledge/mapping-table.tsx` | client | 地质环境特征→支护知识方案映射表 |
+| `src/components/knowledge/scheme-library.tsx` | client | 支护体系与优选方案大表（Ⅳ/Ⅴ级围岩筛选，双行表头） |
+| `src/components/knowledge/data-table.tsx` | client | 通用暗色表格（泛型） |
+| `src/components/knowledge/{section-title,tag}.tsx` | server | 板块标题、标签组件 |
+
+- 数据层：`src/data/knowledge.ts`（9 装备 + 3 工法 + 8 映射 + 7 支护方案）。
+- 服务/接口：`src/server/knowledge.ts` → `GET /api/knowledge`，`fetchKnowledge()`（`src/lib/api.ts`）。
+- 后端接入后仅需替换服务层实现，返回 `KnowledgeData` 契约，页面零改动。
+
 ### 总览板块组件（src/components/overview/）
 
 | 文件 | 类型 | 职责 |

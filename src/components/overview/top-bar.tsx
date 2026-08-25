@@ -14,6 +14,7 @@ interface NavItem {
 const NAV_ITEMS: NavItem[] = [
   { key: 'overview', label: '系统总览', href: '/' },
   { key: 'decision', label: '智能决策中心', href: '/decision' },
+  { key: 'knowledge', label: '经验数据库', href: '/knowledge' },
   { key: 'equipment', label: '机械装备与工效', href: '/equipment' },
   { key: 'methods', label: '标准工法库', href: '/methods' },
   { key: 'support', label: '支护体系与优选库', href: '/support' },

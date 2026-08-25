@@ -266,3 +266,76 @@ export interface OverviewData {
     steelDist: PieSeries;
   };
 }
+
+/* ============================================================
+   经验数据库
+   ============================================================ */
+
+/** 核心施工装备 */
+export interface EquipmentItem {
+  id: number;
+  name: string;
+  model: string;
+  num: number;
+  unit: string;
+  pos: string;
+  stage: string;
+}
+
+/** 标准工法库卡片 */
+export interface MethodCard {
+  name: string;
+  tone: 'ok' | 'brand' | 'warn';
+  geology: string;
+  section: string;
+  advantage: string;
+  equipment: string;
+}
+
+/** 地质环境特征 - 知识方案映射 */
+export interface KnowledgeMapping {
+  no: number;
+  code: string;
+  hard: string;
+  intact: string;
+  water: string;
+  depth: string;
+  stress: string;
+  rock: string;
+  scheme: string;
+}
+
+/** 围岩级别筛选值（支护方案库） */
+export type RockFilter = 'all' | 'IV' | 'V';
+
+/** 支护体系与优选方案 */
+export interface SupportScheme {
+  no: number;
+  rock: string;
+  type: string;
+  depth: string;
+  advType: string;
+  advRing: string;
+  advLen: string;
+  advScope: string;
+  anchor: string;
+  steel: string;
+  shot: string;
+  conc: string;
+  thick: string;
+  mode: string;
+  advRate: string;
+  benchLen: string;
+}
+
+/** 经验数据库聚合数据 */
+export interface KnowledgeData {
+  equipmentTitle: string;
+  equipment: EquipmentItem[];
+  methodTitle: string;
+  methods: MethodCard[];
+  mappingTitle: string;
+  mappings: KnowledgeMapping[];
+  schemeTitle: string;
+  schemes: SupportScheme[];
+}

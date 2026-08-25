@@ -1,7 +1,9 @@
 import { overviewData } from '@/data/overview';
+import { knowledgeData } from '@/data/knowledge';
 import type {
   DecisionMeta,
   GeoParams,
+  KnowledgeData,
   MethodMatch,
   OverviewData,
   SafetyAssessment,
@@ -32,6 +34,17 @@ export async function fetchOverview(): Promise<OverviewData> {
   // return (await res.json()) as OverviewData;
 
   return overviewData;
+}
+
+/**
+ * 获取经验数据库数据（装备 / 工法 / 知识映射 / 支护方案）。
+ *
+ * 后端就绪后：
+ * const res = await fetch('/api/knowledge', { cache: 'no-store' });
+ * return (await res.json()) as KnowledgeData;
+ */
+export async function fetchKnowledge(): Promise<KnowledgeData> {
+  return knowledgeData;
 }
 
 /* ============================================================
