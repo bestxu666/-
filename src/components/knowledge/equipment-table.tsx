@@ -55,7 +55,15 @@ export function EquipmentTable({ title, tag, data }: EquipmentTableProps) {
     <div className="card">
       <div className="mb-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="inline-block h-3.5 w-2 rounded-[2px] bg-brand" />
+          <span
+            className="flex h-[30px] w-[30px] shrink-0 items-center justify-center rounded-lg"
+            style={{ background: "rgba(247,185,85,.12)" }}
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f7b955" strokeWidth="2" aria-hidden>
+              <path d="M9 3h6v4h4v6h-4v4H9v-4H5V7h4V3z" />
+              <path d="M9 17v4M15 17v4M5 21h14" />
+            </svg>
+          </span>
           <h3 className="m-0 text-[15px] font-semibold tracking-wide text-ink">{title}</h3>
           <span className="ml-2 inline-flex items-center rounded-md border border-brand/25 bg-brand/10 px-2 py-0.5 text-[11px] font-medium text-brand">
             {tag}

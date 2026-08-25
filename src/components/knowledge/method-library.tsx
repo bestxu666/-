@@ -22,7 +22,14 @@ export function MethodLibrary({ title, data }: { title: string; data: MethodCard
   return (
     <div>
       <div className="flex items-center gap-2 mb-3">
-        <span className="inline-block w-2 h-3.5 rounded-[2px] bg-[var(--brand)]" />
+        <span
+          className="flex h-[30px] w-[30px] shrink-0 items-center justify-center rounded-lg"
+          style={{ background: "rgba(90,162,248,.12)" }}
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5aa2f8" strokeWidth="2" aria-hidden>
+            <path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7l8-4z" />
+          </svg>
+        </span>
         <h3 className="m-0 text-[15px] font-semibold text-[var(--text)] tracking-wide">{title}</h3>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">

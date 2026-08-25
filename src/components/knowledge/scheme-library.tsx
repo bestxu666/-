@@ -17,7 +17,14 @@ export function SchemeLibrary({ title, data }: { title: string; data: SupportSch
     <div>
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
-          <span className="inline-block w-2 h-3.5 rounded-[2px] bg-[var(--brand)]" />
+          <span
+            className="flex h-[30px] w-[30px] shrink-0 items-center justify-center rounded-lg"
+            style={{ background: "rgba(167,139,250,.12)" }}
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" strokeWidth="2" aria-hidden>
+              <path d="M12 3l2 5 5 .5-3.8 3.4L16.5 17 12 14.3 7.5 17l1.3-5.1L5 8.5 10 8l2-5z" />
+            </svg>
+          </span>
           <h3 className="m-0 text-[15px] font-semibold text-[var(--text)] tracking-wide">{title}</h3>
         </div>
         <div className="flex items-center gap-1.5">
@@ -35,10 +42,10 @@ export function SchemeLibrary({ title, data }: { title: string; data: SupportSch
               <th rowSpan={2} className="px-3 py-2.5 font-semibold whitespace-nowrap border-b border-r border-[var(--line)]">围岩级别</th>
               <th rowSpan={2} className="px-3 py-2.5 font-semibold whitespace-nowrap border-b border-r border-[var(--line)]">衬砌类型</th>
               <th rowSpan={2} className="px-3 py-2.5 font-semibold whitespace-nowrap border-b border-r border-[var(--line)]">埋深范围(m)</th>
-              <th colSpan={4} className="px-3 py-2 text-center font-semibold whitespace-nowrap border-b border-r border-[var(--line)] text-[var(--brand)]">超前支护</th>
-              <th colSpan={3} className="px-3 py-2 text-center font-semibold whitespace-nowrap border-b border-r border-[var(--line)] text-[var(--info)]">初期支护</th>
-              <th colSpan={2} className="px-3 py-2 text-center font-semibold whitespace-nowrap border-b border-r border-[var(--line)] text-[var(--violet)]">二次衬砌</th>
-              <th colSpan={3} className="px-3 py-2 text-center font-semibold whitespace-nowrap border-b border-[var(--line)] text-[var(--ok)]">开挖工法</th>
+              <th colSpan={4} className="px-3 py-2 text-center font-semibold whitespace-nowrap border-b border-r border-[var(--line)]">超前支护</th>
+              <th colSpan={3} className="px-3 py-2 text-center font-semibold whitespace-nowrap border-b border-r border-[var(--line)]">初期支护</th>
+              <th colSpan={2} className="px-3 py-2 text-center font-semibold whitespace-nowrap border-b border-r border-[var(--line)]">二次衬砌</th>
+              <th colSpan={3} className="px-3 py-2 text-center font-semibold whitespace-nowrap border-b border-[var(--line)]">开挖工法</th>
             </tr>
             <tr className="text-[var(--text-3)] text-left text-[11px]">
               <SubHead>类型规格</SubHead><SubHead>环向间距</SubHead><SubHead>单根长</SubHead><SubHead last>适用范围</SubHead>
@@ -53,10 +60,10 @@ export function SchemeLibrary({ title, data }: { title: string; data: SupportSch
                 <Td className="text-center text-[var(--text-3)]">{s.no}</Td>
                 <Td className="text-center">
                   <span
-                    className="inline-flex items-center px-1.5 py-0.5 rounded text-[11px] border"
+                    className="inline-flex items-center rounded px-1.5 py-0.5 text-[11px]"
                     style={{
-                      color: s.rock.startsWith("Ⅴ") ? "var(--warn)" : "var(--info)",
-                      borderColor: s.rock.startsWith("Ⅴ") ? "rgba(247,185,85,0.3)" : "rgba(90,162,248,0.3)",
+                      color: s.rock.startsWith("Ⅴ") ? "#f7b955" : "#2dd4bf",
+                      background: s.rock.startsWith("Ⅴ") ? "rgba(247,185,85,.12)" : "rgba(45,212,191,.12)",
                     }}
                   >
                     {s.rock}
@@ -101,10 +108,10 @@ function Td({ children, className = "", last }: { children: React.ReactNode; cla
   return <td className={`px-3 py-2 whitespace-nowrap border-b ${last ? "" : "border-r"} border-[var(--line)] ${className}`}>{children}</td>;
 }
 
-function cellBase(last: boolean | undefined, color: string) {
-  return `px-2 py-2 whitespace-nowrap border-b ${last ? "" : "border-r"} border-[var(--line)] text-center ${color} text-[11.5px]`;
+function cellBase(last: boolean | undefined) {
+  return `px-2 py-2 whitespace-nowrap border-b ${last ? "" : "border-r"} border-[var(--line)] text-center text-[var(--text)] text-[11.5px]`;
 }
-function TdBrand({ children, last }: { children: React.ReactNode; last?: boolean }) { return <td className={cellBase(last, "text-[var(--brand)]")}>{children}</td>; }
-function TdInfo({ children, last }: { children: React.ReactNode; last?: boolean }) { return <td className={cellBase(last, "text-[var(--info)]")}>{children}</td>; }
-function TdViolet({ children, last }: { children: React.ReactNode; last?: boolean }) { return <td className={cellBase(last, "text-[var(--violet)]")}>{children}</td>; }
-function TdOk({ children, last }: { children: React.ReactNode; last?: boolean }) { return <td className={cellBase(last, "text-[var(--ok)]")}>{children}</td>; }
+function TdBrand({ children, last }: { children: React.ReactNode; last?: boolean }) { return <td className={cellBase(last)}>{children}</td>; }
+function TdInfo({ children, last }: { children: React.ReactNode; last?: boolean }) { return <td className={cellBase(last)}>{children}</td>; }
+function TdViolet({ children, last }: { children: React.ReactNode; last?: boolean }) { return <td className={cellBase(last)}>{children}</td>; }
+function TdOk({ children, last }: { children: React.ReactNode; last?: boolean }) { return <td className={cellBase(last)}>{children}</td>; }
