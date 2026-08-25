@@ -2,7 +2,23 @@
 
 import type { KnowledgeMapping } from '@/lib/types';
 import { DataTable, type DataColumn } from './data-table';
-import { Tag } from './tag';
+
+type Tone = 'red' | 'amber' | 'teal' | 'gray';
+
+const TONE_CLASS: Record<Tone, string> = {
+  red: 'bg-red-soft text-red',
+  amber: 'bg-warn-soft text-warn',
+  teal: 'bg-brand-soft text-brand',
+  gray: 'bg-white/5 text-ink-3',
+};
+
+function MappingTag({ tone, children }: { tone: Tone; children: React.ReactNode }) {
+  return (
+    <span className={`rounded px-1.5 py-0.5 text-[12px] ${TONE_CLASS[tone]}`}>
+      {children}
+    </span>
+  );
+}
 
 const COLUMNS: DataColumn<KnowledgeMapping>[] = [
   {
@@ -26,18 +42,18 @@ const COLUMNS: DataColumn<KnowledgeMapping>[] = [
     key: 'stress',
     title: '构造应力',
     render: (row) => (
-      <Tag tone={row.stress.includes('严重') ? 'red' : 'gray'}>
+      <MappingTag tone={row.stress.includes('严重') ? 'red' : 'gray'}>
         {row.stress}
-      </Tag>
+      </MappingTag>
     ),
   },
   {
     key: 'rock',
     title: '对应围岩',
     render: (row) => (
-      <Tag tone={row.rock.includes('Ⅴ') ? 'amber' : 'teal'}>
+      <MappingTag tone={row.rock.includes('Ⅴ') ? 'amber' : 'teal'}>
         {row.rock}
-      </Tag>
+      </MappingTag>
     ),
   },
   {
