@@ -4,12 +4,12 @@ import { DataTable, type DataColumn } from "./data-table";
 import type { EquipmentItem } from "@/lib/types";
 
 const STAGE_TONE: Record<string, string> = {
-  "开挖与出渣运输": "text-brand bg-brand-soft",
-  "超前支护": "text-info bg-info-soft",
-  "初期支护": "text-warn bg-warn-soft",
-  "二次衬砌": "text-ok bg-ok-soft",
-  "超前地质探测": "text-danger bg-danger-soft",
-  "防排水施工": "text-violet bg-violet-soft",
+  "开挖与出渣运输": "tag tag-teal",
+  "超前支护": "tag tag-blue",
+  "初期支护": "tag tag-amber",
+  "二次衬砌": "tag tag-green",
+  "超前地质探测": "tag tag-red",
+  "防排水施工": "tag tag-purple",
 };
 
   const COLUMNS: DataColumn<EquipmentItem>[] = [
@@ -36,8 +36,7 @@ const STAGE_TONE: Record<string, string> = {
       className: "text-center whitespace-nowrap",
       headerClassName: "text-center",
       render: (r) => (
-        <span className={`inline-flex items-center rounded px-1.5 py-0.5 text-[11px] ${STAGE_TONE[r.stage] ??
-  "text-brand bg-brand-soft"}`}>
+        <span className={STAGE_TONE[r.stage] ?? "tag tag-teal"}>
           {r.stage}
         </span>
       ),
@@ -65,7 +64,7 @@ export function EquipmentTable({ title, tag, data }: EquipmentTableProps) {
             </svg>
           </span>
           <h3 className="m-0 text-[15px] font-semibold tracking-wide text-ink">{title}</h3>
-          <span className="ml-2 inline-flex items-center rounded-md border border-brand/25 bg-brand/10 px-2 py-0.5 text-[11px] font-medium text-brand">
+          <span className="tag tag-teal ml-2">
             {tag}
           </span>
         </div>

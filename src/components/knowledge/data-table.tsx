@@ -20,7 +20,7 @@ interface DataTableProps<T> {
 }
 
 /**
- * 通用暗色数据表格 —— 统一经验数据库各表的样式。
+ * 通用暗色数据表格 —— 统一经验数据库各表的样式（照搬 123 的 .tbl）。
  */
 export function DataTable<T>({
   columns,
@@ -29,18 +29,12 @@ export function DataTable<T>({
   emptyText = '暂无数据',
 }: DataTableProps<T>) {
   return (
-    <div className="tbl-wrap overflow-x-auto rounded-md">
-      <table className="w-full border-collapse text-[12.5px]">
+    <div className="tbl-wrap">
+      <table className="tbl">
         <thead>
-          <tr className="bg-[rgba(10,19,34,0.6)]">
+          <tr>
             {columns.map((col) => (
-              <th
-                key={col.key}
-                className={cn(
-                  'whitespace-nowrap border-b border-line px-3 py-2.5 text-left font-semibold text-ink-2',
-                  col.headerClassName,
-                )}
-              >
+              <th key={col.key} className={cn(col.headerClassName)}>
                 {col.title}
               </th>
             ))}
@@ -49,27 +43,13 @@ export function DataTable<T>({
         <tbody>
           {data.length === 0 ? (
             <tr>
-              <td
-                colSpan={columns.length}
-                className="px-3 py-8 text-center text-ink-3"
-              >
-                {emptyText}
-              </td>
+              <td colSpan={columns.length}>{emptyText}</td>
             </tr>
           ) : (
             data.map((row, index) => (
-              <tr
-                key={rowKey(row, index)}
-                className="transition-colors hover:bg-white/[0.03]"
-              >
+              <tr key={rowKey(row, index)}>
                 {columns.map((col) => (
-                  <td
-                    key={col.key}
-                    className={cn(
-                      'border-b border-line/60 px-3 py-2.5 align-middle text-ink-2',
-                      col.className,
-                    )}
-                  >
+                  <td key={col.key} className={cn(col.className)}>
                     {col.render
                       ? col.render(row)
                       : ((row as Record<string, unknown>)[col.key] as ReactNode)}

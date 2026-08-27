@@ -6,18 +6,14 @@ import { DataTable, type DataColumn } from './data-table';
 type Tone = 'red' | 'amber' | 'teal' | 'gray';
 
 const TONE_CLASS: Record<Tone, string> = {
-  red: 'bg-red-soft text-red',
-  amber: 'bg-warn-soft text-warn',
-  teal: 'bg-brand-soft text-brand',
-  gray: 'bg-white/5 text-ink-3',
+  red: 'tag tag-red',
+  amber: 'tag tag-amber',
+  teal: 'tag tag-teal',
+  gray: 'tag tag-gray',
 };
 
 function MappingTag({ tone, children }: { tone: Tone; children: React.ReactNode }) {
-  return (
-    <span className={`rounded px-1.5 py-0.5 text-[12px] ${TONE_CLASS[tone]}`}>
-      {children}
-    </span>
-  );
+  return <span className={TONE_CLASS[tone]}>{children}</span>;
 }
 
 const COLUMNS: DataColumn<KnowledgeMapping>[] = [
@@ -25,13 +21,11 @@ const COLUMNS: DataColumn<KnowledgeMapping>[] = [
     key: 'no',
     title: '序号',
     render: (row) => <span className="tabular-nums">{row.no}</span>,
-    className: 'w-12 text-center',
-    headerClassName: 'text-center',
   },
   {
     key: 'code',
     title: '知识方案编号',
-    render: (row) => <b className="text-brand">{row.code}</b>,
+    render: (row) => <b className="font-semibold">{row.code}</b>,
     className: 'whitespace-nowrap',
   },
   { key: 'hard', title: '坚硬程度' },
@@ -59,7 +53,7 @@ const COLUMNS: DataColumn<KnowledgeMapping>[] = [
   {
     key: 'scheme',
     title: '匹配优选工法与衬砌',
-    render: (row) => <span className="text-ink">{row.scheme}</span>,
+    render: (row) => <span>{row.scheme}</span>,
   },
 ];
 
@@ -75,13 +69,9 @@ export function MappingTable({ title, tag, data }: MappingTableProps) {
       <div className="mb-3 flex items-center gap-2">
         <span className="inline-block h-3.5 w-2 rounded-[2px] bg-brand" />
         <h3 className="m-0 text-[15px] font-semibold tracking-wide text-ink">{title}</h3>
-        <span className="ml-2 inline-flex items-center rounded-md border border-brand/25 bg-brand/10 px-2 py-0.5 text-[11px] font-medium text-brand">
-          {tag}
-        </span>
+        <span className="tag tag-teal ml-2">{tag}</span>
       </div>
-      <div className="overflow-hidden rounded-lg border border-line bg-panel/40">
-        <DataTable columns={COLUMNS} data={data} rowKey={(r) => r.code} />
-      </div>
+      <DataTable columns={COLUMNS} data={data} rowKey={(r) => r.code} />
     </div>
   );
 }

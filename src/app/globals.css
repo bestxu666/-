@@ -711,3 +711,107 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+/* ===== 经验数据库样式（照搬 123） ===== */
+.card {
+  background: #0e1e34;
+  border: 1px solid rgba(56, 189, 248, 0.16);
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+
+.tbl {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.tbl th {
+  background: rgba(255, 255, 255, 0.04);
+  padding: 8px 9px;
+  text-align: center;
+  font-weight: 600;
+  color: #94a9c9;
+  border: 1px solid rgba(56, 189, 248, 0.16);
+  font-size: 11.5px;
+  white-space: nowrap;
+}
+.tbl td {
+  padding: 8px 9px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  color: #ffffff;
+  text-align: center;
+}
+.tbl tr:hover td {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.db-tab-bar {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.db-tab-btn {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #567092;
+  padding: 3px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+.db-tab-btn:hover {
+  color: #fff;
+  border-color: rgba(56, 189, 248, 0.16);
+}
+.db-tab-btn.active {
+  background: rgba(0, 210, 190, 0.14);
+  color: #00d2be;
+  border-color: rgba(0, 210, 190, 0.35);
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 12px;
+  line-height: 1.4;
+}
+.tag-teal {
+  background: rgba(0, 210, 190, 0.14);
+  color: #00d2be;
+  border: 1px solid rgba(0, 210, 190, 0.35);
+}
+.tag-blue {
+  background: rgba(56, 189, 248, 0.14);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.35);
+}
+.tag-green {
+  background: rgba(16, 185, 129, 0.14);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+}
+.tag-amber {
+  background: rgba(245, 158, 11, 0.14);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.35);
+}
+.tag-red {
+  background: rgba(244, 63, 94, 0.14);
+  color: #f43f5e;
+  border: 1px solid rgba(244, 63, 94, 0.35);
+}
+.tag-purple {
+  background: rgba(168, 85, 247, 0.14);
+  color: #a855f7;
+  border: 1px solid rgba(168, 85, 247, 0.35);
+}
+.tag-gray {
+  background: rgba(255, 255, 255, 0.07);
+  color: #94a9c9;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
