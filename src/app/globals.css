@@ -815,3 +815,34 @@ body {
   color: #94a9c9;
   border: 1px solid rgba(255, 255, 255, 0.12);
 }
+
+/* 二级胶囊切换（照搬 123 .sub-tab-capsule / .st-btn） */
+.sub-tab-capsule {
+  display: inline-flex;
+  gap: 3px;
+  background: #091524;
+  padding: 3px;
+  border-radius: 6px;
+  border: 1px solid rgba(56, 189, 248, 0.12);
+}
+.st-btn {
+  font-size: 12px;
+  font-weight: 600;
+  color: #567092;
+  padding: 4px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  border: 1px solid transparent;
+}
+.st-btn:hover {
+  color: #fff;
+}
+.st-btn.active {
+  background: rgba(0, 210, 190, 0.2);
+  color: #fff;
+  border-color: rgba(0, 210, 190, 0.4);
+}

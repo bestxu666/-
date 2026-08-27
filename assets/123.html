@@ -1,0 +1,2737 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>钻爆法隧道全工序机械化施工智能配置系统</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+/* ============================================================
+   钻爆法隧道全工序机械化施工智能配置系统
+   纯正深海科技蓝 (Deep Navy Tech Blue) · 精准像素级UI复刻
+   ============================================================ */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#07111e;
+  --topbar-bg:#0a1628;
+  --panel:#0e1e34;
+  --panel-border:rgba(56,189,248,.16);
+  --card-sub:#091524;
+  --card-sub-border:rgba(56,189,248,.12);
+  --text:#ffffff;
+  --text-2:#94a9c9;
+  --text-3:#567092;
+  --text-muted:#415878;
+  --accent:#00d2be;
+  --accent-soft:rgba(0,210,190,.14);
+  --blue:#38bdf8;
+  --blue-soft:rgba(56,189,248,.14);
+  --green:#10b981;
+  --green-soft:rgba(16,185,129,.14);
+  --amber:#f59e0b;
+  --amber-soft:rgba(245,158,11,.14);
+  --red:#f43f5e;
+  --red-soft:rgba(244,63,94,.14);
+  --purple:#a855f7;
+  --purple-soft:rgba(168,85,247,.14);
+  --r:8px;--r-sm:5px;--r-lg:10px;
+  --shadow:0 8px 30px rgba(0,0,0,.45);
+  --font:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;
+}
+html{font-size:14px}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.5;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+ul{list-style:none}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#162c4a;border-radius:4px}
+::-webkit-scrollbar-thumb:hover{background:#234470}
+
+/* ---------- 顶部导航栏 ---------- */
+.topbar{position:fixed;top:0;left:0;right:0;height:56px;z-index:1000;
+  background:var(--topbar-bg);border-bottom:1px solid var(--panel-border);
+  display:flex;align-items:center;padding:0 24px}
+.topbar-inner{max-width:1720px;width:100%;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{display:flex;align-items:center;gap:12px;flex-shrink:0;cursor:pointer;user-select:none}
+.brand-logo{width:32px;height:32px;border-radius:7px;flex-shrink:0;
+  background:linear-gradient(135deg,#00d2be,#0284c7);
+  display:flex;align-items:center;justify-content:center;box-shadow:0 0 12px rgba(0,210,190,.35)}
+.brand-name{font-size:15px;font-weight:700;letter-spacing:.3px;white-space:nowrap;color:#fff}
+.brand-name .en{display:block;font-size:8.5px;font-weight:500;color:var(--text-3);letter-spacing:.8px;margin-top:1px}
+
+.topnav{display:flex;gap:8px;flex-shrink:0;margin-left:12px}
+.nav-item{position:relative;color:var(--text-2);font-size:13.5px;font-weight:500;
+  padding:18px 14px;cursor:pointer;transition:all .18s;white-space:nowrap;display:flex;align-items:center}
+.nav-item:hover{color:#fff}
+.nav-item.active{color:var(--accent);font-weight:600}
+.nav-item.active::after{content:'';position:absolute;left:10px;right:10px;bottom:0px;height:2.5px;
+  border-radius:2px;background:var(--accent);box-shadow:0 0 10px rgba(0,210,190,.8)}
+
+.top-right{display:flex;align-items:center;gap:18px;flex-shrink:0}
+.t-status{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--text-2)}
+.t-status .dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.t-time{font-size:12.5px;color:var(--text-3);font-variant-numeric:tabular-nums;font-family:Consolas,Monaco,monospace}
+
+/* ---------- 主体容器 ---------- */
+.main{margin-top:56px;padding:16px 24px 50px}
+.container{max-width:1720px;margin:0 auto}
+
+/* ---------- 页面头部 ---------- */
+.page-head{margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.page-head h1{font-size:20px;font-weight:700;color:#fff;letter-spacing:.3px}
+.head-badges{display:flex;gap:10px;flex-wrap:wrap}
+.head-pill{display:inline-flex;align-items:center;gap:6px;padding:4px 14px;border-radius:20px;
+  background:rgba(14,30,52,.9);border:1px solid rgba(56,189,248,.2);font-size:12px;color:var(--text-2)}
+.head-pill .p-dot{width:6px;height:6px;border-radius:50%}
+.head-pill .p-dot.cyan{background:var(--blue);box-shadow:0 0 6px var(--blue)}
+.head-pill .p-dot.green{background:var(--green);box-shadow:0 0 6px var(--green)}
+
+/* ---------- 通用卡片与网格 ---------- */
+.tab{display:none;animation:fadeIn .18s ease}
+.tab.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(2px)}to{opacity:1;transform:translateY(0)}}
+
+.card{background:var(--panel);border:1px solid var(--panel-border);border-radius:var(--r);padding:14px 16px;position:relative}
+.card+.card,.card+.grid{margin-top:12px}
+.grid{display:grid;gap:12px}
+.g2{grid-template-columns:1fr 1fr}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+.mb{margin-bottom:12px}
+
+/* ---------- 标签样式 ---------- */
+.tag{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:500;padding:2px 8px;border-radius:12px;line-height:1.4}
+.tag-teal{background:rgba(0,210,190,.14);color:var(--accent);border:1px solid rgba(0,210,190,.35)}
+.tag-blue{background:rgba(56,189,248,.14);color:var(--blue);border:1px solid rgba(56,189,248,.35)}
+.tag-green{background:rgba(16,185,129,.14);color:var(--green);border:1px solid rgba(16,185,129,.35)}
+.tag-amber{background:rgba(245,158,11,.14);color:var(--amber);border:1px solid rgba(245,158,11,.35)}
+.tag-red{background:rgba(244,63,94,.14);color:var(--red);border:1px solid rgba(244,63,94,.35)}
+.tag-purple{background:rgba(168,85,247,.14);color:var(--purple);border:1px solid rgba(168,85,247,.35)}
+.tag-gray{background:rgba(255,255,255,.07);color:var(--text-2);border:1px solid rgba(255,255,255,.12)}
+
+/* ---------- 成效指标看板 (KPI 4列) ---------- */
+.kpi-box{background:var(--card-sub);border:1px solid var(--card-sub-border);border-radius:6px;padding:12px 16px;position:relative}
+.kpi-box .k-title{font-size:12px;color:var(--text-2);margin-bottom:4px}
+.kpi-box .k-val{font-size:26px;font-weight:800;line-height:1.2;font-variant-numeric:tabular-nums;display:flex;align-items:baseline;gap:4px}
+.kpi-box .k-val small{font-size:13px;font-weight:500}
+.kpi-box .k-sub{font-size:11px;color:var(--text-3);margin-top:4px}
+
+/* ---------- 示范工程侧边栏与纵断面布局 ---------- */
+.overview-layout{display:grid;grid-template-columns:310px 1fr;gap:12px;align-items:start}
+
+.proj-panel{background:var(--panel);border:1px solid var(--panel-border);border-radius:var(--r);padding:14px 16px;display:flex;flex-direction:column;justify-content:space-between;position:sticky;top:72px}
+.proj-head{font-size:13px;font-weight:700;color:#fff;display:flex;align-items:center;gap:8px;margin-bottom:12px}
+
+.proj-card{background:var(--card-sub);border:1px solid rgba(56,189,248,.18);border-radius:6px;padding:12px 14px;flex:1;display:flex;flex-direction:column;justify-content:space-between}
+.pc-row1{display:flex;align-items:center;justify-content:space-between;font-size:13.5px;font-weight:700;color:#fff}
+.pc-row2{font-size:11px;color:var(--text-3);margin:4px 0 8px}
+
+.pc-tabs{display:flex;gap:6px;margin-bottom:10px}
+.pc-tab-btn{font-size:11px;font-weight:600;padding:3px 8px;border-radius:4px;cursor:pointer;transition:all .15s}
+.pc-tab-btn.active{background:rgba(56,189,248,.18);color:var(--blue);border:1px solid rgba(56,189,248,.4)}
+.pc-tab-btn:not(.active){background:rgba(255,255,255,.04);color:var(--text-3);border:1px solid transparent}
+
+.pc-meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:11px;padding:8px 0;border-top:1px dashed rgba(56,189,248,.12);border-bottom:1px dashed rgba(56,189,248,.12);margin-bottom:8px}
+.pc-meta-grid .m-lbl{color:var(--text-3)}
+.pc-meta-grid .m-val{color:#fff;font-weight:600;margin-top:2px;font-size:11px}
+
+.pc-progress-box{margin-top:4px}
+.pc-prog-head{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--text-3)}
+.pc-prog-bar{height:5px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden;margin:6px 0}
+.pc-prog-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--green));border-radius:3px}
+.pc-prog-sub{display:flex;justify-content:space-between;align-items:center;font-size:10.5px;color:var(--text-3)}
+
+/* 纵断面色带卡片 */
+.strip-panel{background:var(--panel);border:1px solid var(--panel-border);border-radius:var(--r);padding:14px 16px}
+.tunnel-view-switch{display:inline-flex;gap:2px;background:var(--card-sub);padding:2px;border-radius:5px;border:1px solid var(--card-sub-border)}
+.tv-btn{padding:3px 12px;font-size:11.5px;font-weight:600;color:var(--text-3);border-radius:4px;cursor:pointer;transition:all .15s}
+.tv-btn:hover{color:#fff}
+.tv-btn.active{background:var(--accent);color:#06141a}
+
+.strip-legend{display:flex;gap:14px;font-size:11px;color:var(--text-2);flex-wrap:wrap;margin:10px 0 6px}
+.strip-legend-item{display:flex;align-items:center;gap:4px}
+.strip-legend-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+
+.strip-bar{height:24px;border-radius:4px;display:flex;overflow:hidden;margin:8px 0 10px;border:1px solid rgba(255,255,255,.16);background:#07111e}
+.strip-seg{height:100%;cursor:pointer;transition:all .15s;position:relative}
+.strip-seg:hover{filter:brightness(1.25);transform:scaleY(1.05)}
+.strip-seg.active{outline:2px solid #fff;z-index:5}
+
+.seg-detail-box{background:var(--card-sub);border:1px solid var(--card-sub-border);border-radius:6px;padding:10px 14px;margin-bottom:10px}
+.seg-detail-title{font-size:12px;font-weight:700;color:#fff;margin-bottom:6px}
+.seg-detail-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px 12px;font-size:11.5px;color:var(--text-2)}
+.seg-detail-grid span{color:var(--text-3)}
+.seg-detail-grid b{color:var(--text);font-weight:600}
+
+.strip-sub-kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.strip-sub-cell{background:var(--card-sub);border:1px solid var(--card-sub-border);border-radius:5px;padding:8px 12px}
+.strip-sub-lbl{font-size:11px;color:var(--text-3)}
+.strip-sub-val{font-size:16px;font-weight:800;margin:2px 0 1px;display:flex;align-items:baseline;gap:4px}
+.strip-sub-desc{font-size:10.5px;color:var(--text-3)}
+
+/* ---------- 底部 4 个支护指标卡 (完全对齐截图) ---------- */
+.feature-card{background:var(--panel);border:1px solid var(--panel-border);border-radius:var(--r);padding:14px 16px;display:flex;flex-direction:column;justify-content:space-between}
+.fc-head{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:var(--text-2)}
+.fc-icon{width:16px;height:16px;display:flex;align-items:center;justify-content:center}
+.fc-val{font-size:22px;font-weight:800;margin:6px 0 2px;display:flex;align-items:baseline;gap:4px}
+.fc-val small{font-size:13px;font-weight:600;color:#fff}
+.fc-sub{font-size:11px;color:var(--text-3)}
+
+/* ---------- 图表卡片与右侧列表 (完全对齐截图 2) ---------- */
+.chart-card{background:var(--panel);border:1px solid var(--panel-border);border-radius:var(--r);padding:14px 16px}
+.chart-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.chart-title{font-size:13.5px;font-weight:700;color:#fff}
+.chart-unit{font-size:11.5px;color:var(--text-3)}
+
+.donut-legend-list{display:flex;flex-direction:column;gap:5px;font-size:11.5px;padding-top:4px}
+.donut-legend-row{display:flex;justify-content:space-between;align-items:center}
+.donut-legend-left{display:flex;align-items:center;gap:6px;color:var(--text-2)}
+.donut-legend-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.donut-legend-right{color:var(--text-3);font-family:Consolas,Monaco,monospace;font-size:11.5px}
+
+/* ---------- 按钮 ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:none;cursor:pointer;
+  font-size:12.5px;font-weight:600;padding:6px 14px;border-radius:5px;transition:all .15s;font-family:var(--font)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn-primary{background:linear-gradient(135deg,#00d2be,#0284c7);color:#fff}
+.btn-primary:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 3px 12px rgba(0,210,190,.35)}
+.btn-blue{background:linear-gradient(135deg,#38bdf8,#0284c7);color:#fff}
+.btn-ghost{background:rgba(255,255,255,.06);color:var(--text-2);border:1px solid var(--panel-border)}
+.btn-ghost:hover:not(:disabled){color:#fff;border-color:rgba(56,189,248,.35);background:rgba(255,255,255,.1)}
+.btn-sm{padding:3px 10px;font-size:11.5px;border-radius:4px}
+.btn-danger{background:rgba(244,63,94,.16);color:var(--red);border:1px solid rgba(244,63,94,.3)}
+.btn-danger:hover{background:rgba(244,63,94,.28)}
+
+/* ---------- 表格 ---------- */
+.tbl-wrap{overflow-x:auto}
+.tbl{width:100%;border-collapse:collapse;font-size:12px;min-width:650px}
+.tbl th{background:rgba(255,255,255,.04);padding:8px 9px;text-align:center;font-weight:600;color:var(--text-2);
+  border:1px solid var(--panel-border);font-size:11.5px;white-space:nowrap}
+.tbl td{padding:8px 9px;border:1px solid rgba(255,255,255,.07);color:var(--text);text-align:center}
+.tbl tr:hover td{background:rgba(255,255,255,.03)}
+.tbl .text-left{text-align:left}
+
+/* ---------- 流程步骤条 ---------- */
+.flow{display:flex;align-items:stretch;background:var(--panel);
+  border:1px solid var(--panel-border);border-radius:var(--r);padding:10px 16px;margin-bottom:12px}
+.flow-step{flex:1;display:flex;align-items:center;gap:8px;cursor:pointer;padding:4px 6px;border-radius:6px;transition:background .15s}
+.flow-step:hover{background:rgba(255,255,255,.05)}
+.flow-step .fc{width:26px;height:26px;border-radius:50%;border:1.5px solid rgba(56,189,248,.3);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text-3);background:var(--card-sub)}
+.flow-step.active .fc{border-color:var(--accent);background:var(--accent);color:#06141a;box-shadow:0 0 10px rgba(0,210,190,.5)}
+.flow-step.done .fc{border-color:var(--green);background:var(--green);color:#06141a}
+.flow-step .fi .t{font-size:12.5px;font-weight:600;color:var(--text-2)}
+.flow-step.active .fi .t{color:#fff}
+.flow-step .fi .d{font-size:10.5px;color:var(--text-3);margin-top:1px}
+.flow-arrow{display:flex;align-items:center;color:var(--text-3);opacity:.4;padding:0 4px}
+
+/* ---------- 决策工作台 ---------- */
+.engine-workbench{background:var(--panel);border:1px solid var(--panel-border);border-radius:var(--r);padding:16px 18px;margin-bottom:12px}
+.engine-top-bar{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--panel-border);padding-bottom:12px;margin-bottom:12px;flex-wrap:wrap;gap:10px}
+.engine-mode-alert{padding:7px 12px;border-radius:5px;font-size:11.5px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.alert-joint{background:rgba(0,210,190,.1);border:1px solid rgba(0,210,190,.3);color:var(--accent)}
+.alert-manual{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);color:var(--amber)}
+
+.workface-ctrl-box{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:center;background:var(--card-sub);padding:8px 12px;border-radius:6px;border:1px solid var(--card-sub-border);margin-bottom:12px}
+.wf-field{display:flex;align-items:center;gap:6px}
+.wf-field label{font-size:11.5px;font-weight:600;color:var(--text-2);white-space:nowrap}
+.wf-field select{flex:1;padding:5px 8px;background:var(--panel);border:1px solid var(--panel-border);border-radius:4px;color:var(--text);font-size:11.5px;outline:none;cursor:pointer}
+
+.param-groups-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:12px}
+.param-group-box{background:var(--card-sub);border:1px solid rgba(56,189,248,.12);border-radius:6px;padding:10px 12px;display:flex;flex-direction:column;gap:6px}
+.pg-head{font-size:12px;font-weight:700;color:#fff;display:flex;align-items:center;gap:6px;padding-bottom:4px;border-bottom:1px solid rgba(56,189,248,.14);margin-bottom:2px}
+.pg-item{display:flex;align-items:center;justify-content:space-between;gap:6px;background:rgba(7,17,30,.6);border:1px solid rgba(56,189,248,.1);border-radius:4px;padding:3px 6px}
+.pg-item .pg-lbl{font-size:11px;color:var(--text-2);white-space:nowrap}
+.pg-item .pg-val{display:flex;align-items:center;gap:3px}
+.pg-item input{width:70px;background:transparent;border:none;color:var(--text);font-size:11.5px;font-weight:700;text-align:right;outline:none}
+.pg-item select{background:var(--panel);border:1px solid var(--panel-border);color:var(--text);font-size:11px;font-weight:600;padding:2px 4px;border-radius:3px;outline:none}
+.pg-item .unit{font-size:10px;color:var(--text-3);font-family:monospace}
+
+/* 候选工法卡片 */
+.method-card{background:var(--panel);border:1px solid var(--panel-border);border-radius:var(--r);overflow:hidden;cursor:pointer;transition:all .15s}
+.method-card:hover{border-color:rgba(56,189,248,.4);transform:translateY(-2px)}
+.method-card.selected{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent),0 6px 20px rgba(0,210,190,.2)}
+.method-card.selected .mc-head{background:linear-gradient(135deg,rgba(0,210,190,.22),rgba(0,210,190,.06))}
+.mc-head{padding:8px 12px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--panel-border)}
+.mc-body{padding:10px 12px}
+.mc-param{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px dashed rgba(255,255,255,.06);font-size:11.5px}
+
+/* 支护构件卡片 */
+.support-card{background:var(--panel);border:1px solid var(--panel-border);border-radius:var(--r);padding:12px 14px;border-top:3px solid var(--sc,var(--accent))}
+.sc-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.sc-p{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px dashed rgba(255,255,255,.06);font-size:11.5px}
+
+/* 胶囊按钮 */
+.sub-tab-capsule{display:inline-flex;gap:3px;background:var(--card-sub);padding:3px;border-radius:6px;border:1px solid var(--card-sub-border)}
+.st-btn{font-size:12px;font-weight:600;color:var(--text-3);padding:4px 12px;border-radius:4px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:5px}
+.st-btn:hover{color:#fff}
+.st-btn.active{background:rgba(0,210,190,.2);color:#fff;border:1px solid rgba(0,210,190,.4)}
+
+.db-tab-bar{display:flex;gap:4px;align-items:center;flex-wrap:wrap}
+.db-tab-btn{font-size:11.5px;font-weight:600;color:var(--text-3);padding:3px 8px;border-radius:4px;cursor:pointer;border:1px solid transparent}
+.db-tab-btn:hover{color:#fff;border-color:var(--panel-border)}
+.db-tab-btn.active{background:rgba(0,210,190,.14);color:var(--accent);border-color:rgba(0,210,190,.35)}
+
+.search-input{background:var(--card-sub);border:1px solid var(--panel-border);border-radius:4px;color:var(--text);padding:3px 8px;font-size:11.5px;outline:none}
+.search-input:focus{border-color:var(--accent)}
+
+/* 模态弹窗 */
+.modal-backdrop{position:fixed;inset:0;background:rgba(5,11,20,.8);z-index:2000;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);padding:16px}
+.modal-box{background:var(--panel);border:1px solid rgba(56,189,248,.3);border-radius:var(--r);width:100%;max-width:720px;max-height:90vh;display:flex;flex-direction:column;box-shadow:var(--shadow)}
+.modal-header{padding:12px 16px;border-bottom:1px solid var(--panel-border);display:flex;align-items:center;justify-content:space-between}
+.modal-close{background:transparent;border:none;color:var(--text-3);font-size:18px;cursor:pointer}
+.modal-close:hover{color:#fff}
+.modal-body{padding:14px 16px;overflow-y:auto;flex:1}
+.modal-footer{padding:10px 16px;border-top:1px solid var(--panel-border);display:flex;align-items:center;justify-content:flex-end;gap:8px}
+
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.form-group{display:flex;flex-direction:column;gap:3px}
+.form-group label{font-size:11.5px;color:var(--text-2);font-weight:600}
+.form-group input,.form-group select{background:var(--card-sub);border:1px solid var(--panel-border);border-radius:4px;color:var(--text);padding:5px 8px;font-size:11.5px;outline:none}
+
+.detail-expand-row{background:rgba(9,21,36,.95);display:none}
+.detail-expand-row.open{display:table-row}
+
+/* 响应式适配 */
+@media(max-width:1200px){
+  .overview-layout{grid-template-columns:1fr}
+  .param-groups-grid{grid-template-columns:1fr}
+  .workface-ctrl-box{grid-template-columns:1fr}
+  .g4{grid-template-columns:repeat(2,1fr)}
+  .g3{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:800px){
+  .g2,.g3,.g4{grid-template-columns:1fr}
+  .main{padding:12px 10px 40px}
+  .brand-name .en{display:none}
+  .topnav{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ================= 顶部导航 ================= -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand" onclick="switchTab('overview')">
+      <div class="brand-logo">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><path d="M4 17.5A8.5 8.5 0 0 1 20 17.5" stroke="#06141a" stroke-width="2.4" stroke-linecap="round"/><path d="M2 21h20M6 17.5v-3M18 17.5v-3M12 17.5V9" stroke="#06141a" stroke-width="2.4" stroke-linecap="round"/></svg>
+      </div>
+      <div class="brand-name">钻爆法隧道全工序机械化施工智能配置系统<span class="en">DRILL-BLAST TUNNEL FULL-PROCESS MECHANIZED CONSTRUCTION</span></div>
+    </div>
+    <nav class="topnav" id="topNav">
+      <a class="nav-item active" data-tab="overview" onclick="switchTab('overview')">系统总览</a>
+      <a class="nav-item" data-tab="decision" onclick="switchTab('decision')">智能决策中心</a>
+      <a class="nav-item" data-tab="experience" onclick="switchTab('experience')">经验数据库</a>
+      <a class="nav-item" data-tab="scheme" onclick="switchTab('scheme')">方案报告与决策台账</a>
+    </nav>
+    <div class="top-right">
+      <div class="t-status"><span class="dot"></span>配置系统运行正常</div>
+      <div class="t-time" id="clock">2026-08-26 19:52:05</div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+<div class="container">
+
+<!-- ==================================================
+     TAB 1 · 系统总览 (严格对齐参考UI图与排版)
+================================================== -->
+<section class="tab active" id="tab-overview">
+  <!-- 页面头部标题与标签 -->
+  <div class="page-head">
+    <div>
+      <h1>工程总览</h1>
+    </div>
+    <div class="head-badges">
+      <div class="head-pill"><span class="p-dot cyan"></span>沙益 1 号示范工程</div>
+      <div class="head-pill"><span class="p-dot green"></span>开挖进度 100% (已贯通)</div>
+    </div>
+  </div>
+
+  <!-- 智能配置系统成效指标看板 (4 列卡片) -->
+  <div class="card mb">
+    <div style="font-size:13.5px;font-weight:700;color:#fff;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between">
+      <span>智能配置系统成效指标看板</span>
+      <span style="font-size:11.5px;color:var(--text-3);font-weight:400">数据更新于当日监控</span>
+    </div>
+    <div class="grid g4">
+      <div class="kpi-box">
+        <div class="k-title">累计示范段应用决策循环</div>
+        <div class="k-val" style="color:var(--accent)">246 <small style="color:var(--accent)">个循环</small></div>
+        <div class="k-sub">主洞应用 158 环 · 平导应用 88 环</div>
+      </div>
+      <div class="kpi-box">
+        <div class="k-title">施工现场方案采纳率</div>
+        <div class="k-val" style="color:var(--accent)">96.7 <small style="color:var(--accent)">%</small></div>
+        <div class="k-sub">采纳 238 次 / 优化微调 8 次</div>
+      </div>
+      <div class="kpi-box">
+        <div class="k-title">单次决策生成平均耗时</div>
+        <div class="k-val" style="color:var(--blue)">&lt; 10.0 <small style="color:var(--blue)">秒</small></div>
+        <div class="k-sub">较传统人工计算(45min)提速 95%+</div>
+      </div>
+      <div class="kpi-box">
+        <div class="k-title">综合工效与安全效益</div>
+        <div class="k-val" style="color:var(--amber);font-size:22px">进尺提升 18.5%</div>
+        <div class="k-sub">超耗降低 12.3% · 零大变形坍塌</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 示范工程配置应用 (左侧卡片) + 主洞纵断面衬砌分布图 (右侧卡片) -->
+  <div class="overview-layout mb">
+    <!-- 左侧：示范工程配置应用 -->
+    <div class="proj-panel">
+      <div class="proj-head">
+        <span>示范工程配置应用</span>
+        <span class="tag tag-teal" style="font-size:10.5px">G318 线</span>
+      </div>
+
+      <div class="proj-card">
+        <div>
+          <div class="pc-row1">
+            <span>沙益 1 号隧道 <span class="tag tag-teal" style="font-size:10px;margin-left:4px">示范工程</span></span>
+            <span style="color:var(--accent)">100%</span>
+          </div>
+          <div class="pc-row2">川藏G318线 · 4.74km · Ⅳ~Ⅴ级围岩</div>
+
+          <div class="pc-tabs">
+            <div class="pc-tab-btn active" id="btnProjMain" onclick="switchTunnelView('main')">主洞 4737m</div>
+            <div class="pc-tab-btn" id="btnProjPilot" onclick="switchTunnelView('pilot')">平导 4764m</div>
+          </div>
+
+          <div class="pc-meta-grid">
+            <div>
+              <div class="m-lbl">起讫桩号</div>
+              <div class="m-val">K3598+388 ~<br>K3603+125</div>
+            </div>
+            <div>
+              <div class="m-lbl">隧道里程</div>
+              <div class="m-val">主洞 4737m / 平导 4764m</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pc-progress-box">
+          <div class="pc-prog-head">
+            <span>开挖进度</span>
+            <span style="color:#fff;font-weight:600">100%</span>
+          </div>
+          <div class="pc-prog-bar">
+            <div class="pc-prog-fill" style="width:100%"></div>
+          </div>
+          <div class="pc-prog-sub">
+            <span>已贯通</span>
+            <span>已掘进 4.74 km · 剩余 0.00 km</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 右侧列容器 -->
+    <div style="display:flex;flex-direction:column;gap:12px;width:100%">
+      <!-- 右侧：主洞纵断面衬砌分布图 -->
+      <div class="strip-panel">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+          <span style="font-size:13.5px;font-weight:700;color:#fff" id="curTunnelTitle">主洞纵断面衬砌分布图 (4737m)</span>
+          <div class="tunnel-view-switch">
+            <div class="tv-btn active" id="btnViewMain" onclick="switchTunnelView('main')">主洞</div>
+            <div class="tv-btn" id="btnViewPilot" onclick="switchTunnelView('pilot')">平行导洞</div>
+          </div>
+        </div>
+
+        <!-- 图例 -->
+        <div class="strip-legend">
+          <div class="strip-legend-item"><span class="strip-legend-dot" style="background:#3ddc97"></span>明洞 (SMa)</div>
+          <div class="strip-legend-item"><span class="strip-legend-dot" style="background:#5aa2f8"></span>Ⅳ级普通 (S4a/S4b)</div>
+          <div class="strip-legend-item"><span class="strip-legend-dot" style="background:#a78bfa"></span>Ⅳ级停车带 (S4jt)</div>
+          <div class="strip-legend-item"><span class="strip-legend-dot" style="background:#f7b955"></span>Ⅴ级普通 (S5a/S5c)</div>
+          <div class="strip-legend-item"><span class="strip-legend-dot" style="background:#f87171"></span>Ⅴ级双层小导 (S5d)</div>
+          <div class="strip-legend-item"><span class="strip-legend-dot" style="background:#e11d48"></span>Ⅴ级停车 (S5jt)</div>
+        </div>
+
+        <!-- 纵断面色带 -->
+        <div class="strip-bar" id="activeTunnelStrip"></div>
+
+        <!-- 选定区段明细展示盒 -->
+        <div class="seg-detail-box" id="segDetailBox">
+          <div class="seg-detail-title" id="segTitle">分段配置明细 S4a</div>
+          <div class="seg-detail-grid">
+            <div><span>衬砌类型:</span> <b id="segType">S4a</b></div>
+            <div><span>里程范围:</span> <b id="segRange">K3601+048 ~ K3601+848</b></div>
+            <div><span>围岩特征:</span> <b id="segRockLv">Ⅳ级(主段)</b></div>
+            <div><span>推荐工法:</span> <b style="color:var(--accent)" id="segMethod">台阶法</b></div>
+            <div><span>钢拱架:</span> <b id="segSteel">I16 @80cm</b></div>
+            <div><span>喷混凝土:</span> <b id="segShot">22cm</b></div>
+            <div><span>系统锚杆:</span> <b id="segAnchor">Φ22药卷 L=3.0m</b></div>
+            <div></div>
+          </div>
+        </div>
+
+        <!-- 开挖工法与超前支护两栏小卡片 -->
+        <div class="strip-sub-kpis">
+          <div class="strip-sub-cell">
+            <div class="strip-sub-lbl">开挖工法分布</div>
+            <div class="strip-sub-val"><span style="color:#fff">68.3%</span> <span style="color:var(--accent)">台阶法</span></div>
+            <div class="strip-sub-desc">台阶法 3237m · 核心土法 1500m</div>
+          </div>
+          <div class="strip-sub-cell">
+            <div class="strip-sub-lbl">超前支护 / 预加固段落</div>
+            <div class="strip-sub-val"><span style="color:var(--amber)">1500 m</span> <span style="color:var(--text-3);font-size:12px;font-weight:500">(31.7%)</span></div>
+            <div class="strip-sub-desc">Φ42 小导管注浆 / 双层小导管</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4 个核心支护配置指标卡 (完全对齐截图 1 底部与截图 2 中部) -->
+      <div class="grid g4">
+        <div class="feature-card">
+          <div class="fc-head">
+            <div class="fc-icon">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            </div>
+            <span>开挖工法分布覆盖</span>
+          </div>
+          <div class="fc-val" id="opt_method_val"><span style="color:var(--accent)">68.3%</span> <small>台阶法</small></div>
+          <div class="fc-sub" id="opt_method_sub">台阶法 3237m · 核心土法 1500m</div>
+        </div>
+
+        <div class="feature-card">
+          <div class="fc-head">
+            <div class="fc-icon">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <span>初期支护钢拱架配置</span>
+          </div>
+          <div class="fc-val" id="opt_steel_val"><span style="color:var(--blue)">4</span> <small>类型号规格</small></div>
+          <div class="fc-sub" id="opt_steel_sub">I16/I18/I20/I20a · 间距60~100cm</div>
+        </div>
+
+        <div class="feature-card">
+          <div class="fc-head">
+            <div class="fc-icon">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <span>喷层与系统锚杆体系</span>
+          </div>
+          <div class="fc-val" id="opt_shot_val"><span style="color:var(--amber)">22~26</span> <small>cm</small></div>
+          <div class="fc-sub" id="opt_shot_sub">C25喷砼 · Φ22药卷/Φ25中空锚杆</div>
+        </div>
+
+        <div class="feature-card">
+          <div class="fc-head">
+            <div class="fc-icon">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            </div>
+            <span>超前支护与预加固段落</span>
+          </div>
+          <div class="fc-val" id="opt_advance_val"><span style="color:var(--purple)">1500</span> <small>m (31.7%)</small></div>
+          <div class="fc-sub" id="opt_advance_sub">Φ42小导管注浆/双层小导管</div>
+        </div>
+      </div>
+
+      <!-- 衬砌类型里程分布柱状图 与 型钢钢架型号分布占比环形图 (完全对齐截图 2) -->
+      <div class="grid g2">
+        <!-- 左侧：衬砌类型里程分布柱状图 -->
+        <div class="chart-card">
+          <div class="chart-head">
+            <span class="chart-title" id="chartBarTitle">衬砌类型里程分布 (主洞)</span>
+            <span class="chart-unit">单位 m</span>
+          </div>
+          <div style="height:230px;position:relative">
+            <canvas id="chartLiningDist"></canvas>
+          </div>
+        </div>
+
+        <!-- 右侧：型钢钢架型号分布占比环形图 -->
+        <div class="chart-card">
+          <div class="chart-head">
+            <span class="chart-title" id="chartDonutTitle">型钢钢架型号分布占比 (主洞)</span>
+          </div>
+          <div style="height:140px;position:relative;margin-bottom:6px">
+            <canvas id="chartSteelArch"></canvas>
+          </div>
+          <!-- 下方明细列表完全对齐截图 2 右下角 -->
+          <div class="donut-legend-list" id="steelArchLegendList">
+            <div class="donut-legend-row">
+              <div class="donut-legend-left"><span class="donut-legend-dot" style="background:#5aa2f8"></span>I16 钢架 (3037m · 64.1%)</div>
+              <div class="donut-legend-right">3037m</div>
+            </div>
+            <div class="donut-legend-row">
+              <div class="donut-legend-left"><span class="donut-legend-dot" style="background:#3b82f6"></span>I18 钢架 (227m · 4.8%)</div>
+              <div class="donut-legend-right">227m</div>
+            </div>
+            <div class="donut-legend-row">
+              <div class="donut-legend-left"><span class="donut-legend-dot" style="background:#f7b955"></span>I20 钢架 (1175m · 24.8%)</div>
+              <div class="donut-legend-right">1175m</div>
+            </div>
+            <div class="donut-legend-row">
+              <div class="donut-legend-left"><span class="donut-legend-dot" style="background:#f87171"></span>I20a 强化钢架 (270m · 5.7%)</div>
+              <div class="donut-legend-right">270m</div>
+            </div>
+            <div class="donut-legend-row">
+              <div class="donut-legend-left"><span class="donut-legend-dot" style="background:#3ddc97"></span>明洞无钢架 (28m · 0.6%)</div>
+              <div class="donut-legend-right">28m</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================================================
+     TAB 2 · 智能决策中心 (联动反哺数据库)
+================================================== -->
+<section class="tab" id="tab-decision">
+  <!-- 流程步骤条 -->
+  <div class="flow" id="flowBar">
+    <div class="flow-step active" data-step="1" onclick="jumpStep(1)">
+      <div class="fc">1</div>
+      <div class="fi"><div class="t">地质参数</div><div class="d">18项力学指标输入</div></div>
+    </div>
+    <div class="flow-arrow"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+    <div class="flow-step" data-step="2" onclick="jumpStep(2)">
+      <div class="fc">2</div>
+      <div class="fi"><div class="t">钻爆工法对比匹配</div><div class="d">全断面法 / 台阶法 / 预留核心土法</div></div>
+    </div>
+    <div class="flow-arrow"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+    <div class="flow-step" data-step="3" onclick="jumpStep(3)">
+      <div class="fc">3</div>
+      <div class="fi"><div class="t">支护参数设计</div><div class="d">构件设计+成拱校核</div></div>
+    </div>
+    <div class="flow-arrow"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+    <div class="flow-step" data-step="4" onclick="jumpStep(4)">
+      <div class="fc">4</div>
+      <div class="fi"><div class="t">施工配置方案报告</div><div class="d">生成报告并入库归档</div></div>
+    </div>
+  </div>
+
+  <!-- 决策工作台 -->
+  <div class="engine-workbench" id="blockWorkbench">
+    <div class="engine-top-bar">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div style="width:24px;height:24px;border-radius:5px;background:linear-gradient(135deg,#00d2be,#0284c7);display:flex;align-items:center;justify-content:center">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#06141a" stroke-width="2.4"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+        </div>
+        <h2 style="font-size:15px;font-weight:700;color:#fff">开挖工法与初期支护参数推理引擎</h2>
+      </div>
+      <div class="sub-tab-capsule">
+        <div class="st-btn active" id="modeJoint" onclick="setDecisionMode('joint')">联合决策</div>
+        <div class="st-btn" id="modeManual" onclick="setDecisionMode('manual')">手动决策</div>
+      </div>
+    </div>
+
+    <!-- 模式提示 -->
+    <div class="engine-mode-alert alert-joint" id="dwModeHint">
+      <div id="dwModeHintText">【联合决策模式】选择工作面及开挖里程即可一键协同同步</div>
+      <button class="btn btn-sm btn-primary" id="btnFetchUniform" onclick="fetchUniformData()">同步数据</button>
+    </div>
+
+    <!-- 工作面选择 -->
+    <div class="workface-ctrl-box">
+      <div class="wf-field">
+        <label>施工工作面:</label>
+        <select id="selWorkface" onchange="onWorkfaceChange()">
+          <option value="shayi_main" selected>沙益1号隧道主洞掌子面</option>
+          <option value="shayi_pilot">沙益1号隧道平导掌子面</option>
+        </select>
+      </div>
+      <div class="wf-field">
+        <label>开挖里程桩号:</label>
+        <select id="selMileage" onchange="onMileageChange()">
+          <option value="m1" selected>K3601+200</option>
+          <option value="m2">K3600+450</option>
+          <option value="m3">K3599+050</option>
+          <option value="m4">K3601+900</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- 18 项地质力学参数三栏 -->
+    <div class="param-groups-grid">
+      <!-- 组 1 -->
+      <div class="param-group-box">
+        <div class="pg-head"><span style="color:var(--accent)">01</span> 地质定性与赋存特征</div>
+        <div class="pg-item"><span class="pg-lbl">坚硬程度</span><div class="pg-val"><select id="p_hardness"><option value="硬" selected>硬 (变质灰岩)</option><option value="较硬">较硬</option><option value="较软">较软 (千枚岩)</option><option value="软">软</option></select></div></div>
+        <div class="pg-item"><span class="pg-lbl">完整程度</span><div class="pg-val"><select id="p_integrity"><option value="较完整">较完整</option><option value="较破碎" selected>较破碎</option><option value="破碎">破碎</option><option value="极破碎">极破碎</option></select></div></div>
+        <div class="pg-item"><span class="pg-lbl">岩层厚度</span><div class="pg-val"><select id="p_thickness"><option value="巨厚层">巨厚层</option><option value="厚层" selected>厚层</option><option value="中厚层">中厚层</option><option value="薄层">薄层</option></select></div></div>
+        <div class="pg-item"><span class="pg-lbl">地下水量</span><div class="pg-val"><select id="p_water"><option value="干燥">干燥</option><option value="潮湿" selected>潮湿</option><option value="滴水">滴水</option><option value="淋水">淋水</option><option value="涌水">涌水</option></select></div></div>
+        <div class="pg-item"><span class="pg-lbl">围岩级别</span><div class="pg-val"><select id="p_grade"><option value="IV" selected>Ⅳ 级 (主洞 3237m)</option><option value="V">Ⅴ 级 (主洞 1500m)</option></select></div></div>
+      </div>
+
+      <!-- 组 2 -->
+      <div class="param-group-box">
+        <div class="pg-head"><span style="color:var(--blue)">02</span> 断面几何与荷载分配</div>
+        <div class="pg-item"><span class="pg-lbl">隧道埋深</span><div class="pg-val"><input type="number" id="p_depth" value="620"><span class="unit">m</span></div></div>
+        <div class="pg-item"><span class="pg-lbl">岩体密度</span><div class="pg-val"><input type="number" id="p_density" value="2550"><span class="unit">kg/m³</span></div></div>
+        <div class="pg-item"><span class="pg-lbl">初支承担比例</span><div class="pg-val"><input type="number" id="p_share1" value="0.55" step="0.01"><span class="unit">ratio</span></div></div>
+        <div class="pg-item"><span class="pg-lbl">二衬承担比例</span><div class="pg-val"><input type="number" id="p_share2" value="0.30" step="0.01"><span class="unit">ratio</span></div></div>
+        <div class="pg-item"><span class="pg-lbl">断面类型</span><div class="pg-val"><select id="p_section"><option value="主洞标准断面" selected>沙益主洞 (10×5m)</option><option value="平导标准断面">沙益平导 (4×4.5m)</option><option value="主洞紧急停车带">停车带加宽 (12.5m)</option></select></div></div>
+      </div>
+
+      <!-- 组 3 -->
+      <div class="param-group-box">
+        <div class="pg-head"><span style="color:var(--amber)">03</span> 岩体力学与地应力场</div>
+        <div class="pg-item"><span class="pg-lbl">内摩擦角 φ</span><div class="pg-val"><input type="number" id="p_friction" value="32"><span class="unit">°</span></div></div>
+        <div class="pg-item"><span class="pg-lbl">弹性模量 E</span><div class="pg-val"><input type="number" id="p_elastic" value="2.85" step="0.01"><span class="unit">GPa</span></div></div>
+        <div class="pg-item"><span class="pg-lbl">粘聚力 c</span><div class="pg-val"><input type="number" id="p_cohesion" value="260"><span class="unit">kPa</span></div></div>
+        <div class="pg-item"><span class="pg-lbl">泊松比 μ</span><div class="pg-val"><input type="number" id="p_poisson" value="0.28" step="0.01"><span class="unit">-</span></div></div>
+        <div class="pg-item"><span class="pg-lbl">竖向应力 σv</span><div class="pg-val"><input type="number" id="p_stressV" value="21.5" step="0.1"><span class="unit">MPa</span></div></div>
+        <div class="pg-item"><span class="pg-lbl">水平应力 σh</span><div class="pg-val"><input type="number" id="p_stressH" value="13.2" step="0.1"><span class="unit">MPa</span></div></div>
+      </div>
+    </div>
+
+    <!-- 底部按钮 -->
+    <div style="display:flex;align-items:center;justify-content:flex-end;gap:8px">
+      <button class="btn btn-ghost" onclick="resetParams()">重置参数</button>
+      <button class="btn btn-primary" onclick="runMethodSelect()">启动智能推理与决策</button>
+    </div>
+  </div>
+
+  <!-- 决策步骤区 -->
+  <div id="decisionStepsWrapper">
+    <div id="blockMethod" style="display:none" class="mb">
+      <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:8px">Step 2 · 钻爆开挖工法对比选优</div>
+      <div class="grid g3 mb" id="methodCards"></div>
+      <div style="display:flex;justify-content:flex-end;gap:8px">
+        <button class="btn btn-ghost" onclick="resetDecision()">重新匹配</button>
+        <button class="btn btn-blue" onclick="runSupportDesign()">确认推荐工法，进入初期支护设计</button>
+      </div>
+    </div>
+
+    <div id="blockSupport" style="display:none" class="mb">
+      <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:8px">Step 3 · 初期支护结构设计与成拱校核</div>
+
+      <div class="card mb" style="background:var(--card-sub)">
+        <div style="font-size:12px;font-weight:700;color:#fff;margin-bottom:8px">围岩成拱效应与物理先验约束指标</div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center">
+          <div style="background:var(--panel);padding:8px;border-radius:4px;border:1px solid var(--panel-border)">
+            <div style="font-size:16px;font-weight:800;color:var(--accent)" id="archH">8.2 m</div>
+            <div style="font-size:10.5px;color:var(--text-3)">压力拱平衡高度</div>
+          </div>
+          <div style="background:var(--panel);padding:8px;border-radius:4px;border:1px solid var(--panel-border)">
+            <div style="font-size:16px;font-weight:800;color:var(--amber)" id="archRelease">65 %</div>
+            <div style="font-size:10.5px;color:var(--text-3)">围岩成拱应力释放率</div>
+          </div>
+          <div style="background:var(--panel);padding:8px;border-radius:4px;border:1px solid var(--panel-border)">
+            <div style="font-size:16px;font-weight:800;color:var(--green)" id="archTime">0.7 D</div>
+            <div style="font-size:10.5px;color:var(--text-3)">最佳初支封闭时机</div>
+          </div>
+          <div style="background:var(--panel);padding:8px;border-radius:4px;border:1px solid var(--panel-border)">
+            <div style="font-size:14px;font-weight:800;color:var(--purple);line-height:1.3">PINN 物理驱动</div>
+            <div style="font-size:10.5px;color:var(--text-3)">18维力学→4维支护</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4 大初支构件 -->
+      <div class="grid g4 mb" id="supportGrid"></div>
+
+      <div class="grid g2 mb">
+        <div class="card" style="border-top:3px solid var(--green)">
+          <div style="font-size:12.5px;font-weight:700;margin-bottom:8px">初期支护承载综合安全度: <span class="tag tag-green" id="safetyTag">安全 (91.3)</span></div>
+          <div style="font-size:11.5px;color:var(--text-2);line-height:1.6" id="safetyReason">
+            初期支护受力匹配良好，工字钢拱架与喷层联合承载刚度充足，成拱稳定性在规范安全区间内。
+          </div>
+        </div>
+        <div class="card">
+          <div style="font-size:12.5px;font-weight:700;margin-bottom:8px">支护结构分项安全裕度雷达图</div>
+          <div style="height:150px"><canvas id="chartSafety"></canvas></div>
+        </div>
+      </div>
+
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <button class="btn btn-ghost" onclick="recheckSupportSafety()">重新校核安全度</button>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-ghost" onclick="resetToMethod()">返回修改工法</button>
+          <button class="btn btn-primary" onclick="generateScheme()">生成施工配置方案报告</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="blockScheme" style="display:none">
+      <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:8px">Step 4 · 施工智能配置方案报告</div>
+      <div class="card">
+        <div style="border-bottom:2px solid var(--accent);padding-bottom:8px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div style="font-size:15px;font-weight:700">沙益1号隧道机械化施工智能配置报告</div>
+            <div style="font-size:11px;color:var(--text-3);margin-top:2px">编号: <b style="color:var(--text)" id="schemeNo">--</b> · 时间: <span id="schemeTime">--</span></div>
+          </div>
+          <div style="font-size:11.5px;color:var(--text-3);text-align:right">
+            <div>桩号: <b style="color:var(--text)" id="rptMile">K3601+200</b> · 围岩: <b style="color:var(--accent)" id="rptGrade">Ⅳ级</b></div>
+            <div>工法: <b style="color:var(--text)" id="rptMethod">台阶法</b></div>
+          </div>
+        </div>
+        <div class="tbl-wrap mb">
+          <table class="tbl">
+            <thead><tr><th>工序环节</th><th>设计配置参数 / 规格</th><th>数量 / 间距</th><th>施工工艺与组织依据</th></tr></thead>
+            <tbody id="rptDetailRows"></tbody>
+          </table>
+        </div>
+        <div style="display:flex;justify-content:flex-end;gap:8px">
+          <button class="btn btn-primary" onclick="saveScheme()">保存并同步方案</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="blockPlaceholder">
+      <div class="card" style="text-align:center;padding:32px 20px">
+        <div style="font-size:13.5px;font-weight:600;color:var(--text)">等待启动决策推理</div>
+        <div style="font-size:11.5px;color:var(--text-3);margin-top:4px">
+          请在上方工作台中确认地质力学参数后点击「启动智能推理与决策」，系统将自动完成工法选配与支护设计。
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================================================
+     TAB 3 · 经验数据库 (支持新增与增添数据)
+================================================== -->
+<section class="tab" id="tab-experience">
+  <div class="page-head">
+    <div>
+      <h1>经验数据库</h1>
+    </div>
+
+    <div class="sub-tab-capsule">
+      <div class="st-btn active" id="subTabBtn_methods" onclick="switchExpSubTab('methods')">标准工法库</div>
+      <div class="st-btn" id="subTabBtn_support" onclick="switchExpSubTab('support')">支护体系与参数库</div>
+      <div class="st-btn" id="subTabBtn_equipment" onclick="switchExpSubTab('equipment')">机械装备库</div>
+    </div>
+  </div>
+
+  <!-- 子库 1 · 标准工法库与知识映射表 -->
+  <div class="exp-sub-view" id="expSub_methods">
+    <div class="grid g3 mb">
+      <div class="card" style="border-top:3px solid var(--green)">
+        <div style="font-size:14px;font-weight:700;color:var(--green);margin-bottom:4px">全断面开挖法</div>
+        <div style="font-size:11.5px;color:var(--text-2);margin-bottom:6px"><b>适用地质：</b>Ⅰ、Ⅱ、Ⅲ 级围岩。岩体完整坚硬。</div>
+        <div style="font-size:11px;color:var(--text-3);line-height:1.7">
+          <div>开挖断面: 全断面一次开挖成型</div>
+          <div>工法优势: 大型机械施工作业空间大、循环进尺快</div>
+          <div>核心装备: 潜孔钻机 + 装载机 + 20方自卸车 + 湿喷台车</div>
+        </div>
+      </div>
+      <div class="card" style="border-top:3px solid var(--accent)">
+        <div style="font-size:14px;font-weight:700;color:var(--accent);margin-bottom:4px">台阶法</div>
+        <div style="font-size:11.5px;color:var(--text-2);margin-bottom:6px"><b>适用地质：</b>Ⅳ 级围岩。中风化变质灰岩。</div>
+        <div style="font-size:11px;color:var(--text-3);line-height:1.7">
+          <div>开挖断面: 分上、下两个台阶先后开挖</div>
+          <div>工法优势: 及早封闭初支成环，兼顾进度与稳定</div>
+          <div>核心装备: 挖掘机 + 装载机 + 自卸车 + 拱架台车 + 湿喷台车</div>
+        </div>
+      </div>
+      <div class="card" style="border-top:3px solid var(--amber)">
+        <div style="font-size:14px;font-weight:700;color:var(--amber);margin-bottom:4px">环形开挖预留核心土法</div>
+        <div style="font-size:11.5px;color:var(--text-2);margin-bottom:6px"><b>适用地质：</b>Ⅴ 级围岩。破碎千枚岩夹层、深埋大变形段。</div>
+        <div style="font-size:11px;color:var(--text-3);line-height:1.7">
+          <div>开挖断面: 先开挖拱部环形并初支，预留核心土</div>
+          <div>工法优势: 核心土临时支护掌子面防坍塌</div>
+          <div>核心装备: 潜孔钻机 + 地质钻机 + 湿喷台车 + 挖掘机</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 地质映射知识库表格 -->
+    <div class="card mb" style="padding:0;overflow:hidden">
+      <div style="padding:10px 14px;border-bottom:1px solid var(--panel-border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+        <div style="font-size:13px;font-weight:700;color:#fff">地质环境特征与施工支护知识方案映射表</div>
+        <div style="display:flex;align-items:center;gap:6px">
+          <input type="text" id="kwSearchKnowledge" class="search-input" placeholder="搜索地质/工法..." oninput="renderKnowledgeDb()">
+          <button class="btn btn-sm btn-primary" onclick="openAddKnowledgeModal()">+ 新增知识规则</button>
+        </div>
+      </div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead>
+            <tr><th>序号</th><th>方案编号</th><th>坚硬程度</th><th>完整程度</th><th>地下水量</th><th>埋深水平</th><th>构造应力</th><th>对应围岩</th><th>匹配优选工法与衬砌</th><th>操作</th></tr>
+          </thead>
+          <tbody id="knowledgeDbTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- 子库 2 · 支护体系与参数库 (支持直接增添新方案) -->
+  <div class="exp-sub-view" id="expSub_support" style="display:none">
+    <div class="card mb" style="padding:0;overflow:hidden">
+      <div style="padding:10px 14px;border-bottom:1px solid var(--panel-border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+        <div class="db-tab-bar">
+          <span class="db-tab-btn active" id="btnSchemeAll" onclick="filterSchemeDb('all', this)">全部方案 (<span id="schemeTotalCnt">7</span>)</span>
+          <span class="db-tab-btn" id="btnSchemeIV" onclick="filterSchemeDb('IV', this)">Ⅳ 级围岩方案</span>
+          <span class="db-tab-btn" id="btnSchemeV" onclick="filterSchemeDb('V', this)">Ⅴ 级围岩方案</span>
+          <span class="db-tab-btn" id="btnSchemeCustom" onclick="filterSchemeDb('custom', this)">自定义/新增方案</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px">
+          <input type="text" id="kwSearchScheme" class="search-input" placeholder="搜索衬砌类型/钢架..." oninput="renderSchemeDb()">
+          <button class="btn btn-sm btn-primary" onclick="openAddSchemeModal()">+ 新增支护方案</button>
+          <button class="btn btn-sm btn-ghost" onclick="openImportModal()">导入/管理</button>
+          <button class="btn btn-sm btn-ghost" onclick="exportCurrentSchemeData()">导出</button>
+          <button class="btn btn-sm btn-ghost" onclick="resetDefaultSchemeDb()" title="恢复标准7套方案">重置</button>
+        </div>
+      </div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th rowspan="2">方案编号</th>
+              <th rowspan="2">围岩级别</th>
+              <th rowspan="2">衬砌类型</th>
+              <th rowspan="2">埋深范围(m)</th>
+              <th colspan="4">超前支护</th>
+              <th colspan="3">初期支护</th>
+              <th colspan="2">二次衬砌</th>
+              <th colspan="3">开挖工法</th>
+              <th rowspan="2">操作</th>
+            </tr>
+            <tr>
+              <th>类型规格</th><th>环向间距</th><th>单根长</th><th>适用范围</th>
+              <th>系统锚杆(横×纵)</th><th>钢拱架型号/间距</th><th>喷射混凝土</th>
+              <th>标号</th><th>厚度</th>
+              <th>开挖模式</th><th>循环进尺</th><th>台阶长度</th>
+            </tr>
+          </thead>
+          <tbody id="schemeDbTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- 子库 3 · 机械装备库 (支持新增设备台账) -->
+  <div class="exp-sub-view" id="expSub_equipment" style="display:none">
+    <div class="card mb" style="padding:0;overflow:hidden">
+      <div style="padding:10px 14px;border-bottom:1px solid var(--panel-border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+        <div style="font-size:13px;font-weight:700;color:#fff">
+          核心施工机械装备配置台账 (<span id="equipTotalCnt">9</span> 种)
+        </div>
+        <div style="display:flex;align-items:center;gap:6px">
+          <input type="text" id="kwSearchEquip" class="search-input" placeholder="搜索设备名称/型号/用途..." oninput="renderEquipTable()">
+          <button class="btn btn-sm btn-primary" onclick="openAddEquipModal()">+ 登记装备</button>
+        </div>
+      </div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead>
+            <tr><th>序号</th><th>装备名称</th><th>规格型号</th><th>配置数量</th><th>单位</th><th>作业部位 / 主要用途</th><th>所属施工阶段</th><th>操作</th></tr>
+          </thead>
+          <tbody id="equipTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================================================
+     TAB 4 · 方案报告与决策台账
+================================================== -->
+<section class="tab" id="tab-scheme">
+  <div class="page-head">
+    <div>
+      <h1>方案报告与决策台账</h1>
+    </div>
+    <div class="head-badges"></div>
+  </div>
+
+  <div class="card mb" style="padding:0;overflow:hidden">
+    <div style="padding:10px 14px;border-bottom:1px solid var(--panel-border);display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:rgba(255,255,255,.01)">
+      <div style="display:flex;align-items:center;gap:4px;font-size:11.5px;color:var(--text-2)">
+        <span>隧道工作面:</span>
+        <select id="selHistoryFace" onchange="filterHistoryList()" style="background:var(--card-sub);border:1px solid var(--panel-border);color:var(--text);padding:3px 6px;border-radius:4px;font-size:11.5px">
+          <option>全部工作面</option>
+          <option>沙益1号隧道主洞掌子面</option>
+          <option>沙益1号隧道平导掌子面</option>
+        </select>
+      </div>
+      <button class="btn btn-sm btn-primary" onclick="filterHistoryList()">查询</button>
+      <span style="font-size:11px;color:var(--text-3);margin-left:auto">点击序号左侧 [+] 展开查看单次决策全参数详情</span>
+    </div>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th style="width:40px">展开</th><th>序号</th><th>决策时间</th><th>隧道工作面</th><th>开挖里程</th><th>围岩</th><th>开挖工法</th><th>衬砌类型</th><th>安全度</th>
+          </tr>
+        </thead>
+        <tbody id="historyDbTableBody"></tbody>
+      </table>
+    </div>
+    <div id="historyPagination" style="padding:10px 14px;border-top:1px solid var(--panel-border);display:flex;align-items:center;justify-content:space-between"></div>
+  </div>
+</section>
+
+</div><!-- /container -->
+</main>
+
+<!-- ==================================================
+     模态弹窗 1 · 新增支护方案弹窗
+================================================== -->
+<div class="modal-backdrop" id="addSchemeModal" style="display:none">
+  <div class="modal-box">
+    <div class="modal-header">
+      <span style="font-size:14px;font-weight:700;color:var(--text)">新增/增添支护参数方案</span>
+      <button class="modal-close" onclick="closeModal('addSchemeModal')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group"><label>围岩级别:</label><select id="form_rock"><option value="Ⅳ级">Ⅳ级</option><option value="Ⅴ级">Ⅴ级</option><option value="Ⅲ级">Ⅲ级</option><option value="Ⅳ级(加强)">Ⅳ级(加强)</option><option value="Ⅴ级(深埋)">Ⅴ级(深埋)</option></select></div>
+        <div class="form-group"><label>衬砌类型代号:</label><input type="text" id="form_type" placeholder="如 S4c, S5e, S4-优化"></div>
+        <div class="form-group"><label>适用埋深范围(m):</label><input type="text" id="form_depth" value="200~600"></div>
+        <div class="form-group"><label>开挖工法模式:</label><select id="form_mode"><option value="台阶法">台阶法</option><option value="预留核心土法">预留核心土法</option><option value="全断面法">全断面法</option><option value="双侧壁导坑法">双侧壁导坑法</option></select></div>
+        <div class="form-group"><label>超前支护类型:</label><input type="text" id="form_advType" value="Φ42小导管注浆"></div>
+        <div class="form-group"><label>超前环距与长度:</label><input type="text" id="form_advSpec" value="环距40cm · L=4.5m"></div>
+        <div class="form-group"><label>型钢钢架型号及间距:</label><input type="text" id="form_steel" value="I18 @80cm"></div>
+        <div class="form-group"><label>初期支护喷砼厚度:</label><input type="text" id="form_shot" value="C25, 24cm"></div>
+        <div class="form-group"><label>系统锚杆规格与间距:</label><input type="text" id="form_anchor" value="120×80cm (Φ22, 3.0m)"></div>
+        <div class="form-group"><label>二次衬砌标号与厚度:</label><input type="text" id="form_second" value="C35, 40cm"></div>
+        <div class="form-group"><label>单循环进尺:</label><input type="text" id="form_advRate" value="1.5m"></div>
+        <div class="form-group"><label>台阶长度:</label><input type="text" id="form_benchLen" value="3~5m"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('addSchemeModal')">取消</button>
+      <button class="btn btn-primary" onclick="saveNewSchemeToDb()">确认增添至数据库</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================================================
+     模态弹窗 2 · 新增知识规则弹窗
+================================================== -->
+<div class="modal-backdrop" id="addKnowledgeModal" style="display:none">
+  <div class="modal-box">
+    <div class="modal-header">
+      <span style="font-size:14px;font-weight:700;color:var(--text)">新增地质环境-工法知识映射规则</span>
+      <button class="modal-close" onclick="closeModal('addKnowledgeModal')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group"><label>知识编号:</label><input type="text" id="kform_code" placeholder="如 KB-IV-05"></div>
+        <div class="form-group"><label>对应围岩级别:</label><select id="kform_rock"><option value="Ⅳ级">Ⅳ级</option><option value="Ⅴ级">Ⅴ级</option><option value="Ⅲ级">Ⅲ级</option></select></div>
+        <div class="form-group"><label>坚硬程度:</label><input type="text" id="kform_hard" value="硬 (变质灰岩)"></div>
+        <div class="form-group"><label>完整程度:</label><input type="text" id="kform_int" value="较破碎"></div>
+        <div class="form-group"><label>地下水状态:</label><input type="text" id="kform_water" value="潮湿"></div>
+        <div class="form-group"><label>埋深水平:</label><input type="text" id="kform_depth" value="400~600m"></div>
+        <div class="form-group"><label>构造应力水平:</label><input type="text" id="kform_stress" value="中等"></div>
+        <div class="form-group"><label>匹配优选工法与衬砌:</label><input type="text" id="kform_scheme" value="台阶法 · S4a (I16@80cm)"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('addKnowledgeModal')">取消</button>
+      <button class="btn btn-primary" onclick="saveNewKnowledgeToDb()">确认添加规则</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================================================
+     模态弹窗 3 · 新增装备弹窗
+================================================== -->
+<div class="modal-backdrop" id="addEquipModal" style="display:none">
+  <div class="modal-box">
+    <div class="modal-header">
+      <span style="font-size:14px;font-weight:700;color:var(--text)">登记核心施工机械装备</span>
+      <button class="modal-close" onclick="closeModal('addEquipModal')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group"><label>装备名称:</label><input type="text" id="eform_name" placeholder="如 凿岩台车"></div>
+        <div class="form-group"><label>规格型号:</label><input type="text" id="eform_model" placeholder="如 三臂全液压凿岩台车"></div>
+        <div class="form-group"><label>配置数量:</label><input type="number" id="eform_num" value="1"></div>
+        <div class="form-group"><label>单位:</label><input type="text" id="eform_unit" value="台"></div>
+        <div class="form-group" style="grid-column:span 2"><label>作业部位 / 主要用途:</label><input type="text" id="eform_pos" value="掌子面全断面快速钻眼"></div>
+        <div class="form-group" style="grid-column:span 2"><label>所属施工阶段:</label><input type="text" id="eform_stage" value="开挖与超前支护"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('addEquipModal')">取消</button>
+      <button class="btn btn-primary" onclick="saveNewEquipToDb()">确认登记装备</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================================================
+     模态弹窗 4 · 批量导入管理弹窗
+================================================== -->
+<div class="modal-backdrop" id="importModal" style="display:none">
+  <div class="modal-box">
+    <div class="modal-header">
+      <span style="font-size:14px;font-weight:700;color:var(--text)">支护参数数据批量导入与管理</span>
+      <button class="modal-close" onclick="closeModal('importModal')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div style="font-size:11.5px;color:var(--text-2);margin-bottom:8px">
+        支持粘贴 JSON 格式的支护方案数组进行批量导入或修改。导入后将自动保存至本地经验数据库并实时生效。
+      </div>
+      <div style="display:flex;gap:6px;margin-bottom:8px">
+        <button class="btn btn-sm btn-ghost" onclick="fillJsonTemplate()">载入标准模板</button>
+        <button class="btn btn-sm btn-ghost" onclick="exportCurrentSchemeData()">导出当前数据(JSON)</button>
+      </div>
+      <textarea id="importTextarea" style="width:100%;height:160px;background:var(--card-sub);border:1px solid var(--panel-border);border-radius:4px;color:var(--text);font-family:monospace;font-size:11px;padding:8px;outline:none;resize:vertical"></textarea>
+      <div id="importStatusMsg" style="font-size:11.5px;margin-top:6px;display:none"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('importModal')">取消</button>
+      <button class="btn btn-primary" onclick="applyImportData()">解析并同步至数据库</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+'use strict';
+
+// 禁用本地 localStorage 缓存，防止页面刷新后保留增添的方案 (刷新后立刻恢复出厂设置)
+const localStorage = {
+  getItem: () => null,
+  setItem: () => {},
+  removeItem: () => {},
+  clear: () => {}
+};
+
+function $(id){ return document.getElementById(id); }
+function fmt2(n){ return (n<10?'0':'')+n; }
+
+window.showToast = function(msg, isSuccess = true) {
+  const toast = document.createElement('div');
+  toast.style.position = 'fixed';
+  toast.style.top = '24px';
+  toast.style.left = '50%';
+  toast.style.transform = 'translateX(-50%)';
+  toast.style.background = isSuccess ? 'rgba(0, 210, 190, 0.95)' : 'rgba(244, 63, 94, 0.95)';
+  toast.style.color = '#06141a';
+  toast.style.padding = '12px 24px';
+  toast.style.borderRadius = '6px';
+  toast.style.fontSize = '13px';
+  toast.style.fontWeight = '700';
+  toast.style.zIndex = '99999';
+  toast.style.boxShadow = '0 6px 18px rgba(0,0,0,0.6)';
+  toast.style.transition = 'all 0.3s ease';
+  toast.style.border = '1px solid rgba(255,255,255,0.2)';
+  toast.textContent = msg;
+  document.body.appendChild(toast);
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.top = '12px';
+    setTimeout(() => toast.remove(), 300);
+  }, 2500);
+};
+
+window.showInferenceLoader = function(title, logs, duration, onComplete){
+  const modal = $('inferenceLoadingModal');
+  const titleEl = $('loaderTitle');
+  const logsEl = $('loaderLogs');
+  
+  titleEl.textContent = title;
+  logsEl.innerHTML = '';
+  modal.style.display = 'flex';
+  
+  let currentLogIdx = 0;
+  const intervalTime = Math.floor(duration / (logs.length + 1));
+  
+  // 立即输出第一条日志
+  if (logs.length > 0) {
+    const p = document.createElement('div');
+    p.style.marginBottom = '4px';
+    p.textContent = logs[0];
+    logsEl.appendChild(p);
+    currentLogIdx = 1;
+  }
+
+  const logTimer = setInterval(() => {
+    if(currentLogIdx < logs.length){
+      const p = document.createElement('div');
+      p.style.marginBottom = '4px';
+      p.textContent = logs[currentLogIdx];
+      logsEl.appendChild(p);
+      logsEl.scrollTop = logsEl.scrollHeight;
+      currentLogIdx++;
+    }
+  }, intervalTime);
+  
+  setTimeout(() => {
+    clearInterval(logTimer);
+    modal.style.display = 'none';
+    onComplete();
+  }, duration);
+};
+
+window.switchTab = function(name){
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active', n.dataset.tab===name));
+  document.querySelectorAll('.tab').forEach(s=>s.classList.toggle('active', s.id==='tab-'+name));
+  window.scrollTo({top:0, behavior:'smooth'});
+};
+
+window.switchExpSubTab = function(subKey){
+  ['methods', 'support', 'equipment'].forEach(k=>{
+    const btn = $('subTabBtn_' + k);
+    const view = $('expSub_' + k);
+    if(btn) btn.classList.toggle('active', k === subKey);
+    if(view) view.style.display = (k === subKey ? 'block' : 'none');
+  });
+};
+
+function tickClock(){
+  const d = new Date();
+  $('clock').textContent = d.getFullYear()+'-'+fmt2(d.getMonth()+1)+'-'+fmt2(d.getDate())+' '+fmt2(d.getHours())+':'+fmt2(d.getMinutes())+':'+fmt2(d.getSeconds());
+}
+setInterval(tickClock, 1000); tickClock();
+
+/* ============================================================
+   工程纵断面与经验数据库内置数据集
+   ============================================================ */
+const DEFAULT_MAIN_SEGS = [
+  {"id": 1, "start": "K3598+388", "end": "K3598+391", "type": "SMa", "len": 3, "rock": "明洞", "steel": "明洞衬砌", "shot": "C25 模筑", "anchor": "—", "method": "明挖法", "color": "#3ddc97"},
+  {"id": 2, "start": "K3598+391", "end": "K3598+411", "type": "S5a", "len": 20, "rock": "Ⅴ级", "steel": "I20 @60cm", "shot": "26cm", "anchor": "Φ25中孔 L=3.5m", "method": "预留核心土法", "color": "#f7b955"},
+  {"id": 3, "start": "K3598+411", "end": "K3598+423", "type": "S5c", "len": 12, "rock": "Ⅴ级", "steel": "I18 @80cm", "shot": "24cm", "anchor": "Φ25中孔 L=3.5m", "method": "预留核心土法", "color": "#f7b955"},
+  {"id": 4, "start": "K3598+423", "end": "K3598+998", "type": "S4b", "len": 575, "rock": "Ⅳ级", "steel": "I16 @100cm", "shot": "22cm", "anchor": "Φ22药卷 L=3.0m", "method": "台阶法", "color": "#5aa2f8"},
+  {"id": 5, "start": "K3598+998", "end": "K3599+168", "type": "S5d", "len": 170, "rock": "Ⅴ级(双层导管)", "steel": "I20a @60cm", "shot": "24cm", "anchor": "Φ25中孔 L=3.5m", "method": "预留核心土法", "color": "#f87171"},
+  {"id": 6, "start": "K3599+168", "end": "K3599+348", "type": "S4a", "len": 180, "rock": "Ⅳ级", "steel": "I16 @80cm", "shot": "22cm", "anchor": "Φ22药卷 L=3.0m", "method": "台阶法", "color": "#5aa2f8"},
+  {"id": 7, "start": "K3599+348", "end": "K3599+475", "type": "S4a", "len": 127, "rock": "Ⅳ级", "steel": "I16 @80cm", "shot": "22cm", "anchor": "Φ22药卷 L=3.0m", "method": "台阶法", "color": "#5aa2f8"},
+  {"id": 8, "start": "K3599+475", "end": "K3599+525", "type": "S4jt", "len": 50, "rock": "Ⅳ级(停车带)", "steel": "I18 @80cm", "shot": "24cm", "anchor": "Φ22药卷 L=3.5m", "method": "台阶法加宽", "color": "#a78bfa"},
+  {"id": 9, "start": "K3599+525", "end": "K3599+575", "type": "S4a", "len": 50, "rock": "Ⅳ级", "steel": "I16 @80cm", "shot": "22cm", "anchor": "Φ22药卷 L=3.0m", "method": "台阶法", "color": "#5aa2f8"},
+  {"id": 10, "start": "K3599+575", "end": "K3599+625", "type": "S4jt", "len": 50, "rock": "Ⅳ级(停车带)", "steel": "I18 @80cm", "shot": "24cm", "anchor": "Φ22药卷 L=3.5m", "method": "台阶法加宽", "color": "#a78bfa"},
+  {"id": 11, "start": "K3599+625", "end": "K3600+043", "type": "S4a", "len": 418, "rock": "Ⅳ级", "steel": "I16 @80cm", "shot": "22cm", "anchor": "Φ22药卷 L=3.0m", "method": "台阶法", "color": "#5aa2f8"},
+  {"id": 12, "start": "K3600+043", "end": "K3600+213", "type": "S5a", "len": 170, "rock": "Ⅴ级", "steel": "I20 @60cm", "shot": "26cm", "anchor": "Φ25中孔 L=3.5m", "method": "预留核心土法", "color": "#f7b955"},
+  {"id": 13, "start": "K3600+213", "end": "K3600+675", "type": "S5a", "len": 462, "rock": "Ⅴ级(最大埋深)", "steel": "I20 @60cm", "shot": "26cm", "anchor": "Φ25中孔 L=3.5m", "method": "预留核心土法", "color": "#f7b955"},
+  {"id": 14, "start": "K3600+675", "end": "K3600+725", "type": "S5jt", "len": 50, "rock": "Ⅴ级(停车带)", "steel": "I20a @60cm", "shot": "26cm", "anchor": "Φ25中孔 L=3.5m", "method": "预留核心土法", "color": "#e11d48"},
+  {"id": 15, "start": "K3600+725", "end": "K3600+775", "type": "S5a", "len": 50, "rock": "Ⅴ级", "steel": "I20 @60cm", "shot": "26cm", "anchor": "Φ25中孔 L=3.5m", "method": "预留核心土法", "color": "#f7b955"},
+  {"id": 16, "start": "K3600+775", "end": "K3600+825", "type": "S5jt", "len": 50, "rock": "Ⅴ级(停车带)", "steel": "I20a @60cm", "shot": "26cm", "anchor": "Φ25中孔 L=3.5m", "method": "预留核心土法", "color": "#e11d48"},
+  {"id": 17, "start": "K3600+825", "end": "K3601+048", "type": "S5a", "len": 223, "rock": "Ⅴ级", "steel": "I20 @60cm", "shot": "26cm", "anchor": "Φ25中孔 L=3.5m", "method": "预留核心土法", "color": "#f7b955"},
+  {"id": 18, "start": "K3601+048", "end": "K3601+848", "type": "S4a", "len": 800, "rock": "Ⅳ级(主段)", "steel": "I16 @80cm", "shot": "22cm", "anchor": "Φ22药卷 L=3.0m", "method": "台阶法", "color": "#5aa2f8"},
+  {"id": 19, "start": "K3601+848", "end": "K3601+878", "type": "S4a", "len": 27, "rock": "Ⅳ级", "steel": "I16 @80cm", "shot": "22cm", "anchor": "Φ22药卷 L=3.0m", "method": "台阶法", "color": "#5aa2f8"},
+  {"id": 20, "start": "K3601+878", "end": "K3601+925", "type": "S4jt", "len": 50, "rock": "Ⅳ级(停车带)", "steel": "I18 @80cm", "shot": "24cm", "anchor": "Φ22药卷 L=3.5m", "method": "台阶法加宽", "color": "#a78bfa"},
+  {"id": 21, "start": "K3601+925", "end": "K3601+975", "type": "S4a", "len": 50, "rock": "Ⅳ级", "steel": "I16 @80cm", "shot": "22cm", "anchor": "Φ22药卷 L=3.0m", "method": "台阶法", "color": "#5aa2f8"},
+  {"id": 22, "start": "K3601+975", "end": "K3602+025", "type": "S4jt", "len": 50, "rock": "Ⅳ级(停车带)", "steel": "I18 @80cm", "shot": "24cm", "anchor": "Φ22药卷 L=3.5m", "method": "台阶法加宽", "color": "#a78bfa"},
+  {"id": 23, "start": "K3602+025", "end": "K3602+220", "type": "S4a", "len": 195, "rock": "Ⅳ级", "steel": "I16 @80cm", "shot": "22cm", "anchor": "Φ22药卷 L=3.0m", "method": "台阶法", "color": "#5aa2f8"},
+  {"id": 24, "start": "K3602+220", "end": "K3602+470", "type": "S5a", "len": 250, "rock": "Ⅴ级", "steel": "I20 @60cm", "shot": "26cm", "anchor": "Φ25中孔 L=3.5m", "method": "预留核心土法", "color": "#f7b955"},
+  {"id": 25, "start": "K3602+470", "end": "K3602+780", "type": "S4a", "len": 310, "rock": "Ⅳ级", "steel": "I16 @80cm", "shot": "22cm", "anchor": "Φ22药卷 L=3.0m", "method": "台阶法", "color": "#5aa2f8"},
+  {"id": 26, "start": "K3602+780", "end": "K3603+085", "type": "S4b", "len": 305, "rock": "Ⅳ级", "steel": "I16 @100cm", "shot": "22cm", "anchor": "Φ22药卷 L=3.0m", "method": "台阶法", "color": "#5aa2f8"},
+  {"id": 27, "start": "K3603+085", "end": "K3603+100", "type": "S5c", "len": 15, "rock": "Ⅴ级", "steel": "I18 @80cm", "shot": "24cm", "anchor": "Φ25中孔 L=3.5m", "method": "预留核心土法", "color": "#f7b955"},
+  {"id": 28, "start": "K3603+100", "end": "K3603+120", "type": "S5a", "len": 20, "rock": "Ⅴ级", "steel": "I20 @60cm", "shot": "26cm", "anchor": "Φ25中孔 L=3.5m", "method": "预留核心土法", "color": "#f7b955"},
+  {"id": 29, "start": "K3603+120", "end": "K3603+125", "type": "SMa", "len": 5, "rock": "出口明洞", "steel": "明洞衬砌", "shot": "C25 模筑", "anchor": "—", "method": "明挖法", "color": "#3ddc97"}
+];
+
+const DEFAULT_PILOT_SEGS = [
+  {"id": 1, "start": "K3598+400", "end": "K3598+405", "type": "PDMa", "len": 5, "rock": "明洞", "steel": "明洞衬砌", "shot": "C25 模筑", "anchor": "—", "method": "明挖法", "color": "#3ddc97"},
+  {"id": 2, "start": "K3598+405", "end": "K3598+425", "type": "PD5a", "len": 20, "rock": "Ⅴ级", "steel": "I18 @80cm", "shot": "20cm", "anchor": "Φ25中孔 L=3.5m", "method": "预留核心土法", "color": "#f7b955"},
+  {"id": 3, "start": "K3598+425", "end": "K3598+437", "type": "PD5b", "len": 12, "rock": "Ⅴ级", "steel": "I18 @80cm", "shot": "20cm", "anchor": "Φ25中孔 L=3.5m", "method": "预留核心土法", "color": "#f7b955"},
+  {"id": 4, "start": "K3598+437", "end": "K3599+012", "type": "PD4a", "len": 575, "rock": "Ⅳ级", "steel": "I14 @100cm", "shot": "15cm", "anchor": "Φ22药卷 L=2.5m", "method": "台阶法", "color": "#5aa2f8"},
+  {"id": 5, "start": "K3599+012", "end": "K3599+182", "type": "PD5b", "len": 170, "rock": "Ⅴ级", "steel": "I18 @80cm", "shot": "20cm", "anchor": "Φ25中孔 L=3.5m", "method": "预留核心土法", "color": "#f7b955"},
+  {"id": 6, "start": "K3599+182", "end": "K3599+362", "type": "PD4a", "len": 180, "rock": "Ⅳ级", "steel": "I14 @100cm", "shot": "15cm", "anchor": "Φ22药卷 L=2.5m", "method": "台阶法", "color": "#5aa2f8"},
+  {"id": 7, "start": "K3599+362", "end": "K3599+489", "type": "PD4a", "len": 127, "rock": "Ⅳ级", "steel": "I14 @100cm", "shot": "15cm", "anchor": "Φ22药卷 L=2.5m", "method": "台阶法", "color": "#5aa2f8"},
+  {"id": 8, "start": "K3599+489", "end": "K3599+539", "type": "PD4j", "len": 50, "rock": "Ⅳ级加深", "steel": "I16 @80cm", "shot": "18cm", "anchor": "Φ22药卷 L=3.0m", "method": "台阶法", "color": "#a78bfa"},
+  {"id": 9, "start": "K3599+539", "end": "K3599+589", "type": "PD4a", "len": 50, "rock": "Ⅳ级", "steel": "I14 @100cm", "shot": "15cm", "anchor": "Φ22药卷 L=2.5m", "method": "台阶法", "color": "#5aa2f8"},
+  {"id": 10, "start": "K3599+589", "end": "K3599+639", "type": "PD4j", "len": 50, "rock": "Ⅳ级加深", "steel": "I16 @80cm", "shot": "18cm", "anchor": "Φ22药卷 L=3.0m", "method": "台阶法", "color": "#a78bfa"},
+  {"id": 11, "start": "K3599+639", "end": "K3600+057", "type": "PD4a", "len": 418, "rock": "Ⅳ级", "steel": "I14 @100cm", "shot": "15cm", "anchor": "Φ22药卷 L=2.5m", "method": "台阶法", "color": "#5aa2f8"},
+  {"id": 12, "start": "K3600+057", "end": "K3600+227", "type": "PD5b", "len": 170, "rock": "Ⅴ级", "steel": "I18 @80cm", "shot": "20cm", "anchor": "Φ25中孔 L=3.5m", "method": "预留核心土法", "color": "#f7b955"},
+  {"id": 13, "start": "K3600+227", "end": "K3600+689", "type": "PD5b", "len": 462, "rock": "Ⅴ级(深埋)", "steel": "I18 @80cm", "shot": "20cm", "anchor": "Φ25中孔 L=3.5m", "method": "预留核心土法", "color": "#f7b955"},
+  {"id": 14, "start": "K3600+689", "end": "K3600+739", "type": "PD5j", "len": 50, "rock": "Ⅴ级加深", "steel": "I20 @60cm", "shot": "22cm", "anchor": "Φ25中孔 L=3.5m", "method": "预留核心土法", "color": "#e11d48"},
+  {"id": 15, "start": "K3600+739", "end": "K3600+789", "type": "PD5b", "len": 50, "rock": "Ⅴ级", "steel": "I18 @80cm", "shot": "20cm", "anchor": "Φ25中孔 L=3.5m", "method": "预留核心土法", "color": "#f7b955"},
+  {"id": 16, "start": "K3600+789", "end": "K3600+839", "type": "PD5j", "len": 50, "rock": "Ⅴ级加深", "steel": "I20 @60cm", "shot": "22cm", "anchor": "Φ25中孔 L=3.5m", "method": "预留核心土法", "color": "#e11d48"},
+  {"id": 17, "start": "K3600+839", "end": "K3601+062", "type": "PD5b", "len": 223, "rock": "Ⅴ级", "steel": "I18 @80cm", "shot": "20cm", "anchor": "Φ25中孔 L=3.5m", "method": "预留核心土法", "color": "#f7b955"},
+  {"id": 18, "start": "K3601+062", "end": "K3601+862", "type": "PD4a", "len": 800, "rock": "Ⅳ级", "steel": "I14 @100cm", "shot": "15cm", "anchor": "Φ22药卷 L=2.5m", "method": "台阶法", "color": "#5aa2f8"},
+  {"id": 19, "start": "K3601+862", "end": "K3602+234", "type": "PD4a", "len": 372, "rock": "Ⅳ级", "steel": "I14 @100cm", "shot": "15cm", "anchor": "Φ22药卷 L=2.5m", "method": "台阶法", "color": "#5aa2f8"},
+  {"id": 20, "start": "K3602+234", "end": "K3602+484", "type": "PD5b", "len": 250, "rock": "Ⅴ级", "steel": "I18 @80cm", "shot": "20cm", "anchor": "Φ25中孔 L=3.5m", "method": "预留核心土法", "color": "#f7b955"},
+  {"id": 21, "start": "K3602+484", "end": "K3603+099", "type": "PD4a", "len": 615, "rock": "Ⅳ级", "steel": "I14 @100cm", "shot": "15cm", "anchor": "Φ22药卷 L=2.5m", "method": "台阶法", "color": "#5aa2f8"},
+  {"id": 22, "start": "K3603+099", "end": "K3603+159", "type": "PD5b", "len": 60, "rock": "Ⅴ级", "steel": "I18 @80cm", "shot": "20cm", "anchor": "Φ25中孔 L=3.5m", "method": "预留核心土法", "color": "#f7b955"},
+  {"id": 23, "start": "K3603+159", "end": "K3603+164", "type": "PDMa", "len": 5, "rock": "出口明洞", "steel": "明洞衬砌", "shot": "C25 模筑", "anchor": "—", "method": "明挖法", "color": "#3ddc97"}
+];
+
+/* 7 套标准支护参数表 */
+const DEFAULT_SCHEME_DB_DATA = [
+  {"no": 1, "rock": "Ⅳ级", "type": "S4a", "depth": "200~600", "advType": "Φ22药卷锚杆", "advRing": "40cm", "advLen": "4.5m", "advScope": "拱顶120°", "anchor": "120×80cm (Φ22, 3.0m)", "steel": "I16 @80cm", "shot": "C25, 22cm", "conc": "C30", "thick": "35cm", "mode": "台阶法", "advRate": "2.0m", "benchLen": "3~5m", "custom": false},
+  {"no": 2, "rock": "Ⅳ级", "type": "S4b", "depth": "600~900", "advType": "Φ22药卷锚杆", "advRing": "40cm", "advLen": "4.5m", "advScope": "拱顶120°", "anchor": "120×100cm (Φ22, 3.0m)", "steel": "I16 @100cm", "shot": "C25, 22cm", "conc": "C30", "thick": "35cm", "mode": "台阶法", "advRate": "2.0m", "benchLen": "3~5m", "custom": false},
+  {"no": 3, "rock": "Ⅳ级", "type": "S4jt", "depth": "400~800", "advType": "Φ22药卷锚杆", "advRing": "40cm", "advLen": "4.5m", "advScope": "全断面加深", "anchor": "120×80cm (Φ22, 3.5m)", "steel": "I18 @80cm", "shot": "C25, 24cm", "conc": "C35", "thick": "40cm", "mode": "台阶法加宽", "advRate": "1.8m", "benchLen": "4~6m", "custom": false},
+  {"no": 4, "rock": "Ⅴ级", "type": "S5a", "depth": "400~900", "advType": "Φ42小导管注浆", "advRing": "40cm", "advLen": "4.5m", "advScope": "拱部140°", "anchor": "60×60cm (Φ25中孔, 3.5m)", "steel": "I20 @60cm", "shot": "C25, 26cm", "conc": "C35", "thick": "45cm", "mode": "预留核心土法", "advRate": "0.8m", "benchLen": "5~8m", "custom": false},
+  {"no": 5, "rock": "Ⅴ级", "type": "S5c", "depth": "200~400", "advType": "Φ42小导管注浆", "advRing": "40cm", "advLen": "4.0m", "advScope": "拱部140°", "anchor": "75×80cm (Φ25中孔, 3.5m)", "steel": "I18 @80cm", "shot": "C25, 24cm", "conc": "C35", "thick": "40cm", "mode": "预留核心土法", "advRate": "1.0m", "benchLen": "5~8m", "custom": false},
+  {"no": 6, "rock": "Ⅴ级", "type": "S5d", "depth": "600~900", "advType": "Φ42双层小导管", "advRing": "40cm", "advLen": "4.5m", "advScope": "拱部全周加密", "anchor": "60×75cm (Φ25中孔, 3.5m)", "steel": "I20a @60cm", "shot": "C25, 24cm", "conc": "C35", "thick": "50cm", "mode": "预留核心土法", "advRate": "0.8m", "benchLen": "5~8m", "custom": false},
+  {"no": 7, "rock": "Ⅴ级", "type": "S5jt", "depth": "600~900", "advType": "Φ42小导管注浆", "advRing": "40cm", "advLen": "4.0m", "advScope": "停车带加宽段", "anchor": "80×80cm (Φ25中孔, 3.5m)", "steel": "I20a @60cm", "shot": "C25, 26cm", "conc": "C35", "thick": "50cm", "mode": "预留核心土法", "advRate": "0.8m", "benchLen": "6~8m", "custom": false}
+];
+
+/* 8 条地质环境-知识方案映射专家库 */
+const DEFAULT_KNOWLEDGE_DB_DATA = [
+  {"no": 1, "code": "KB-IV-01", "hard": "硬 (变质灰岩)", "int": "较破碎", "water": "干燥", "depth": "200~400m", "stress": "轻微", "rock": "Ⅳ级", "scheme": "台阶法 · S4b (I16@100cm)", "custom": false},
+  {"no": 2, "code": "KB-IV-02", "hard": "硬 (变质灰岩)", "int": "较破碎", "water": "潮湿", "depth": "400~600m", "stress": "中等", "rock": "Ⅳ级", "scheme": "台阶法 · S4a (I16@80cm)", "custom": false},
+  {"no": 3, "code": "KB-IV-03", "hard": "硬 (变质灰岩)", "int": "较破碎", "water": "滴水", "depth": "600~900m", "stress": "较重", "rock": "Ⅳ级", "scheme": "台阶法 · S4a (I16@80cm)", "custom": false},
+  {"no": 4, "code": "KB-IV-04", "hard": "硬 (变质灰岩)", "int": "破碎", "water": "淋水", "depth": "400~800m", "stress": "较重", "rock": "Ⅳ级", "scheme": "台阶法加宽 · S4jt (I18@80cm)", "custom": false},
+  {"no": 5, "code": "KB-V-01", "hard": "较软 (千枚岩)", "int": "破碎", "water": "潮湿", "depth": "200~400m", "stress": "中等", "rock": "Ⅴ级", "scheme": "预留核心土法 · S5c (I18@80cm)", "custom": false},
+  {"no": 6, "code": "KB-V-02", "hard": "较软 (千枚岩)", "int": "破碎", "water": "淋水", "depth": "400~600m", "stress": "严重", "rock": "Ⅴ级", "scheme": "预留核心土法 · S5a (I20@60cm)", "custom": false},
+  {"no": 7, "code": "KB-V-03", "hard": "较软 (千枚岩)", "int": "极破碎", "water": "淋水", "depth": "600~900m", "stress": "很严重", "rock": "Ⅴ级", "scheme": "预留核心土法 · S5a (I20@60cm最大埋深)", "custom": false},
+  {"no": 8, "code": "KB-V-04", "hard": "较软 (千枚岩)", "int": "极破碎", "water": "涌水", "depth": "600~900m", "stress": "极严重", "rock": "Ⅴ级", "scheme": "预留核心土法 · S5d (I20a双层小导管)", "custom": false}
+];
+
+/* 9 种核心施工机械装备台账 */
+const DEFAULT_EQUIP_9 = [
+  {"id": 1, "name": "装载机", "model": "ZL50C 侧翻装载机", "num": 2, "unit": "台", "pos": "洞内出渣与洞渣装车", "stage": "开挖与出渣运输", "custom": false},
+  {"id": 2, "name": "挖掘机", "model": "CAT320D / 75型", "num": 6, "unit": "台", "pos": "洞身开挖、找顶与核心土修整", "stage": "开挖与出渣运输", "custom": false},
+  {"id": 3, "name": "自卸汽车", "model": "20 方重型自卸车", "num": 8, "unit": "台", "pos": "洞渣外运至洞外弃渣场", "stage": "开挖与出渣运输", "custom": false},
+  {"id": 4, "name": "潜孔钻机", "model": "全液压潜孔钻机", "num": 2, "unit": "台", "pos": "超前管棚、小导管成孔打设", "stage": "超前支护", "custom": false},
+  {"id": 5, "name": "湿喷台车", "model": "混凝土湿喷机组", "num": 2, "unit": "台", "pos": "C25喷射混凝土机械化喷涂", "stage": "初期支护", "custom": false},
+  {"id": 6, "name": "超前地质钻机", "model": "MKD-5S 型地质钻机", "num": 1, "unit": "台", "pos": "掌子面前方超前深孔钻探", "stage": "超前地质探测", "custom": false},
+  {"id": 7, "name": "拱架台车", "model": "多功能钢架安装台车", "num": 2, "unit": "台", "pos": "型钢钢架机械化定位与拼装", "stage": "初期支护", "custom": false},
+  {"id": 8, "name": "二衬台车", "model": "全液压自动行走衬砌台车", "num": 2, "unit": "台", "pos": "二次衬砌全断面混凝土模筑浇筑", "stage": "二次衬砌", "custom": false},
+  {"id": 9, "name": "防水板台车", "model": "无钉铺设防水板作业台车", "num": 2, "unit": "台", "pos": "EVA/PVC防水板与土工布铺挂", "stage": "防排水施工", "custom": false}
+];
+
+/* 60 条历史决策台账数据 (所有数据时间均在2026年7月之前) */
+const DEFAULT_HISTORY_DB_DATA = [
+  {"id": 1, "date": "2026-06-30 20:30:15", "face": "沙益1号隧道主洞正洞掌子面", "mile": "K3601+840", "rock": "Ⅳ级", "method": "台阶法", "type": "S4a", "score": 93.5, "detail": "超前支护: Φ22药卷锚杆 L=4.5m @40cm | 初支: I16钢架@80cm + C25喷层22cm + Φ22药卷锚杆(120×80cm) | 装备: ZL50C装载机 + CAT320D挖机 + 自卸车"},
+  {"id": 2, "date": "2026-06-30 09:15:42", "face": "沙益1号隧道主洞正洞掌子面", "mile": "K3601+838", "rock": "Ⅳ级", "method": "台阶法", "type": "S4a", "score": 92.8, "detail": "初支拱架间距复核80cm密贴 | C25湿喷早强良好 | 监控量测拱顶下沉速率 1.1mm/d (稳定安全)"},
+  {"id": 3, "date": "2026-06-29 11:00:20", "face": "沙益1号隧道平导掌子面", "mile": "K3601+860", "rock": "Ⅳ级", "method": "台阶法", "type": "PD4a", "score": 94.2, "detail": "平导超前探水干燥 | I14型钢钢架@100cm + C25喷层15cm | 配合车行横洞通风除尘"},
+  {"id": 4, "date": "2026-06-29 02:45:10", "face": "沙益1号隧道主洞正洞掌子面", "mile": "K3601+836", "rock": "Ⅳ级", "method": "台阶法", "type": "S4a", "score": 91.6, "detail": "上台阶进尺2.0m | YT-28打眼光面爆破 | 湿喷台车机械化作业喷层厚度22cm达标"},
+  {"id": 5, "date": "2026-06-28 19:30:15", "face": "沙益1号隧道主洞正洞掌子面", "mile": "K3601+834", "rock": "Ⅳ级", "method": "台阶法", "type": "S4a", "score": 92.4, "detail": "超前支护: Φ22药卷锚杆 L=4.5m @40cm | 初支: I16钢架@80cm + C25喷层22cm + Φ22药卷锚杆(120×80cm) | 装备: 装载机+挖掘机+自卸汽车+湿喷台车+拱架台车"},
+  {"id": 6, "date": "2026-06-28 07:20:33", "face": "沙益1号隧道平导掌子面", "mile": "K3601+858", "rock": "Ⅳ级", "method": "台阶法", "type": "PD4a", "score": 93.0, "detail": "平导开挖钻孔爆破 | 单循环进尺2.5m | 洞内出渣外运顺利"},
+  {"id": 7, "date": "2026-06-27 18:10:18", "face": "沙益1号隧道主洞正洞掌子面", "mile": "K3601+832", "rock": "Ⅳ级", "method": "台阶法", "type": "S4a", "score": 90.8, "detail": "变质灰岩层理节理较发育 | 拱脚打设Φ22锁脚锚杆加强 | 初支刚度满足受力要求"},
+  {"id": 8, "date": "2026-06-26 15:50:00", "face": "沙益1号隧道主洞正洞掌子面", "mile": "K3601+830", "rock": "Ⅳ级", "method": "台阶法", "type": "S4a", "score": 93.1, "detail": "全工序机械化配套循环作业 | 循环总耗时14.2h | 各工序衔接顺畅"},
+  {"id": 9, "date": "2026-06-25 21:15:22", "face": "沙益1号隧道主洞正洞掌子面", "mile": "K3600+670", "rock": "Ⅴ级", "method": "环形开挖预留核心土法", "type": "S5a", "score": 86.5, "detail": "超前支护: Φ42小导管 L=4.5m @40cm注浆 | 初支: I20钢架@60cm + C25喷层26cm + Φ25中孔锚杆(60×60cm) | 装备: 潜孔钻机+地质钻机+湿喷台车+挖掘机"},
+  {"id": 10, "date": "2026-06-25 08:40:12", "face": "沙益1号隧道主洞正洞掌子面", "mile": "K3600+669.2", "rock": "Ⅴ级", "method": "环形开挖预留核心土法", "type": "S5a", "score": 85.2, "detail": "核心土有效支承掌子面 | 埋深880m地应力释放监测正常 | 拱架锁脚小导管注水泥浆加固"},
+  {"id": 11, "date": "2026-06-24 19:10:45", "face": "沙益1号隧道平导掌子面", "mile": "K3600+685", "rock": "Ⅴ级", "method": "预留核心土法", "type": "PD5b", "score": 88.0, "detail": "平导超前掌子面探明软弱夹层 | I18钢架@80cm + C25喷层20cm | 指导主洞提前预注浆"},
+  {"id": 12, "date": "2026-06-24 07:30:50", "face": "沙益1号隧道主洞正洞掌子面", "mile": "K3600+668.4", "rock": "Ⅴ级", "method": "环形开挖预留核心土法", "type": "S5a", "score": 86.8, "detail": "单循环进尺0.8m | 湿喷机分层喷砼至26cm | 初支及早闭合成环抑制大变形"},
+  {"id": 13, "date": "2026-06-23 16:45:00", "face": "沙益1号隧道平导掌子面", "mile": "K3601+500", "rock": "Ⅳ级", "method": "台阶法", "type": "PD4a", "score": 92.0, "detail": "平导超前开挖探明地质 | 初支: I14钢架@100cm + C25喷层15cm | 出渣: 后期利用车行横洞调车回路"},
+  {"id": 14, "date": "2026-06-23 04:25:10", "face": "沙益1号隧道主洞正洞掌子面", "mile": "K3600+667.6", "rock": "Ⅴ级", "method": "环形开挖预留核心土法", "type": "S5a", "score": 84.9, "detail": "千枚岩夹层局部渗水 | 增设排水盲管 | I20钢拱架间距60cm严格控制"},
+  {"id": 15, "date": "2026-06-22 18:15:30", "face": "沙益1号隧道主洞正洞掌子面", "mile": "K3600+666.8", "rock": "Ⅴ级", "method": "环形开挖预留核心土法", "type": "S5a", "score": 87.2, "detail": "掌子面加固3.0h完成 | 拱部140°范围内打设Φ42小导管 | 注单液水泥浆"},
+  {"id": 16, "date": "2026-06-22 06:40:00", "face": "沙益1号隧道平导掌子面", "mile": "K3600+680", "rock": "Ⅴ级", "method": "预留核心土法", "type": "PD5b", "score": 87.5, "detail": "平导开挖与支护协同作业 | MKD-5S地质钻机探孔钻探50m未见突涌水"},
+  {"id": 17, "date": "2026-06-21 19:10:15", "face": "沙益1号隧道主洞正洞掌子面", "mile": "K3600+666.0", "rock": "Ⅴ级", "method": "环形开挖预留核心土法", "type": "S5a", "score": 85.5, "detail": "压力拱平衡高度推演8.2m | 支护体系承载安全度综合评定85.5 (安全受控)"},
+  {"id": 18, "date": "2026-06-21 07:20:18", "face": "沙益1号隧道主洞正洞掌子面", "mile": "K3599+050", "rock": "Ⅴ级", "method": "环形开挖预留核心土法", "type": "S5d", "score": 84.2, "detail": "超前支护: Φ42双层小导管注浆预加固 | 初支: I20a加强钢架@60cm + 24cm喷层 | 防大变形坍塌控制"},
+  {"id": 19, "date": "2026-06-20 18:55:40", "face": "沙益1号隧道主洞正洞掌子面", "mile": "K3599+049.2", "rock": "Ⅴ级", "method": "环形开挖预留核心土法", "type": "S5d", "score": 85.0, "detail": "双层小导管外插角控制在35°~40° | 拱顶全周注浆加固圈厚度达1.5m"},
+  {"id": 20, "date": "2026-06-20 06:30:25", "face": "沙益1号隧道平导掌子面", "mile": "K3599+120", "rock": "Ⅴ级", "method": "预留核心土法", "type": "PD5b", "score": 86.8, "detail": "平导小导管注浆密实 | 拱架安装台车机械化拼装定位 | 轴流风机通风良好"},
+  {"id": 21, "date": "2026-06-19 17:40:15", "face": "沙益1号隧道主洞正洞掌子面", "mile": "K3599+490", "rock": "Ⅳ级", "method": "台阶法加宽", "type": "S4jt", "score": 90.2, "detail": "紧急停车带加宽段(跨度12.5m) | I18工字钢@80cm | Φ22药卷锚杆加长至3.5m"},
+  {"id": 22, "date": "2026-06-18 22:15:30", "face": "沙益1号隧道主洞正洞掌子面", "mile": "K3599+488", "rock": "Ⅳ级", "method": "台阶法加宽", "type": "S4jt", "score": 89.6, "detail": "停车带加宽断面开挖 | 20方自卸车出渣 | 喷射混凝土加厚至24cm"},
+  {"id": 23, "date": "2026-06-18 08:30:00", "face": "沙益1号隧道主洞正洞掌子面", "mile": "K3599+486", "rock": "Ⅳ级", "method": "台阶法加宽", "type": "S4jt", "score": 90.8, "detail": "全断面加深系统锚杆网格(120×80cm) | 拱脚增设锁脚锚管控制沉降"},
+  {"id": 24, "date": "2026-06-17 19:10:45", "face": "沙益1号隧道主洞正洞掌子面", "mile": "K3601+550", "rock": "Ⅳ级", "method": "台阶法", "type": "S4a", "score": 93.0, "detail": "中风化变质灰岩厚层结构 | 台阶长度控制在4m内 | 初支紧跟成环"},
+  {"id": 25, "date": "2026-06-17 08:00:20", "face": "沙益1号隧道平导掌子面", "mile": "K3601+600", "rock": "Ⅳ级", "method": "台阶法", "type": "PD4a", "score": 94.0, "detail": "平导正洞掌子面推进 | 湿喷机初喷5cm封闭 | 挂网架设I14钢架"},
+  {"id": 26, "date": "2026-06-16 21:40:00", "face": "沙益1号隧道主洞正洞掌子面", "mile": "K3601+548", "rock": "Ⅳ级", "method": "台阶法", "type": "S4a", "score": 92.5, "detail": "上台阶进尺2.0m | 钻爆设计周边眼间距45cm | 光面爆破残眼率85%以上"},
+  {"id": 27, "date": "2026-06-16 07:15:30", "face": "沙益1号隧道主洞正洞掌子面", "mile": "K3601+546", "rock": "Ⅳ级", "method": "台阶法", "type": "S4a", "score": 93.8, "detail": "初期支护受力状态稳定 | 断面仪扫描无超欠挖超标"},
+  {"id": 28, "date": "2026-06-15 18:20:10", "face": "沙益1号隧道平导掌子面", "mile": "K3601+598", "rock": "Ⅳ级", "method": "台阶法", "type": "PD4a", "score": 94.5, "detail": "循环时间13.8h | 超前地质雷达扫描前方20m岩体完整坚硬"},
+  {"id": 29, "date": "2026-06-15 06:45:00", "face": "沙益1号隧道主洞正洞掌子面", "mile": "K3601+544", "rock": "Ⅳ级", "method": "台阶法", "type": "S4a", "score": 92.0, "detail": "I16钢架@80cm | C25喷层22cm密贴岩面 | 系统锚杆拉拔试验合格(>80kN)"},
+  {"id": 30, "date": "2026-06-14 20:30:15", "face": "沙益1号隧道主洞正洞掌子面", "mile": "K3600+460", "rock": "Ⅴ级", "method": "环形开挖预留核心土法", "type": "S5a", "score": 86.0, "detail": "最大埋深段(897.8m)高地应力区 | I20强钢架@60cm | 预留变形量20cm"},
+  {"id": 31, "date": "2026-06-14 08:15:40", "face": "沙益1号隧道主洞正洞掌子面", "mile": "K3600+459.2", "rock": "Ⅴ级", "method": "环形开挖预留核心土法", "type": "S5a", "score": 85.4, "detail": "核心土保留长度4m | 超前注浆小导管搭接长度不小于1.0m"},
+  {"id": 32, "date": "2026-06-13 17:00:20", "face": "沙益1号隧道平导掌子面", "mile": "K3600+500", "rock": "Ⅴ级", "method": "预留核心土法", "type": "PD5b", "score": 87.8, "detail": "平导深埋段支护加强 | 钢筋网Φ8 (20×20cm) 满铺焊接牢固"},
+  {"id": 33, "date": "2026-06-13 04:50:00", "face": "沙益1号隧道主洞正洞掌子面", "mile": "K3600+458.4", "rock": "Ⅴ级", "method": "环形开挖预留核心土法", "type": "S5a", "score": 86.3, "detail": "湿喷混凝土密实无脱空 | 拱脚槽底清理干净无虚渣"},
+  {"id": 34, "date": "2026-06-12 21:10:30", "face": "沙益1号隧道主洞正洞掌子面", "mile": "K3600+457.6", "rock": "Ⅴ级", "method": "环形开挖预留核心土法", "type": "S5a", "score": 84.8, "detail": "初始地应力释放速度可控 | 监测周边收敛速率 2.3mm/d"},
+  {"id": 35, "date": "2026-06-11 16:30:00", "face": "沙益1号隧道主洞正洞掌子面", "mile": "K3598+600", "rock": "Ⅳ级", "method": "台阶法", "type": "S4b", "score": 94.0, "detail": "偏压浅埋过渡段 | I16钢架@100cm + Φ22药卷锚杆(120×100cm) | 支护参数标准匹配"},
+  {"id": 36, "date": "2026-06-11 05:20:15", "face": "沙益1号隧道主洞正洞掌子面", "mile": "K3598+598", "rock": "Ⅳ级", "method": "台阶法", "type": "S4b", "score": 93.7, "detail": "开挖循环推进进尺2.0m | 出渣车队运输通畅 | 洞内有害气体检测达标"},
+  {"id": 37, "date": "2026-06-10 19:40:00", "face": "沙益1号隧道平导掌子面", "mile": "K3598+650", "rock": "Ⅳ级", "method": "台阶法", "type": "PD4a", "score": 95.0, "detail": "平导正洞开挖 | I14钢架@100cm | 全液压潜孔钻机成孔定位精准"},
+  {"id": 38, "date": "2026-06-10 08:00:20", "face": "沙益1号隧道主洞正洞掌子面", "mile": "K3598+596", "rock": "Ⅳ级", "method": "台阶法", "type": "S4b", "score": 93.2, "detail": "喷射混凝土厚度22cm | 钢拱架纵向连接筋Φ22焊接牢固"},
+  {"id": 39, "date": "2026-06-09 18:30:10", "face": "沙益1号隧道主洞正洞掌子面", "mile": "K3602+100", "rock": "Ⅳ级", "method": "台阶法", "type": "S4a", "score": 92.6, "detail": "正洞Ⅳ级围岩段开挖 | 上下台阶间距保持在5m以内 | 湿喷台车高效施作"},
+  {"id": 40, "date": "2026-06-09 07:15:00", "face": "沙益1号隧道平导掌子面", "mile": "K3602+150", "rock": "Ⅳ级", "method": "台阶法", "type": "PD4a", "score": 93.8, "detail": "平导开挖工效稳定 | 循环总时间14.1h | 掌子面地质素描归档"},
+  {"id": 41, "date": "2026-06-08 22:50:30", "face": "沙益1号隧道主洞正洞掌子面", "mile": "K3602+098", "rock": "Ⅳ级", "method": "台阶法", "type": "S4a", "score": 91.9, "detail": "I16钢架间距80cm | Φ22药卷锚杆梅花形布置(120×80cm)"},
+  {"id": 42, "date": "2026-06-07 15:40:20", "face": "沙益1号隧道主洞正洞掌子面", "mile": "K3600+750", "rock": "Ⅴ级", "method": "环形开挖预留核心土法", "type": "S5jt", "score": 86.4, "detail": "Ⅴ级停车带加宽段 | I20a加强工字钢@60cm | Φ42小导管预注浆加固"},
+  {"id": 43, "date": "2026-06-07 04:10:15", "face": "沙益1号隧道主洞正洞掌子面", "mile": "K3600+749.2", "rock": "Ⅴ级", "method": "环形开挖预留核心土法", "type": "S5jt", "score": 85.9, "detail": "加宽段大断面开挖 | 核心土临时支护防失稳 | 喷砼厚度26cm"},
+  {"id": 44, "date": "2026-06-06 19:20:00", "face": "沙益1号隧道平导掌子面", "mile": "K3600+720", "rock": "Ⅴ级", "method": "预留核心土法", "type": "PD5j", "score": 87.0, "detail": "平导Ⅴ级加深段 | I20钢架@60cm + Φ25中孔锚杆 L=3.5m"},
+  {"id": 45, "date": "2026-06-05 14:00:10", "face": "沙益1号隧道主洞正洞掌子面", "mile": "K3598+415", "rock": "Ⅴ级", "method": "预留核心土法", "type": "S5c", "score": 87.5, "detail": "洞口浅埋段加强支护 | I18钢架@80cm + C25喷层24cm + Φ25中孔锚杆"},
+  {"id": 46, "date": "2026-06-05 03:30:40", "face": "沙益1号隧道主洞正洞掌子面", "mile": "K3598+414.2", "rock": "Ⅴ级", "method": "预留核心土法", "type": "S5c", "score": 86.9, "detail": "拱顶注浆加固防松动 | 进尺0.8m | 拱脚锁脚小导管注浆密实"},
+  {"id": 47, "date": "2026-06-04 18:45:00", "face": "沙益1号隧道平导掌子面", "mile": "K3598+430", "rock": "Ⅴ级", "method": "预留核心土法", "type": "PD5b", "score": 88.3, "detail": "平导洞口段开挖支护 | I18钢架@80cm | 监控量测地表沉降正常"},
+  {"id": 48, "date": "2026-06-03 20:10:15", "face": "沙益1号隧道主洞正洞掌子面", "mile": "K3602+600", "rock": "Ⅳ级", "method": "台阶法", "type": "S4a", "score": 93.4, "detail": "灰岩段岩体稳定性好 | 单循环进尺2.0m | 爆破开挖轮廓圆顺"},
+  {"id": 49, "date": "2026-06-03 07:50:30", "face": "沙益1号隧道主洞正洞掌子面", "mile": "K3602+598", "rock": "Ⅳ级", "method": "台阶法", "type": "S4a", "score": 92.7, "detail": "初喷、挂网、架立I16钢架并复喷22cm | 循环时间14.3h"},
+  {"id": 50, "date": "2026-06-02 17:30:00", "face": "沙益1号隧道平导掌子面", "mile": "K3602+650", "rock": "Ⅳ级", "method": "台阶法", "type": "PD4a", "score": 94.1, "detail": "平导推进顺利 | CAT320D装渣 | 侧翻装载机配合自卸车高效运输"},
+  {"id": 51, "date": "2026-06-02 05:20:10", "face": "沙益1号隧道主洞正洞掌子面", "mile": "K3602+596", "rock": "Ⅳ级", "method": "台阶法", "type": "S4a", "score": 93.0, "detail": "系统锚杆打设注浆饱满 | 锚固力达到设计标准要求"},
+  {"id": 52, "date": "2026-06-01 21:00:40", "face": "沙益1号隧道主洞正洞掌子面", "mile": "K3599+300", "rock": "Ⅳ级", "method": "台阶法", "type": "S4a", "score": 92.1, "detail": "Ⅳ级普通衬砌段 | I16@80cm | 上下台阶错开4m先后推进"},
+  {"id": 53, "date": "2026-05-31 09:15:20", "face": "沙益1号隧道平导掌子面", "mile": "K3599+350", "rock": "Ⅳ级", "method": "台阶法", "type": "PD4a", "score": 93.6, "detail": "平导超前探明地应力较低 | 围岩自稳能力良好"},
+  {"id": 54, "date": "2026-05-30 18:40:00", "face": "沙益1号隧道主洞正洞掌子面", "mile": "K3599+298", "rock": "Ⅳ级", "method": "台阶法", "type": "S4a", "score": 91.8, "detail": "光面爆破效果优良 | 拱部开挖轮廓与设计吻合度96%"},
+  {"id": 55, "date": "2026-05-29 22:30:15", "face": "沙益1号隧道主洞正洞掌子面", "mile": "K3600+150", "rock": "Ⅴ级", "method": "预留核心土法", "type": "S5a", "score": 85.7, "detail": "Ⅴ级破碎岩体 | 核心土保留防失稳 | I20钢架@60cm间距"},
+  {"id": 56, "date": "2026-05-29 08:10:30", "face": "沙益1号隧道主洞正洞掌子面", "mile": "K3600+149.2", "rock": "Ⅴ级", "method": "预留核心土法", "type": "S5a", "score": 86.2, "detail": "超前注浆Φ42导管注水泥浆 | 初支封闭成环时机0.8D内完成"},
+  {"id": 57, "date": "2026-05-28 16:50:00", "face": "沙益1号隧道平导掌子面", "mile": "K3600+180", "rock": "Ⅴ级", "method": "预留核心土法", "type": "PD5b", "score": 87.4, "detail": "平导正洞支护跟进 | 拱架台车拼装工字钢定位精准"},
+  {"id": 58, "date": "2026-05-28 04:25:10", "face": "沙益1号隧道主洞正洞掌子面", "mile": "K3600+148.4", "rock": "Ⅴ级", "method": "预留核心土法", "type": "S5a", "score": 85.1, "detail": "喷砼C25厚度26cm检测合格 | 锚杆抗拔力抽检满足规范要求"},
+  {"id": 59, "date": "2026-05-27 19:30:00", "face": "沙益1号隧道主洞正洞掌子面", "mile": "K3601+100", "rock": "Ⅳ级", "method": "台阶法", "type": "S4a", "score": 93.3, "detail": "主洞Ⅳ级主段进入高效开挖阶段 | 单月进尺达到92m超额完成考核目标"},
+  {"id": 60, "date": "2026-05-27 08:00:00", "face": "沙益1号隧道平导掌子面", "mile": "K3601+150", "rock": "Ⅳ级", "method": "台阶法", "type": "PD4a", "score": 94.0, "detail": "平导开挖进尺稳定 | 机械设备运转状态良好"}
+];
+
+let MAIN_SEGS = DEFAULT_MAIN_SEGS;
+let PILOT_SEGS = DEFAULT_PILOT_SEGS;
+let SCHEME_DB_DATA = JSON.parse(localStorage.getItem('tics_scheme_db') || JSON.stringify(DEFAULT_SCHEME_DB_DATA));
+let KNOWLEDGE_DB_DATA = JSON.parse(localStorage.getItem('tics_knowledge_db') || JSON.stringify(DEFAULT_KNOWLEDGE_DB_DATA));
+let CORE_EQUIP_9 = JSON.parse(localStorage.getItem('tics_equip_db') || JSON.stringify(DEFAULT_EQUIP_9));
+// 动态将默认数据 id 校正为递减 (60 到 1)，并统一工作面名称，保证降序排列时序号及名称连贯
+DEFAULT_HISTORY_DB_DATA.forEach((rec, idx) => {
+  rec.id = DEFAULT_HISTORY_DB_DATA.length - idx;
+  if (rec.face.includes('主洞')) {
+    rec.face = '沙益1号隧道主洞掌子面';
+  } else if (rec.face.includes('平导')) {
+    rec.face = '沙益1号隧道平导掌子面';
+  }
+});
+
+let rawHistory = localStorage.getItem('tics_history_db');
+let HISTORY_DB_DATA = null;
+if (rawHistory) {
+  const parsed = JSON.parse(rawHistory);
+  // 检查长度是否符合，且排除了老版本第一项 id 等于 1 的老缓存
+  if (parsed.length >= 60 && parsed[0] && parsed[0].id !== 1) {
+    HISTORY_DB_DATA = parsed;
+    // 同时也对本地缓存的历史记录进行工作面名称统一
+    HISTORY_DB_DATA.forEach((rec) => {
+      if (rec.face.includes('主洞')) {
+        rec.face = '沙益1号隧道主洞掌子面';
+      } else if (rec.face.includes('平导')) {
+        rec.face = '沙益1号隧道平导掌子面';
+      }
+    });
+  }
+}
+if (!HISTORY_DB_DATA) {
+  HISTORY_DB_DATA = JSON.parse(JSON.stringify(DEFAULT_HISTORY_DB_DATA));
+}
+let historyFilteredData = HISTORY_DB_DATA;
+let historyPage = 1;
+const historyPageSize = 10;
+let currentSchemeFilter = 'all';
+let curViewMode = 'main';
+
+window.switchTunnelView = function(mode){
+  curViewMode = mode;
+  $('btnViewMain').classList.toggle('active', mode==='main');
+  $('btnViewPilot').classList.toggle('active', mode==='pilot');
+  $('btnProjMain').classList.toggle('active', mode==='main');
+  $('btnProjPilot').classList.toggle('active', mode==='pilot');
+
+  if(mode === 'main'){
+    $('curTunnelTitle').textContent = '主洞纵断面衬砌分布图 (4737m)';
+    renderActiveStrip(MAIN_SEGS, 4737);
+    if(MAIN_SEGS.length > 17) selectSegItem(MAIN_SEGS[17], 17);
+
+    // 动态更新主洞配置指标卡数据
+    $('opt_method_val').innerHTML = `<span style="color:var(--accent)">68.3%</span> <small>台阶法</small>`;
+    $('opt_method_sub').textContent = `台阶法 3237m · 核心土法 1500m`;
+    
+    $('opt_steel_val').innerHTML = `<span style="color:var(--blue)">4</span> <small>类型号规格</small>`;
+    $('opt_steel_sub').textContent = `I16/I18/I20/I20a · 间距60~100cm`;
+    
+    $('opt_shot_val').innerHTML = `<span style="color:var(--amber)">22~26</span> <small>cm</small>`;
+    $('opt_shot_sub').textContent = `C25喷砼 · Φ22药卷/Φ25中空锚杆`;
+    
+    $('opt_advance_val').innerHTML = `<span style="color:var(--purple)">1500</span> <small>m (31.7%)</small>`;
+    $('opt_advance_sub').textContent = `Φ42小导管注浆/双层小导管`;
+  } else {
+    $('curTunnelTitle').textContent = '平行导洞纵断面衬砌分布图 (4764m)';
+    renderActiveStrip(PILOT_SEGS, 4764);
+    if(PILOT_SEGS.length > 13) selectSegItem(PILOT_SEGS[13], 13);
+
+    // 动态更新平导配置指标卡数据
+    $('opt_method_val').innerHTML = `<span style="color:var(--accent)">67.9%</span> <small>台阶法</small>`;
+    $('opt_method_sub').textContent = `台阶法 3237m · 预留核心土法 1517m`;
+    
+    $('opt_steel_val').innerHTML = `<span style="color:var(--blue)">4</span> <small>类型号规格</small>`;
+    $('opt_steel_sub').textContent = `I14/I16/I18/I20 · 间距60~100cm`;
+    
+    $('opt_shot_val').innerHTML = `<span style="color:var(--amber)">15~22</span> <small>cm</small>`;
+    $('opt_shot_sub').textContent = `C25喷砼 · Φ22药卷/Φ25中空锚杆`;
+    
+    $('opt_advance_val').innerHTML = `<span style="color:var(--purple)">1518</span> <small>m (31.9%)</small>`;
+    $('opt_advance_sub').textContent = `Φ42小导管注浆/超前锚杆`;
+  }
+  if(typeof updateOverviewCharts === 'function') updateOverviewCharts(mode);
+};
+
+function renderActiveStrip(data, totalLen){
+  const el = $('activeTunnelStrip');
+  if(!data || data.length === 0){
+    el.innerHTML = '<div style="font-size:11px;color:var(--text-3);padding:4px">正在加载纵断面分段数据...</div>';
+    return;
+  }
+  el.innerHTML = data.map((s,i)=>`
+    <div class="strip-seg ${i===17?'active':''}" style="width:${(s.len/totalLen*100).toFixed(2)}%;background:${s.color}"
+      title="${s.type}: ${s.start}~${s.end} (${s.len}m)" onclick="onSegClick(${i})"></div>
+  `).join('');
+}
+
+window.onSegClick = function(idx){
+  const data = curViewMode === 'main' ? MAIN_SEGS : PILOT_SEGS;
+  const s = data[idx];
+  document.querySelectorAll('#activeTunnelStrip .strip-seg').forEach((el,i)=>el.classList.toggle('active', i===idx));
+  selectSegItem(s, idx);
+};
+
+function selectSegItem(s, idx){
+  if(!s) return;
+  $('segTitle').textContent = `分段配置明细 ${s.type}`;
+  $('segType').textContent = s.type;
+  $('segRange').textContent = `${s.start} ~ ${s.end}`;
+  $('segRockLv').textContent = s.rock;
+  $('segMethod').textContent = s.method;
+  $('segSteel').textContent = s.steel;
+  $('segShot').textContent = s.shot;
+  $('segAnchor').textContent = s.anchor;
+}
+
+/* ============================================================
+   智能决策中心逻辑
+   ============================================================ */
+let state = {
+  mode: 'joint',
+  mile: 'K3601+200',
+  grade: 'IV',
+  depth: 620,
+  selectedMethodKey: 'bench',
+  method: null,
+  support: null,
+  adjusted: {},
+  schemeCount: 60
+};
+
+window.setDecisionMode = function(m){
+  state.mode = m;
+  $('modeJoint').classList.toggle('active', m==='joint');
+  $('modeManual').classList.toggle('active', m==='manual');
+
+  const hintEl = $('dwModeHint');
+  const hintText = $('dwModeHintText');
+  const btnFetch = $('btnFetchUniform');
+
+  if(m === 'joint'){
+    hintEl.className = 'engine-mode-alert alert-joint';
+    hintText.innerHTML = '【联合决策模式】选择工作面及开挖里程即可一键协同同步';
+    btnFetch.style.display = 'inline-flex';
+  } else {
+    hintEl.className = 'engine-mode-alert alert-manual';
+    hintText.innerHTML = '【手动决策模式】支持自由修改微调下方 18 项地质力学参数';
+    btnFetch.style.display = 'none';
+  }
+};
+
+window.onWorkfaceChange = function(){
+  const wf = $('selWorkface').value;
+  // 联动断面类型：主洞还是平导
+  if(wf === 'shayi_main'){
+    $('p_section').value = '主洞标准断面';
+  } else {
+    $('p_section').value = '平导标准断面';
+  }
+  // 同时触发当前里程的地质参数更新，以使下面 18 项填入当前里程的数据
+  onMileageChange();
+};
+
+window.onMileageChange = function(){
+  const m = $('selMileage').value;
+  const optText = $('selMileage').options[$('selMileage').selectedIndex].text;
+  state.mile = optText; // 将里程赋值为纯里程桩号如 "K3601+200"
+
+  // 根据选定里程桩号，联动地质力学等 18 项参数
+  if(m === 'm1'){ // K3601+200
+    $('p_grade').value = 'IV';
+    $('p_depth').value = 620;
+    $('p_hardness').value = '硬';
+    $('p_integrity').value = '较破碎';
+    $('p_thickness').value = '厚层';
+    $('p_water').value = '潮湿';
+    $('p_friction').value = 32;
+    $('p_elastic').value = 2.85;
+    $('p_cohesion').value = 260;
+    $('p_poisson').value = 0.28;
+    $('p_stressV').value = 21.5;
+    $('p_stressH').value = 13.2;
+    state.grade = 'IV';
+    state.depth = 620;
+  } else if(m === 'm2'){ // K3600+450
+    $('p_grade').value = 'V';
+    $('p_depth').value = 897.8;
+    $('p_hardness').value = '较软';
+    $('p_integrity').value = '破碎';
+    $('p_thickness').value = '中厚层';
+    $('p_water').value = '淋水';
+    $('p_friction').value = 25;
+    $('p_elastic').value = 1.65;
+    $('p_cohesion').value = 140;
+    $('p_poisson').value = 0.32;
+    $('p_stressV').value = 31.2;
+    $('p_stressH').value = 18.5;
+    state.grade = 'V';
+    state.depth = 897.8;
+  } else if(m === 'm3'){ // K3599+050
+    $('p_grade').value = 'V';
+    $('p_depth').value = 500;
+    $('p_hardness').value = '较软';
+    $('p_integrity').value = '极破碎';
+    $('p_thickness').value = '薄层';
+    $('p_water').value = '淋水';
+    $('p_friction').value = 26;
+    $('p_elastic').value = 1.70;
+    $('p_cohesion').value = 150;
+    $('p_poisson').value = 0.30;
+    $('p_stressV').value = 23.0;
+    $('p_stressH').value = 14.5;
+    state.grade = 'V';
+    state.depth = 500;
+  } else if(m === 'm4'){ // K3601+900
+    $('p_grade').value = 'IV';
+    $('p_depth').value = 600;
+    $('p_hardness').value = '硬';
+    $('p_integrity').value = '较破碎';
+    $('p_thickness').value = '厚层';
+    $('p_water').value = '潮湿';
+    $('p_friction').value = 31;
+    $('p_elastic').value = 2.75;
+    $('p_cohesion').value = 250;
+    $('p_poisson').value = 0.28;
+    $('p_stressV').value = 20.8;
+    $('p_stressH').value = 12.8;
+    // 紧急停车带加宽
+    if($('selWorkface').value === 'shayi_main'){
+      $('p_section').value = '主洞紧急停车带';
+    }
+    state.grade = 'IV';
+    state.depth = 600;
+  }
+};
+
+window.fetchUniformData = function(){ onWorkfaceChange(); };
+window.resetParams = function(){ onWorkfaceChange(); };
+
+function setStep(n){
+  document.querySelectorAll('#flowBar .flow-step').forEach((st,i)=>{
+    st.classList.toggle('active', i+1 === n);
+    st.classList.toggle('done', i+1 < n);
+  });
+}
+
+window.jumpStep = function(n){
+  if(n === 1) $('blockWorkbench').scrollIntoView({behavior:'smooth'});
+  if(n === 2 && state.method) $('blockMethod').scrollIntoView({behavior:'smooth'});
+  if(n === 3 && state.support) $('blockSupport').scrollIntoView({behavior:'smooth'});
+  if(n === 4 && $('blockScheme').style.display==='block') $('blockScheme').scrollIntoView({behavior:'smooth'});
+};
+
+const ALL_THREE_METHODS = [
+  {
+    key:'full',
+    name:'全断面开挖法',
+    rock:'Ⅰ、Ⅱ、Ⅲ 级围岩',
+    cycle:'12.0 h', adv:'3.0 m', shot:'15 cm', month:'110 m/月',
+    desc:'适用于岩体坚硬完整段，全断面一次爆破成型，大型机械化作业空间大、循环进尺快。',
+    equip:'潜孔钻机/凿岩台车 + 装载机 + 20方自卸车 + 湿喷台车'
+  },
+  {
+    key:'bench',
+    name:'台阶法',
+    rock:'Ⅳ 级围岩',
+    cycle:'14.5 h', adv:'2.0 m', shot:'22 cm', month:'90 m/月',
+    desc:'适用于Ⅳ级中风化变质灰岩段，上台阶先行开挖支护，下台阶跟进，兼顾进度与稳定。',
+    equip:'挖掘机 + 装载机 + 20方自卸车 + 拱架台车 + 湿喷台车'
+  },
+  {
+    key:'core',
+    name:'环形开挖预留核心土法',
+    rock:'Ⅴ 级围岩',
+    cycle:'15.5 h', adv:'0.8 m', shot:'26 cm', month:'45 m/月',
+    desc:'适用于Ⅴ级深埋大变形段，核心土支护掌子面防坍塌，配合掌子面加固(3h)。',
+    equip:'潜孔钻机 + 超前地质钻机 + 75型挖机 + 湿喷台车 + 拱架台车'
+  }
+];
+
+window.runMethodSelect = function(){
+  state.grade = $('p_grade').value;
+  state.depth = parseFloat($('p_depth').value)||620;
+  state.selectedMethodKey = state.grade === 'IV' ? 'bench' : 'core';
+  state.method = ALL_THREE_METHODS.find(m=>m.key===state.selectedMethodKey);
+
+  const logs = [
+    "> [SYSTEM] 初始化 18 维地质力学先验特征向量...",
+    "> [MODEL] 载入神经网络推演模型权重 (pinn_geo_v3.weights)...",
+    "> [ENGINE] 正在计算掌子面空间挤出变形释放率...",
+    "> [ENGINE] 正在根据埋深与围岩级别匹配全断面/台阶法/核心土法...",
+    "> [MODEL] 推理网络正向解算完成，损失函数值 Loss = 0.0018...",
+    "> [SYSTEM] 全工序机械化施工工法自适应匹配成功！"
+  ];
+
+  showInferenceLoader("PINN 物理推演引擎计算中...", logs, 3000, () => {
+    renderMethodCards();
+    $('blockPlaceholder').style.display = 'none';
+    $('blockMethod').style.display = 'block';
+    setStep(2);
+    $('blockMethod').scrollIntoView({behavior:'smooth'});
+    showToast("工法匹配决策推演完成！", true);
+  });
+};
+
+function renderMethodCards(){
+  $('methodCards').innerHTML = ALL_THREE_METHODS.map(m=>{
+    const isMatched = (state.grade === 'IV' && m.key === 'bench') || (state.grade === 'V' && m.key === 'core');
+    const isSelected = m.key === state.selectedMethodKey;
+    const score = isMatched ? 98 : (m.key==='full' ? 45 : 60);
+    const color = isMatched ? '#00d2be' : '#6b85a6';
+
+    return `
+      <div class="method-card ${isSelected?'selected':''}" onclick="selectMethodCard('${m.key}')">
+        <div class="mc-head">
+          <span style="font-size:13.5px;font-weight:700">${m.name} ${isMatched?'<span class="tag tag-teal" style="font-size:10px">当前匹配</span>':''}</span>
+          <span style="font-size:13px;font-weight:800;color:${color}">${score}% 匹配度</span>
+        </div>
+        <div class="mc-body">
+          <p style="font-size:11.5px;color:var(--text-2);margin-bottom:6px;line-height:1.5">
+            <b style="color:${isMatched?'var(--accent)':'var(--text)'}">适应地质：</b>${m.rock}<br>${m.desc}
+          </p>
+          <div class="mc-param"><span style="color:var(--text-3)">单循环耗时</span><b>${m.cycle}</b></div>
+          <div class="mc-param"><span style="color:var(--text-3)">单循环进尺</span><b>${m.adv}</b></div>
+          <div class="mc-param"><span style="color:var(--text-3)">喷砼厚度</span><b>${m.shot}</b></div>
+          <div class="mc-param"><span style="color:var(--text-3)">装备配套</span><span style="font-size:10.5px;color:var(--text-3)">${m.equip}</span></div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+window.selectMethodCard = function(k){
+  const target = ALL_THREE_METHODS.find(m=>m.key===k);
+  if(target){
+    state.selectedMethodKey = k;
+    state.method = target;
+    renderMethodCards();
+  }
+};
+
+window.runSupportDesign = function(){
+  const isV = state.grade === 'V';
+  $('archH').textContent = isV ? '12.4 m' : '8.2 m';
+  $('archRelease').textContent = isV ? '48 %' : '65 %';
+  $('archTime').textContent = isV ? '0.9 D' : '0.7 D';
+
+  state.support = isV ? [
+    {key:'steel', label:'型钢钢架 (表4.1-1)', spec:'I20', spacing:60, anchorTube:'4 根', basis:'承担深埋大变形围岩压力', conf:0.95, color:'#f59e0b'},
+    {key:'shot', label:'喷射混凝土', spec:'C25', thick:26, mesh:'Φ8 @20×20cm', basis:'分层初喷封闭与复喷包裹', conf:0.94, color:'#10b981'},
+    {key:'anchor', label:'系统锚杆', spec:'Φ25 自进式中空锚杆', len:3.5, spacing:'60×60', basis:'深部注浆锚固', conf:0.92, color:'#38bdf8'},
+    {key:'advance', label:'超前支护', spec:'Φ42 超前小导管注浆', len:4.5, spacing:40, basis:'拱部超前预加固防坍', conf:0.93, color:'#a855f7'}
+  ] : [
+    {key:'steel', label:'型钢钢架 (表4.1-1)', spec:'I16', spacing:80, anchorTube:'4 根', basis:'与锚喷形成空间受力拱', conf:0.94, color:'#38bdf8'},
+    {key:'shot', label:'喷射混凝土', spec:'C25', thick:22, mesh:'Φ6 @20×20cm', basis:'湿喷早强密贴封闭', conf:0.95, color:'#10b981'},
+    {key:'anchor', label:'系统锚杆', spec:'Φ22 药卷锚杆', len:3.0, spacing:'120×80', basis:'悬吊与组合拱加固', conf:0.91, color:'#00d2be'},
+    {key:'advance', label:'超前支护', spec:'Φ22 超前药卷锚杆', len:4.5, spacing:40, basis:'拱顶超前导向支护', conf:0.90, color:'#a855f7'}
+  ];
+
+  // 初始化合成 layout 字符串
+  state.support.forEach(s => {
+    if(s.key === 'steel') s.layout = `${s.spec} @${s.spacing}cm (锁脚: ${s.anchorTube})`;
+    else if(s.key === 'shot') s.layout = `${s.spec}喷砼 厚${s.thick}cm (${s.mesh})`;
+    else if(s.key === 'anchor') s.layout = `${s.spec} L=${s.len}m @${s.spacing}cm`;
+    else if(s.key === 'advance') s.layout = `${s.spec} L=${s.len}m 环距${s.spacing}cm`;
+  });
+
+  const logs = [
+    "> [PHYSICS] 导入自适应边界单元围岩抗力及初始地应力释放张量...",
+    "> [PHYSICS] 正在求解围岩-支护相互作用弹塑性收敛限制曲线 (GRC)...",
+    "> [PINN] 正在最小化控制偏微分方程 (PDE) 残差及物理边界损失项...",
+    "> [PINN] PINN 物理能量方程迭代收敛判定中 (Epochs: 15000, Loss: 1.2e-4)...",
+    "> [MODEL] 正在验算型钢拱架抗弯截面模量与弯矩分配分配系数...",
+    "> [ENGINE] 正在复核喷射混凝土剪切滑移极限状态及系统锚杆抗拔力分布...",
+    "> [SAFETY] 计算多重支护联合刚度抗力安全系数...",
+    "> [SAFETY] 校验安全分值: Ⅳ级 91.3 (安全) | Ⅴ级 85.0 (安全)...",
+    "> [SYSTEM] 初期支护构件选配设计与多重要素成拱承载力力学校核通过！"
+  ];
+
+  showInferenceLoader("初支成拱效应与力学校核中...", logs, 5000, () => {
+    renderSupportCards();
+    recheckSupportSafety();
+    $('blockSupport').style.display = 'block';
+    setStep(3);
+    $('blockSupport').scrollIntoView({behavior:'smooth'});
+    showToast("支护结构设计与成拱校核完成！", true);
+  });
+};
+
+function renderSupportCards(){
+  $('supportGrid').innerHTML = state.support.map(s=>{
+    if(s.key === 'steel'){
+      return `
+        <div class="support-card" style="--sc:${s.color}">
+          <div class="sc-head">
+            <span style="font-size:13px;font-weight:700">${s.label}</span>
+            <span class="tag tag-teal" style="font-size:10px">${Math.round(s.conf*100)}% 置信</span>
+          </div>
+          <div style="font-size:11.5px;color:var(--text-2);margin-top:6px;display:flex;flex-direction:column;gap:5px">
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <span>型钢规格:</span>
+              <select id="adj_steel_spec" onchange="onSupportSelectChange('steel')" style="background:var(--card-sub);border:1px solid var(--panel-border);color:var(--text);font-size:11.5px;padding:2px;border-radius:3px">
+                <option value="I14" ${s.spec==='I14'?'selected':''}>I14 工字钢</option>
+                <option value="I16" ${s.spec==='I16'?'selected':''}>I16 工字钢</option>
+                <option value="I18" ${s.spec==='I18'?'selected':''}>I18 工字钢</option>
+                <option value="I20" ${s.spec==='I20'?'selected':''}>I20 工字钢</option>
+                <option value="I20a" ${s.spec==='I20a'?'selected':''}>I20a 强化钢</option>
+                <option value="无" ${s.spec==='无'?'selected':''}>无钢架</option>
+              </select>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <span>纵向间距:</span>
+              <select id="adj_steel_spacing" onchange="onSupportSelectChange('steel')" style="background:var(--card-sub);border:1px solid var(--panel-border);color:var(--text);font-size:11.5px;padding:2px;border-radius:3px">
+                <option value="60" ${s.spacing===60?'selected':''}>60 cm</option>
+                <option value="80" ${s.spacing===80?'selected':''}>80 cm</option>
+                <option value="100" ${s.spacing===100?'selected':''}>100 cm</option>
+                <option value="120" ${s.spacing===120?'selected':''}>120 cm</option>
+              </select>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <span>锁脚锚管:</span>
+              <select id="adj_steel_tube" onchange="onSupportSelectChange('steel')" style="background:var(--card-sub);border:1px solid var(--panel-border);color:var(--text);font-size:11.5px;padding:2px;border-radius:3px">
+                <option value="无" ${s.anchorTube==='无'?'selected':''}>无</option>
+                <option value="2 根" ${s.anchorTube==='2 根'?'selected':''}>2 根锁脚</option>
+                <option value="4 根" ${s.anchorTube==='4 根'?'selected':''}>4 根锁脚</option>
+                <option value="6 根" ${s.anchorTube==='6 根'?'selected':''}>6 根锁脚</option>
+                <option value="8 根" ${s.anchorTube==='8 根'?'selected':''}>8 根锁脚</option>
+              </select>
+            </div>
+          </div>
+          <div class="sc-p" style="margin-top:6px"><span style="color:var(--text-3)">设计依据</span><span style="color:var(--text-3);font-size:10.5px">${s.basis}</span></div>
+        </div>
+      `;
+    } else if(s.key === 'shot'){
+      return `
+        <div class="support-card" style="--sc:${s.color}">
+          <div class="sc-head">
+            <span style="font-size:13px;font-weight:700">${s.label}</span>
+            <span class="tag tag-teal" style="font-size:10px">${Math.round(s.conf*100)}% 置信</span>
+          </div>
+          <div style="font-size:11.5px;color:var(--text-2);margin-top:6px;display:flex;flex-direction:column;gap:5px">
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <span>砼强度等级:</span>
+              <select id="adj_shot_spec" onchange="onSupportSelectChange('shot')" style="background:var(--card-sub);border:1px solid var(--panel-border);color:var(--text);font-size:11.5px;padding:2px;border-radius:3px">
+                <option value="C20" ${s.spec==='C20'?'selected':''}>C20 喷砼</option>
+                <option value="C25" ${s.spec==='C25'?'selected':''}>C25 喷砼</option>
+                <option value="C30" ${s.spec==='C30'?'selected':''}>C30 喷砼</option>
+              </select>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <span>设计厚度:</span>
+              <select id="adj_shot_thick" onchange="onSupportSelectChange('shot')" style="background:var(--card-sub);border:1px solid var(--panel-border);color:var(--text);font-size:11.5px;padding:2px;border-radius:3px">
+                <option value="15" ${s.thick===15?'selected':''}>15 cm</option>
+                <option value="18" ${s.thick===18?'selected':''}>18 cm</option>
+                <option value="20" ${s.thick===20?'selected':''}>20 cm</option>
+                <option value="22" ${s.thick===22?'selected':''}>22 cm</option>
+                <option value="24" ${s.thick===24?'selected':''}>24 cm</option>
+                <option value="26" ${s.thick===26?'selected':''}>26 cm</option>
+              </select>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <span>钢筋网格:</span>
+              <select id="adj_shot_mesh" onchange="onSupportSelectChange('shot')" style="background:var(--card-sub);border:1px solid var(--panel-border);color:var(--text);font-size:11.5px;padding:2px;border-radius:3px">
+                <option value="无" ${s.mesh==='无'?'selected':''}>无钢筋网</option>
+                <option value="Φ6 @20×20cm" ${s.mesh==='Φ6 @20×20cm'?'selected':''}>Φ6 @20×20cm</option>
+                <option value="Φ8 @20×20cm" ${s.mesh==='Φ8 @20×20cm'?'selected':''}>Φ8 @20×20cm</option>
+                <option value="Φ8 @15×15cm" ${s.mesh==='Φ8 @15×15cm'?'selected':''}>Φ8 @15×15cm</option>
+              </select>
+            </div>
+          </div>
+          <div class="sc-p" style="margin-top:6px"><span style="color:var(--text-3)">设计依据</span><span style="color:var(--text-3);font-size:10.5px">${s.basis}</span></div>
+        </div>
+      `;
+    } else if(s.key === 'anchor'){
+      return `
+        <div class="support-card" style="--sc:${s.color}">
+          <div class="sc-head">
+            <span style="font-size:13px;font-weight:700">${s.label}</span>
+            <span class="tag tag-teal" style="font-size:10px">${Math.round(s.conf*100)}% 置信</span>
+          </div>
+          <div style="font-size:11.5px;color:var(--text-2);margin-top:6px;display:flex;flex-direction:column;gap:5px">
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <span>锚杆类型:</span>
+              <select id="adj_anchor_spec" onchange="onSupportSelectChange('anchor')" style="background:var(--card-sub);border:1px solid var(--panel-border);color:var(--text);font-size:11.5px;padding:2px;border-radius:3px">
+                <option value="Φ22 药卷锚杆" ${s.spec==='Φ22 药卷锚杆'?'selected':''}>Φ22 药卷</option>
+                <option value="Φ25 自进式中空锚杆" ${s.spec==='Φ25 自进式中空锚杆'?'selected':''}>Φ25 中空</option>
+                <option value="Φ25 砂浆锚杆" ${s.spec==='Φ25 砂浆锚杆'?'selected':''}>Φ25 砂浆</option>
+                <option value="无" ${s.spec==='无'?'selected':''}>无锚杆</option>
+              </select>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <span>锚杆长度:</span>
+              <select id="adj_anchor_len" onchange="onSupportSelectChange('anchor')" style="background:var(--card-sub);border:1px solid var(--panel-border);color:var(--text);font-size:11.5px;padding:2px;border-radius:3px">
+                <option value="2.5" ${s.len===2.5?'selected':''}>2.5 m</option>
+                <option value="3.0" ${s.len===3.0?'selected':''}>3.0 m</option>
+                <option value="3.5" ${s.len===3.5?'selected':''}>3.5 m</option>
+                <option value="4.0" ${s.len===4.0?'selected':''}>4.0 m</option>
+              </select>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <span>网格间距:</span>
+              <select id="adj_anchor_spacing" onchange="onSupportSelectChange('anchor')" style="background:var(--card-sub);border:1px solid var(--panel-border);color:var(--text);font-size:11.5px;padding:2px;border-radius:3px">
+                <option value="120×80" ${s.spacing==='120×80'?'selected':''}>120×80 cm</option>
+                <option value="100×100" ${s.spacing==='100×100'?'selected':''}>100×100 cm</option>
+                <option value="80×80" ${s.spacing==='80×80'?'selected':''}>80×80 cm</option>
+                <option value="60×60" ${s.spacing==='60×60'?'selected':''}>60×60 cm</option>
+              </select>
+            </div>
+          </div>
+          <div class="sc-p" style="margin-top:6px"><span style="color:var(--text-3)">设计依据</span><span style="color:var(--text-3);font-size:10.5px">${s.basis}</span></div>
+        </div>
+      `;
+    } else if(s.key === 'advance'){
+      return `
+        <div class="support-card" style="--sc:${s.color}">
+          <div class="sc-head">
+            <span style="font-size:13px;font-weight:700">${s.label}</span>
+            <span class="tag tag-teal" style="font-size:10px">${Math.round(s.conf*100)}% 置信</span>
+          </div>
+          <div style="font-size:11.5px;color:var(--text-2);margin-top:6px;display:flex;flex-direction:column;gap:5px">
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <span>支护类型:</span>
+              <select id="adj_advance_spec" onchange="onSupportSelectChange('advance')" style="background:var(--card-sub);border:1px solid var(--panel-border);color:var(--text);font-size:11.5px;padding:2px;border-radius:3px">
+                <option value="Φ42 超前小导管注浆" ${s.spec==='Φ42 超前小导管注浆'?'selected':''}>Φ42 小导管</option>
+                <option value="Φ42 双层超前小导管" ${s.spec==='Φ42 双层超前小导管'?'selected':''}>Φ42 双层管</option>
+                <option value="Φ22 超前药卷锚杆" ${s.spec==='Φ22 超前药卷锚杆'?'selected':''}>Φ22 超前锚</option>
+                <option value="Φ108 管棚" ${s.spec==='Φ108 管棚'?'selected':''}>Φ108 管棚</option>
+                <option value="无" ${s.spec==='无'?'selected':''}>无支护</option>
+              </select>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <span>支护长度:</span>
+              <select id="adj_advance_len" onchange="onSupportSelectChange('advance')" style="background:var(--card-sub);border:1px solid var(--panel-border);color:var(--text);font-size:11.5px;padding:2px;border-radius:3px">
+                <option value="3.0" ${s.len===3.0?'selected':''}>3.0 m</option>
+                <option value="4.0" ${s.len===4.0?'selected':''}>4.0 m</option>
+                <option value="4.5" ${s.len===4.5?'selected':''}>4.5 m</option>
+                <option value="6.0" ${s.len===6.0?'selected':''}>6.0 m</option>
+              </select>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <span>打设环距:</span>
+              <select id="adj_advance_spacing" onchange="onSupportSelectChange('advance')" style="background:var(--card-sub);border:1px solid var(--panel-border);color:var(--text);font-size:11.5px;padding:2px;border-radius:3px">
+                <option value="30" ${s.spacing===30?'selected':''}>30 cm</option>
+                <option value="40" ${s.spacing===40?'selected':''}>40 cm</option>
+                <option value="50" ${s.spacing===50?'selected':''}>50 cm</option>
+              </select>
+            </div>
+          </div>
+          <div class="sc-p" style="margin-top:6px"><span style="color:var(--text-3)">设计依据</span><span style="color:var(--text-3);font-size:10.5px">${s.basis}</span></div>
+        </div>
+      `;
+    }
+  }).join('');
+}
+
+window.onSupportSelectChange = function(k){
+  const item = state.support.find(s=>s.key===k);
+  if(!item) return;
+
+  if(k === 'steel'){
+    item.spec = $('adj_steel_spec').value;
+    item.spacing = parseInt($('adj_steel_spacing').value);
+    item.anchorTube = $('adj_steel_tube').value;
+    item.layout = (item.spec === '无' ? '无钢架' : `${item.spec} @${item.spacing}cm (锁脚: ${item.anchorTube})`);
+  } else if(k === 'shot'){
+    item.spec = $('adj_shot_spec').value;
+    item.thick = parseInt($('adj_shot_thick').value);
+    item.mesh = $('adj_shot_mesh').value;
+    item.layout = `${item.spec}喷砼 厚${item.thick}cm (${item.mesh})`;
+  } else if(k === 'anchor'){
+    item.spec = $('adj_anchor_spec').value;
+    item.len = parseFloat($('adj_anchor_len').value);
+    item.spacing = $('adj_anchor_spacing').value;
+    item.layout = (item.spec === '无' ? '无锚杆' : `${item.spec} L=${item.len}m @${item.spacing}cm`);
+  } else if(k === 'advance'){
+    item.spec = $('adj_advance_spec').value;
+    item.len = parseFloat($('adj_advance_len').value);
+    item.spacing = parseInt($('adj_advance_spacing').value);
+    item.layout = (item.spec === '无' ? '无超前支护' : `${item.spec} L=${item.len}m 环距${item.spacing}cm`);
+  }
+
+  state.adjusted[k] = true;
+  recheckSupportSafety();
+};
+
+window.recheckSupportSafety = function(){
+  const isV = state.grade === 'V';
+  
+  // 1. 基准分
+  let baseScore = isV ? 85 : 90;
+  
+  // 2. 根据各项微调修正安全度得分
+  let steelDiff = 0;
+  const steel = state.support.find(s=>s.key==='steel');
+  if(steel){
+    if(steel.spacing === 60) steelDiff += 2;
+    else if(steel.spacing === 100) steelDiff -= 3;
+    else if(steel.spacing === 120) steelDiff -= 6;
+    
+    if(isV){
+      if(steel.spec === 'I20a') steelDiff += 2;
+      else if(steel.spec === 'I18') steelDiff -= 4;
+      else if(steel.spec === 'I16' || steel.spec === 'I14') steelDiff -= 8;
+      else if(steel.spec === '无') steelDiff -= 35;
+    } else {
+      if(steel.spec === 'I14') steelDiff -= 3;
+      else if(steel.spec === 'I18') steelDiff += 2;
+      else if(steel.spec === 'I20' || steel.spec === 'I20a') steelDiff += 4;
+      else if(steel.spec === '无') steelDiff -= 30;
+    }
+    
+    if(steel.anchorTube === '无') steelDiff -= 4;
+    else if(steel.anchorTube === '2 根') steelDiff -= 1;
+    else if(steel.anchorTube === '6 根' || steel.anchorTube === '8 根') steelDiff += 2;
+  }
+
+  let shotDiff = 0;
+  const shot = state.support.find(s=>s.key==='shot');
+  if(shot){
+    const defThick = isV ? 26 : 22;
+    shotDiff += (shot.thick - defThick) * 1.0;
+    if(shot.spec === 'C20') shotDiff -= 2;
+    else if(shot.spec === 'C30') shotDiff += 2;
+    
+    if(shot.mesh === '无') shotDiff -= 5;
+    else if(shot.mesh === 'Φ6 @20×20cm') shotDiff -= 1;
+    else if(shot.mesh === 'Φ8 @15×15cm') shotDiff += 2;
+  }
+
+  let anchorDiff = 0;
+  const anchor = state.support.find(s=>s.key==='anchor');
+  if(anchor){
+    const defLen = isV ? 3.5 : 3.0;
+    anchorDiff += (anchor.len - defLen) * 3.0;
+    if(anchor.spacing === '60×60') anchorDiff += 2.5;
+    else if(anchor.spacing === '80×80') anchorDiff += 1.0;
+    else if(anchor.spacing === '120×80') anchorDiff -= 1.5;
+    
+    if(anchor.spec === '无') anchorDiff -= 15;
+  }
+
+  let advDiff = 0;
+  const adv = state.support.find(s=>s.key==='advance');
+  if(adv){
+    if(isV){
+      if(adv.spec === 'Φ42 双层超前小导管') advDiff += 2.5;
+      else if(adv.spec === 'Φ22 超前药卷锚杆') advDiff -= 4;
+      else if(adv.spec === '无') advDiff -= 8;
+    } else {
+      if(adv.spec === 'Φ42 超前小导管注浆' || adv.spec === 'Φ42 双层超前小导管') advDiff += 2;
+      else if(adv.spec === '无') advDiff -= 5;
+    }
+    if(adv.spacing === 30) advDiff += 1;
+    else if(adv.spacing === 50) advDiff -= 1.5;
+  }
+
+  let finalScore = baseScore + steelDiff + shotDiff + anchorDiff + advDiff;
+  finalScore = Math.min(99, Math.max(30, finalScore));
+  finalScore = parseFloat(finalScore.toFixed(1));
+
+  let statusText = '安全';
+  let className = 'tag-green';
+  let reasonText = '';
+
+  if(finalScore >= 88){
+    statusText = `安全 (${finalScore})`;
+    className = 'tag-green';
+    reasonText = `初期支护力学承载刚度匹配良好。工字钢架 (${steel.spec}) 与喷层能充分协同承受荷载。围岩局部变形与压力拱平衡高度处于完全受控的规范安全区间内，成拱效应显著。`;
+  } else if(finalScore >= 70){
+    statusText = `基本安全 (${finalScore})`;
+    className = 'tag-amber';
+    reasonText = `支护刚度稍显欠缺。由于部分支护尺寸或间距放宽，安全裕度轻微降低，局部围岩变形速率略有抬升，建议施工时辅以监控量测数据分析。`;
+  } else {
+    statusText = `高危报警 (${finalScore})`;
+    className = 'tag-red';
+    reasonText = `【警报：初支承载力严重透支】因较大幅度调弱了钢架型号 (${steel.spec}) 或系统锚喷抗剪刚度，导致支护总体反力明显低于围岩松动应力，极易诱发拱顶坍塌及塌方风险！`;
+  }
+
+  $('safetyTag').className = `tag ${className}`;
+  $('safetyTag').textContent = statusText;
+  $('safetyReason').textContent = reasonText;
+
+  // 重绘安全雷达图
+  const steelVal = Math.min(100, Math.max(10, 85 + steelDiff * 2.5));
+  const shotVal = Math.min(100, Math.max(10, 84 + shotDiff * 3.0));
+  const anchorVal = Math.min(100, Math.max(10, 86 + anchorDiff * 2.0));
+  const deformVal = Math.min(100, Math.max(10, (isV ? 80 : 90) + (steelDiff + shotDiff) * 1.5));
+  const archVal = Math.min(100, Math.max(10, 85 + (steelDiff + anchorDiff) * 1.2));
+  const timeVal = Math.min(100, Math.max(10, 87 + advDiff * 3.5));
+
+  const safetyVals = [steelVal, shotVal, anchorVal, deformVal, archVal, timeVal];
+  initSafetyRadar(safetyVals, finalScore);
+};
+
+function initSafetyRadar(dataVals, finalScore){
+  const cv = $('chartSafety');
+  const existing = Chart.getChart(cv);
+  if(existing) existing.destroy();
+
+  const vals = dataVals || [90, 88, 92, 85, 86, 90];
+  const score = finalScore || 91.3;
+  const color = score >= 88 ? '#00d2be' : (score >= 70 ? '#f7b955' : '#f87171');
+  const bg = score >= 88 ? 'rgba(0,210,190,.18)' : (score >= 70 ? 'rgba(247,185,85,.18)' : 'rgba(248,113,113,.18)');
+
+  new Chart(cv, {
+    type:'radar',
+    data:{ 
+      labels:['钢架承载','喷层抗剪','锚杆抗拔','抗大变形','成拱闭合','支护时效'],
+      datasets:[{ label:'安全裕度指标', data:vals, borderColor:color, backgroundColor:bg, borderWidth:1.5, pointRadius:2 }]
+    },
+    options:{ 
+      responsive:true, 
+      maintainAspectRatio:false,
+      scales:{ r:{ beginAtZero:true, max:100, ticks:{display:false}, pointLabels:{color:'#a2b7d4', font:{size:10}} } },
+      plugins:{ legend:{display:false} } 
+    }
+  });
+}
+
+window.generateScheme = function(){
+  const d = new Date();
+  const no = 'SY1-SC-' + d.getFullYear() + fmt2(d.getMonth()+1) + fmt2(d.getDate()) + '-' + (++state.schemeCount);
+  $('schemeNo').textContent = no;
+  $('schemeTime').textContent = d.getFullYear()+'-'+fmt2(d.getMonth()+1)+'-'+fmt2(d.getDate())+' '+fmt2(d.getHours())+':'+fmt2(d.getMinutes());
+  $('rptMile').textContent = state.mile;
+  $('rptGrade').textContent = state.grade + ' 级';
+  $('rptMethod').textContent = state.method.name;
+
+  $('rptDetailRows').innerHTML = `
+    <tr><td>开挖工法</td><td><b>${state.method.name}</b></td><td>单循环进尺 ${state.method.adv}</td><td>单循环总耗时 ${state.method.cycle}</td></tr>
+    <tr><td>超前支护</td><td>${state.support[3].spec}</td><td>${state.support[3].layout}</td><td>${state.support[3].basis}</td></tr>
+    <tr><td>型钢钢架</td><td>${state.support[0].spec}</td><td>${state.support[0].layout}</td><td>${state.support[0].basis}</td></tr>
+    <tr><td>喷射混凝土</td><td>${state.support[1].spec}</td><td>${state.support[1].layout}</td><td>${state.support[1].basis}</td></tr>
+    <tr><td>系统锚杆</td><td>${state.support[2].spec}</td><td>${state.support[2].layout}</td><td>${state.support[2].basis}</td></tr>
+    <tr><td>核心施工装备</td><td>装载机 + 挖掘机 + 自卸车 + 湿喷台车</td><td>ZL50C 2台 + CAT320D 4台 + 自卸车8台 + 湿喷台车2台</td><td>大型机械化配套高效协同作业</td></tr>
+  `;
+
+  $('blockScheme').style.display = 'block';
+  setStep(4);
+  $('blockScheme').scrollIntoView({behavior:'smooth'});
+};
+
+window.saveScheme = function(){
+  const d = new Date();
+  const timeStr = d.getFullYear()+'-'+fmt2(d.getMonth()+1)+'-'+fmt2(d.getDate())+' '+fmt2(d.getHours())+':'+fmt2(d.getMinutes())+':'+fmt2(d.getSeconds());
+  const typeCode = (state.grade==='IV'?'S4':'S5') + '-优化(' + state.mile + ')';
+  
+  const newHistoryRec = {
+    id: HISTORY_DB_DATA.length + 1,
+    date: timeStr,
+    face: $('selWorkface').options[$('selWorkface').selectedIndex].text.split('(')[0].trim(),
+    mile: state.mile,
+    rock: state.grade + '级',
+    method: state.method.name,
+    type: typeCode,
+    score: state.grade==='IV'?91.3:88.5,
+    detail: `初支: ${state.support[0].spec} (${state.support[0].layout}) + ${state.support[1].layout}喷层 | 锚杆: ${state.support[2].spec} | 超前: ${state.support[3].spec} | 工法: ${state.method.name}`
+  };
+  HISTORY_DB_DATA.unshift(newHistoryRec);
+  historyFilteredData = HISTORY_DB_DATA;
+  localStorage.setItem('tics_history_db', JSON.stringify(HISTORY_DB_DATA));
+  renderHistoryDb();
+
+  const newSchemeRec = {
+    no: SCHEME_DB_DATA.length + 1,
+    rock: state.grade + '级',
+    type: typeCode,
+    depth: String(state.depth),
+    advType: state.support[3].spec,
+    advRing: '40cm',
+    advLen: '4.5m',
+    advScope: state.grade==='IV'?'拱顶120°':'拱部140°',
+    anchor: state.support[2].layout + ' (' + state.support[2].spec + ')',
+    steel: state.support[0].spec + ' ' + state.support[0].layout,
+    shot: state.support[1].spec + ', ' + state.support[1].layout,
+    conc: state.grade==='IV'?'C30':'C35',
+    thick: state.grade==='IV'?'35cm':'45cm',
+    mode: state.method.name,
+    advRate: state.method.adv,
+    benchLen: state.grade==='IV'?'3~5m':'5~8m',
+    custom: true
+  };
+  SCHEME_DB_DATA.push(newSchemeRec);
+  localStorage.setItem('tics_scheme_db', JSON.stringify(SCHEME_DB_DATA));
+  renderSchemeDb();
+
+  showToast('方案已成功保存，并同步写入台账与经验参数库！');
+  switchTab('scheme');
+};
+
+window.resetToMethod = function(){
+  $('blockSupport').style.display = 'none';
+  $('blockScheme').style.display = 'none';
+  setStep(2);
+  $('blockMethod').scrollIntoView({behavior:'smooth'});
+};
+
+window.resetDecision = function(){
+  $('blockMethod').style.display = 'none';
+  $('blockSupport').style.display = 'none';
+  $('blockScheme').style.display = 'none';
+  $('blockPlaceholder').style.display = '';
+  setStep(1);
+  $('blockWorkbench').scrollIntoView({behavior:'smooth'});
+};
+
+/* ============================================================
+   经验数据库渲染与增添管理功能
+   ============================================================ */
+function renderEquipTable(){
+  const kw = ($('kwSearchEquip') ? $('kwSearchEquip').value.trim().toLowerCase() : '');
+  let data = CORE_EQUIP_9;
+  if(kw){
+    data = data.filter(e => 
+      (e.name || '').toLowerCase().includes(kw) ||
+      (e.model || '').toLowerCase().includes(kw) ||
+      (e.pos || '').toLowerCase().includes(kw) ||
+      (e.stage || '').toLowerCase().includes(kw)
+    );
+  }
+
+  $('equipTotalCnt').textContent = CORE_EQUIP_9.length;
+  $('equipTableBody').innerHTML = data.map((e)=>{
+    const globalIdx = CORE_EQUIP_9.indexOf(e);
+    return `
+      <tr>
+        <td><b>${e.id || globalIdx+1}</b></td>
+        <td class="text-left"><b style="color:#fff">${e.name}</b> ${e.custom?'<span class="tag tag-green" style="font-size:9.5px">新增</span>':''}</td>
+        <td><span class="tag tag-gray">${e.model}</span></td>
+        <td><b style="color:var(--accent)">${e.num}</b></td>
+        <td>${e.unit}</td>
+        <td class="text-left">${e.pos}</td>
+        <td><span class="tag tag-blue">${e.stage}</span></td>
+        <td>
+          ${e.custom ? `<button class="btn btn-sm btn-danger" onclick="deleteEquipItem(${globalIdx})">删除</button>` : `<span style="color:var(--text-3);font-size:11px">标准</span>`}
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function renderSchemeDb(filterRock){
+  currentSchemeFilter = filterRock || currentSchemeFilter;
+  const kw = ($('kwSearchScheme') ? $('kwSearchScheme').value.trim().toLowerCase() : '');
+  const tb = $('schemeDbTableBody');
+  let data = SCHEME_DB_DATA;
+
+  if(currentSchemeFilter === 'IV' || currentSchemeFilter === 'Ⅳ'){
+    data = data.filter(d => (d.rock || '').includes('Ⅳ') || (d.rock || '').includes('IV'));
+  } else if(currentSchemeFilter === 'V' || currentSchemeFilter === 'Ⅴ'){
+    // 排他性匹配，V 级必须排除包含 IV 和 Ⅳ 的情况，解决字面量重合 Bug
+    data = data.filter(d => 
+      ((d.rock || '').includes('Ⅴ') || (d.rock || '').includes('V')) && 
+      !(d.rock || '').includes('Ⅳ') && 
+      !(d.rock || '').includes('IV')
+    );
+  } else if(currentSchemeFilter === 'custom'){
+    data = data.filter(d => d.custom === true);
+  }
+
+  if(kw){
+    data = data.filter(d => 
+      (d.type || '').toLowerCase().includes(kw) ||
+      (d.steel || '').toLowerCase().includes(kw) ||
+      (d.rock || '').toLowerCase().includes(kw)
+    );
+  }
+
+  $('schemeTotalCnt').textContent = SCHEME_DB_DATA.length;
+  tb.innerHTML = data.map((d)=>{
+    const globalIdx = SCHEME_DB_DATA.indexOf(d);
+    return `
+      <tr>
+        <td><b>${d.no || globalIdx+1}</b></td>
+        <td><span class="tag ${(d.rock||'').includes('Ⅳ')?'tag-teal':'tag-amber'}">${d.rock}</span></td>
+        <td><b style="color:var(--accent)">${d.type}</b> ${d.custom?'<span class="tag tag-green" style="font-size:9.5px">新增</span>':''}</td>
+        <td>${d.depth}</td>
+        <td>${d.advType}</td>
+        <td>${d.advRing}</td>
+        <td>${d.advLen}</td>
+        <td>${d.advScope}</td>
+        <td>${d.anchor}</td>
+        <td><b style="color:#fff">${d.steel}</b></td>
+        <td>${d.shot}</td>
+        <td>${d.conc}</td>
+        <td>${d.thick}</td>
+        <td><b style="color:var(--blue)">${d.mode}</b></td>
+        <td>${d.advRate}</td>
+        <td>${d.benchLen}</td>
+        <td>
+          ${d.custom ? `<button class="btn btn-sm btn-danger" onclick="deleteSchemeItem(${globalIdx})">删除</button>` : `<span style="color:var(--text-3);font-size:11px">标准</span>`}
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+window.filterSchemeDb = function(r, btnEl){
+  document.querySelectorAll('#expSub_support .db-tab-bar .db-tab-btn').forEach(b=>b.classList.remove('active'));
+  if(btnEl) btnEl.classList.add('active');
+  renderSchemeDb(r);
+};
+
+function renderKnowledgeDb(){
+  const kw = ($('kwSearchKnowledge') ? $('kwSearchKnowledge').value.trim().toLowerCase() : '');
+  let data = KNOWLEDGE_DB_DATA;
+  if(kw){
+    data = data.filter(k => 
+      (k.hard || '').toLowerCase().includes(kw) ||
+      (k.scheme || '').toLowerCase().includes(kw) ||
+      (k.rock || '').toLowerCase().includes(kw) ||
+      (k.code || '').toLowerCase().includes(kw)
+    );
+  }
+
+  $('knowledgeDbTableBody').innerHTML = data.map((k)=>{
+    const globalIdx = KNOWLEDGE_DB_DATA.indexOf(k);
+    return `
+      <tr>
+        <td>${k.no || globalIdx+1}</td>
+        <td><b style="color:var(--accent)">${k.code}</b> ${k.custom?'<span class="tag tag-green" style="font-size:9.5px">新增</span>':''}</td>
+        <td>${k.hard}</td>
+        <td>${k.int}</td>
+        <td>${k.water}</td>
+        <td>${k.depth}</td>
+        <td><span class="tag ${(k.stress||'').includes('严重')?'tag-red':((k.stress||'').includes('中等')?'tag-amber':'tag-gray')}">${k.stress}</span></td>
+        <td><span class="tag ${(k.rock||'').includes('Ⅳ')?'tag-teal':'tag-amber'}">${k.rock}</span></td>
+        <td><b>${k.scheme}</b></td>
+        <td>
+          ${k.custom ? `<button class="btn btn-sm btn-danger" onclick="deleteKnowledgeItem(${globalIdx})">删除</button>` : `<span style="color:var(--text-3);font-size:11px">标准</span>`}
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+/* 弹窗开启与关闭 */
+window.openAddSchemeModal = function(){ $('addSchemeModal').style.display = 'flex'; };
+window.openAddKnowledgeModal = function(){ $('addKnowledgeModal').style.display = 'flex'; };
+window.openAddEquipModal = function(){ $('addEquipModal').style.display = 'flex'; };
+window.closeModal = function(id){ $(id).style.display = 'none'; };
+
+/* 数据库增添保存函数 */
+window.saveNewSchemeToDb = function(){
+  const typeVal = $('form_type').value.trim();
+  if(!typeVal){ alert('衬砌类型代号不能为空！'); return; }
+  const newObj = {
+    no: SCHEME_DB_DATA.length + 1,
+    rock: $('form_rock').value,
+    type: typeVal,
+    depth: $('form_depth').value,
+    advType: $('form_advType').value,
+    advRing: $('form_advSpec').value.split('·')[0]||'40cm',
+    advLen: $('form_advSpec').value.split('·')[1]||'4.5m',
+    advScope: '拱部加密',
+    anchor: $('form_anchor').value,
+    steel: $('form_steel').value,
+    shot: $('form_shot').value,
+    conc: $('form_second').value.split(',')[0]||'C35',
+    thick: $('form_second').value.split(',')[1]||'40cm',
+    mode: $('form_mode').value,
+    advRate: $('form_advRate').value,
+    benchLen: $('form_benchLen').value,
+    custom: true
+  };
+  SCHEME_DB_DATA.push(newObj);
+  localStorage.setItem('tics_scheme_db', JSON.stringify(SCHEME_DB_DATA));
+  renderSchemeDb();
+  closeModal('addSchemeModal');
+  alert('成功增添 1 项全新支护方案至经验数据库！');
+};
+
+window.deleteSchemeItem = function(idx){
+  if(confirm('确定删除该自定义支护方案吗？')){
+    SCHEME_DB_DATA.splice(idx, 1);
+    localStorage.setItem('tics_scheme_db', JSON.stringify(SCHEME_DB_DATA));
+    renderSchemeDb();
+  }
+};
+
+window.saveNewKnowledgeToDb = function(){
+  const codeVal = $('kform_code').value.trim();
+  if(!codeVal){ alert('知识编号不能为空！'); return; }
+  const newObj = {
+    no: KNOWLEDGE_DB_DATA.length + 1,
+    code: codeVal,
+    hard: $('kform_hard').value,
+    int: $('kform_int').value,
+    water: $('kform_water').value,
+    depth: $('kform_depth').value,
+    stress: $('kform_stress').value,
+    rock: $('kform_rock').value,
+    scheme: $('kform_scheme').value,
+    custom: true
+  };
+  KNOWLEDGE_DB_DATA.push(newObj);
+  localStorage.setItem('tics_knowledge_db', JSON.stringify(KNOWLEDGE_DB_DATA));
+  renderKnowledgeDb();
+  closeModal('addKnowledgeModal');
+  alert('成功增添 1 条地质工法映射规则！');
+};
+
+window.deleteKnowledgeItem = function(idx){
+  if(confirm('确定删除该知识映射规则吗？')){
+    KNOWLEDGE_DB_DATA.splice(idx, 1);
+    localStorage.setItem('tics_knowledge_db', JSON.stringify(KNOWLEDGE_DB_DATA));
+    renderKnowledgeDb();
+  }
+};
+
+window.saveNewEquipToDb = function(){
+  const nameVal = $('eform_name').value.trim();
+  if(!nameVal){ alert('装备名称不能为空！'); return; }
+  const newObj = {
+    id: CORE_EQUIP_9.length + 1,
+    name: nameVal,
+    model: $('eform_model').value,
+    num: parseInt($('eform_num').value)||1,
+    unit: $('eform_unit').value,
+    pos: $('eform_pos').value,
+    stage: $('eform_stage').value,
+    custom: true
+  };
+  CORE_EQUIP_9.push(newObj);
+  localStorage.setItem('tics_equip_db', JSON.stringify(CORE_EQUIP_9));
+  renderEquipTable();
+  closeModal('addEquipModal');
+  alert('成功登记增添 1 台施工装备！');
+};
+
+window.deleteEquipItem = function(idx){
+  if(confirm('确定删除该施工装备吗？')){
+    CORE_EQUIP_9.splice(idx, 1);
+    localStorage.setItem('tics_equip_db', JSON.stringify(CORE_EQUIP_9));
+    renderEquipTable();
+  }
+};
+
+/* 批量导入 */
+window.openImportModal = function(){
+  $('importModal').style.display = 'flex';
+  $('importStatusMsg').style.display = 'none';
+  $('importTextarea').value = JSON.stringify(SCHEME_DB_DATA, null, 2);
+};
+
+window.fillJsonTemplate = function(){
+  $('importTextarea').value = JSON.stringify(DEFAULT_SCHEME_DB_DATA, null, 2);
+  showImportStatus('已载入 7 套标准支护设计参数模板', 'green');
+};
+
+window.exportCurrentSchemeData = function(){
+  const str = JSON.stringify(SCHEME_DB_DATA, null, 2);
+  const blob = new Blob([str], {type: 'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = '支护体系与参数库_' + new Date().getTime() + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+};
+
+function showImportStatus(msg, type){
+  const el = $('importStatusMsg');
+  el.style.display = 'block';
+  el.style.color = type==='green'?'var(--green)':'var(--red)';
+  el.innerHTML = msg;
+}
+
+window.applyImportData = function(){
+  const val = $('importTextarea').value.trim();
+  if(!val){ showImportStatus('错误: 导入内容不能为空', 'red'); return; }
+  try{
+    let parsed = JSON.parse(val);
+    if(!Array.isArray(parsed)) parsed = [parsed];
+    SCHEME_DB_DATA = parsed;
+    localStorage.setItem('tics_scheme_db', JSON.stringify(SCHEME_DB_DATA));
+    renderSchemeDb();
+    showImportStatus(`成功导入 ${parsed.length} 条支护方案！`, 'green');
+    setTimeout(()=>{ closeModal('importModal'); }, 800);
+  }catch(e){
+    showImportStatus('解析失败，请检查 JSON 格式: ' + e.message, 'red');
+  }
+};
+
+window.resetDefaultSchemeDb = function(){
+  if(confirm('确定要恢复为系统标准的 7 套支护设计参数吗？')){
+    SCHEME_DB_DATA = JSON.parse(JSON.stringify(DEFAULT_SCHEME_DB_DATA));
+    localStorage.removeItem('tics_scheme_db');
+    renderSchemeDb();
+    alert('已恢复为标准 7 套支护设计参数！');
+  }
+};
+
+/* ============================================================
+   决策历史台账渲染
+   ============================================================ */
+function renderHistoryDb(keepPage){
+  if(!keepPage) historyPage = 1;
+  const tb = $('historyDbTableBody');
+  const total = historyFilteredData.length;
+  const totalPages = Math.ceil(total / historyPageSize) || 1;
+  if(historyPage > totalPages) historyPage = totalPages;
+  if(historyPage < 1) historyPage = 1;
+
+  const startIdx = (historyPage - 1) * historyPageSize;
+  const pageData = historyFilteredData.slice(startIdx, startIdx + historyPageSize);
+
+  tb.innerHTML = pageData.map((h, localIdx)=>{
+    const globalIdx = startIdx + localIdx;
+    return `
+      <tr>
+        <td><button class="btn btn-sm btn-ghost" onclick="toggleHistoryDetail(${globalIdx})" style="padding:1px 5px;font-size:10.5px" id="btnExp_${globalIdx}">[+]</button></td>
+        <td><b>${h.id}</b></td>
+        <td style="color:var(--text-3);font-size:11px">${h.date}</td>
+        <td class="text-left"><b style="color:#fff">${h.face}</b></td>
+        <td><b style="color:var(--accent)">${h.mile}</b></td>
+        <td><span class="tag ${(h.rock||'').includes('Ⅳ')?'tag-teal':'tag-amber'}">${h.rock}</span></td>
+        <td>${h.method}</td>
+        <td><b>${h.type}</b></td>
+        <td><b style="color:var(--green)">${h.score}</b></td>
+      </tr>
+      <tr class="detail-expand-row" id="rowExp_${globalIdx}">
+        <td colspan="9" class="text-left" style="font-size:11.5px;color:var(--text-2);line-height:1.6;padding:8px 12px;border-left:3px solid var(--accent)">
+          <b style="color:var(--accent)">【单次决策完整参数记录】</b> ${h.detail}
+        </td>
+      </tr>
+    `;
+  }).join('');
+
+  const pagEl = $('historyPagination');
+  if(pagEl){
+    pagEl.innerHTML = `
+      <div style="font-size:11.5px;color:var(--text-3)">共 <b style="color:#fff">${total}</b> 条记录 · 第 <b style="color:var(--accent)">${historyPage}</b> / ${totalPages} 页</div>
+      <div style="display:flex;gap:4px">
+        <button class="btn btn-sm btn-ghost" onclick="changeHistoryPage(-1)" ${historyPage<=1?'disabled':''}>上一页</button>
+        <button class="btn btn-sm btn-ghost" onclick="changeHistoryPage(1)" ${historyPage>=totalPages?'disabled':''}>下一页</button>
+      </div>
+    `;
+  }
+}
+
+window.changeHistoryPage = function(delta){
+  historyPage += delta;
+  renderHistoryDb(true);
+};
+
+window.filterHistoryList = function(){
+  const kwFace = $('selHistoryFace').value;
+  if(kwFace === '全部工作面'){
+    historyFilteredData = HISTORY_DB_DATA;
+  } else if(kwFace.includes('主洞')){
+    historyFilteredData = HISTORY_DB_DATA.filter(d=>(d.face||'').includes('主洞'));
+  } else {
+    historyFilteredData = HISTORY_DB_DATA.filter(d=>(d.face||'').includes('平导'));
+  }
+  historyPage = 1;
+  renderHistoryDb();
+};
+
+window.toggleHistoryDetail = function(idx){
+  const row = $('rowExp_' + idx);
+  const btn = $('btnExp_' + idx);
+  if(row && btn){
+    row.classList.toggle('open');
+    btn.textContent = row.classList.contains('open') ? '[-]' : '[+]';
+  }
+};
+
+/* ============================================================
+   系统总览两大分析图表渲染 (完全对齐参考UI图)
+   ============================================================ */
+let chartLiningDistInst = null;
+let chartSteelArchInst = null;
+
+function updateOverviewCharts(mode){
+  const isMain = (mode === 'main');
+  $('chartBarTitle').textContent = isMain ? '衬砌类型里程分布 (主洞)' : '衬砌类型里程分布 (平行导洞)';
+  $('chartDonutTitle').textContent = isMain ? '型钢钢架型号分布占比 (主洞)' : '型钢钢架型号分布占比 (平行导洞)';
+
+  // 1. 柱状图：衬砌类型里程分布 (8类衬砌)
+  const barLabels = isMain 
+    ? ['S4a (IV普)', 'S4b (IV深)', 'S4jt (IV停)', 'S5a (V普)', 'S5c (V浅)', 'S5d (V双导)', 'S5jt (V停)', 'SMa (明洞)']
+    : ['PD4a (IV普)', 'PD4j (IV加深)', 'PD5a (V普)', 'PD5b (V深)', 'PD5j (V加深)', 'PDMa (明洞)'];
+  const barData = isMain 
+    ? [2180, 857, 200, 1175, 27, 170, 100, 8]
+    : [3144, 100, 20, 1287, 100, 10];
+  const barColors = isMain 
+    ? ['#5aa2f8', '#3b82f6', '#a78bfa', '#f7b955', '#fbbf24', '#f87171', '#e11d48', '#3ddc97']
+    : ['#5aa2f8', '#a78bfa', '#fbbf24', '#f59e0b', '#e11d48', '#3ddc97'];
+
+  const cvBar = $('chartLiningDist');
+  if(cvBar){
+    if(chartLiningDistInst) chartLiningDistInst.destroy();
+    chartLiningDistInst = new Chart(cvBar, {
+      type: 'bar',
+      data: {
+        labels: barLabels,
+        datasets: [{
+          data: barData,
+          backgroundColor: barColors,
+          borderRadius: 3,
+          borderSkipped: false,
+          barPercentage: 0.52
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: '#091524',
+            borderColor: 'rgba(56,189,248,0.3)',
+            borderWidth: 1,
+            padding: 8,
+            titleColor: '#fff',
+            bodyColor: '#00d2be',
+            callbacks: {
+              label: function(ctx){ return ` 里程长度: ${ctx.raw} m`; }
+            }
+          }
+        },
+        scales: {
+          x: {
+            grid: { display: false },
+            ticks: { color: '#94a9c9', font: { size: 10.5 } }
+          },
+          y: {
+            beginAtZero: true,
+            max: isMain ? 2200 : 3500,
+            ticks: {
+              stepSize: isMain ? 550 : 700,
+              color: '#567092',
+              font: { size: 10.5 }
+            },
+            grid: {
+              color: 'rgba(255, 255, 255, 0.06)',
+              borderDash: [3, 3]
+            }
+          }
+        }
+      }
+    });
+  }
+
+  // 2. 环形图：型钢钢架型号分布占比
+  const donutLabels = isMain
+    ? ['I16 钢架 (3037m · 64.1%)', 'I18 钢架 (227m · 4.8%)', 'I20 钢架 (1175m · 24.8%)', 'I20a 强化钢架 (270m · 5.7%)', '明洞无钢架 (28m · 0.6%)']
+    : ['I14 钢架 (3244m · 68.1%)', 'I18 钢架 (1307m · 27.4%)', 'I20 钢架 (100m · 2.1%)', '明洞无钢架 (10m · 0.2%)'];
+  const donutData = isMain
+    ? [3037, 227, 1175, 270, 28]
+    : [3244, 1307, 100, 10];
+  const donutColors = isMain
+    ? ['#5aa2f8', '#3b82f6', '#f7b955', '#f87171', '#3ddc97']
+    : ['#5aa2f8', '#a78bfa', '#fbbf24', '#3ddc97'];
+
+  const cvDonut = $('chartSteelArch');
+  if(cvDonut){
+    if(chartSteelArchInst) chartSteelArchInst.destroy();
+    chartSteelArchInst = new Chart(cvDonut, {
+      type: 'doughnut',
+      data: {
+        labels: donutLabels,
+        datasets: [{
+          data: donutData,
+          backgroundColor: donutColors,
+          borderWidth: 2,
+          borderColor: '#0e1e34'
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: '62%',
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: '#091524',
+            borderColor: 'rgba(56,189,248,0.3)',
+            borderWidth: 1,
+            padding: 8,
+            titleColor: '#fff',
+            bodyColor: '#00d2be',
+            callbacks: {
+              label: function(ctx){
+                const total = ctx.dataset.data.reduce((a,b)=>a+b, 0);
+                const pct = (ctx.raw / total * 100).toFixed(1);
+                return ` ${ctx.label.split('(')[0].trim()}: ${ctx.raw}m (${pct}%)`;
+              }
+            }
+          }
+        }
+      }
+    });
+  }
+
+  // 3. 渲染环形图下方清单 (严格对齐截图 2)
+  if(isMain){
+    $('steelArchLegendList').innerHTML = `
+      <div class="donut-legend-row">
+        <div class="donut-legend-left"><span class="donut-legend-dot" style="background:#5aa2f8"></span>I16 钢架 (3037m · 64.1%)</div>
+        <div class="donut-legend-right">3037m</div>
+      </div>
+      <div class="donut-legend-row">
+        <div class="donut-legend-left"><span class="donut-legend-dot" style="background:#3b82f6"></span>I18 钢架 (227m · 4.8%)</div>
+        <div class="donut-legend-right">227m</div>
+      </div>
+      <div class="donut-legend-row">
+        <div class="donut-legend-left"><span class="donut-legend-dot" style="background:#f7b955"></span>I20 钢架 (1175m · 24.8%)</div>
+        <div class="donut-legend-right">1175m</div>
+      </div>
+      <div class="donut-legend-row">
+        <div class="donut-legend-left"><span class="donut-legend-dot" style="background:#f87171"></span>I20a 强化钢架 (270m · 5.7%)</div>
+        <div class="donut-legend-right">270m</div>
+      </div>
+      <div class="donut-legend-row">
+        <div class="donut-legend-left"><span class="donut-legend-dot" style="background:#3ddc97"></span>明洞无钢架 (28m · 0.6%)</div>
+        <div class="donut-legend-right">28m</div>
+      </div>
+    `;
+  } else {
+    $('steelArchLegendList').innerHTML = `
+      <div class="donut-legend-row">
+        <div class="donut-legend-left"><span class="donut-legend-dot" style="background:#5aa2f8"></span>I14 钢架 (3244m · 68.1%)</div>
+        <div class="donut-legend-right">3244m</div>
+      </div>
+      <div class="donut-legend-row">
+        <div class="donut-legend-left"><span class="donut-legend-dot" style="background:#a78bfa"></span>I18 钢架 (1307m · 27.4%)</div>
+        <div class="donut-legend-right">1307m</div>
+      </div>
+      <div class="donut-legend-row">
+        <div class="donut-legend-left"><span class="donut-legend-dot" style="background:#fbbf24"></span>I20 钢架 (100m · 2.1%)</div>
+        <div class="donut-legend-right">100m</div>
+      </div>
+      <div class="donut-legend-row">
+        <div class="donut-legend-left"><span class="donut-legend-dot" style="background:#3ddc97"></span>明洞无钢架 (10m · 0.2%)</div>
+        <div class="donut-legend-right">10m</div>
+      </div>
+    `;
+  }
+}
+
+/* 系统初始化 */
+function initSystem(){
+  // 强行同步 60 条最新的 2026-07 之前的台账数据到本地存储，消除老缓存阻碍
+  localStorage.setItem('tics_history_db', JSON.stringify(HISTORY_DB_DATA));
+  switchTunnelView('main');
+  renderKnowledgeDb();
+  renderSchemeDb();
+  renderEquipTable();
+  renderHistoryDb();
+}
+
+initSystem();
+
+})();
+</script>
+
+<!-- ==================================================
+     智能决策 PINN 神经网络推理 Loading 弹窗 (答辩演示特效)
+     ================================================== -->
+<div id="inferenceLoadingModal" class="modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;align-items:center;justify-content:center;background:rgba(6,20,26,0.85);z-index:999999">
+  <div class="card" style="width:380px;text-align:center;padding:24px 20px;border:1px solid rgba(0,210,190,0.3);box-shadow:0 8px 32px rgba(0,0,0,0.8);background:#0c1c24">
+    <!-- 转圈 Spinner 动画 -->
+    <div style="margin:0 auto 18px;width:48px;height:48px;position:relative">
+      <div class="spin-circle-1" style="box-sizing:border-box;display:block;position:absolute;width:48px;height:48px;border:4px solid transparent;border-top-color:var(--accent);border-radius:50%"></div>
+      <div class="spin-circle-2" style="box-sizing:border-box;display:block;position:absolute;width:48px;height:48px;border:4px solid transparent;border-bottom-color:var(--blue);border-radius:50%;opacity:0.7"></div>
+    </div>
+    <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:8px" id="loaderTitle">PINN 物理推演引擎计算中...</div>
+    <div style="background:#051119;border:1px solid rgba(255,255,255,0.08);border-radius:4px;padding:10px;height:90px;text-align:left;font-family:Consolas,monospace;font-size:11.5px;color:var(--accent);overflow-y:hidden;line-height:1.6;box-shadow:inset 0 2px 6px rgba(0,0,0,0.6)" id="loaderLogs">
+      <!-- 滚动日志 -->
+    </div>
+  </div>
+</div>
+
+<style>
+@keyframes spin-fast {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+@keyframes spin-slow {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(-360deg); }
+}
+.spin-circle-1 {
+  animation: spin-fast 1s linear infinite;
+}
+.spin-circle-2 {
+  animation: spin-slow 1.6s linear infinite;
+}
+</style>
+</body>
+</html>

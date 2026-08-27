@@ -53,10 +53,10 @@ const MAPPINGS: KnowledgeMapping[] = [
   { no: 2, code: 'KB-IV-02', hard: '硬 (变质灰岩)', intact: '较破碎', water: '潮湿', depth: '400~600m', stress: '中等', rock: 'Ⅳ级', scheme: '台阶法 · S4a (I16@80cm)' },
   { no: 3, code: 'KB-IV-03', hard: '硬 (变质灰岩)', intact: '较破碎', water: '滴水', depth: '600~900m', stress: '较重', rock: 'Ⅳ级', scheme: '台阶法 · S4a (I16@80cm)' },
   { no: 4, code: 'KB-IV-04', hard: '硬 (变质灰岩)', intact: '破碎', water: '淋水', depth: '400~800m', stress: '较重', rock: 'Ⅳ级', scheme: '台阶法加宽 · S4jt (I18@80cm)' },
-  { no: 5, code: 'KB-V-01', hard: '较软 (千枚岩)', intact: '破碎', water: '潮湿', depth: '200~400m', stress: '中等', rock: 'Ⅴ级', scheme: '环形核心土法 · S5c (I18@80cm)' },
-  { no: 6, code: 'KB-V-02', hard: '较软 (千枚岩)', intact: '破碎', water: '淋水', depth: '400~600m', stress: '严重', rock: 'Ⅴ级', scheme: '环形核心土法 · S5a (I20@60cm)' },
-  { no: 7, code: 'KB-V-03', hard: '较软 (千枚岩)', intact: '极破碎', water: '淋水', depth: '600~900m', stress: '很严重', rock: 'Ⅴ级', scheme: '环形核心土法 · S5a (I20@60cm最大埋深)' },
-  { no: 8, code: 'KB-V-04', hard: '较软 (千枚岩)', intact: '极破碎', water: '涌水', depth: '600~900m', stress: '极严重', rock: 'Ⅴ级', scheme: '环形核心土法 · S5d (I20a双层小导管)' },
+  { no: 5, code: 'KB-V-01', hard: '较软 (千枚岩)', intact: '破碎', water: '潮湿', depth: '200~400m', stress: '中等', rock: 'Ⅴ级', scheme: '预留核心土法 · S5c (I18@80cm)' },
+  { no: 6, code: 'KB-V-02', hard: '较软 (千枚岩)', intact: '破碎', water: '淋水', depth: '400~600m', stress: '严重', rock: 'Ⅴ级', scheme: '预留核心土法 · S5a (I20@60cm)' },
+  { no: 7, code: 'KB-V-03', hard: '较软 (千枚岩)', intact: '极破碎', water: '淋水', depth: '600~900m', stress: '很严重', rock: 'Ⅴ级', scheme: '预留核心土法 · S5a (I20@60cm最大埋深)' },
+  { no: 8, code: 'KB-V-04', hard: '较软 (千枚岩)', intact: '极破碎', water: '涌水', depth: '600~900m', stress: '极严重', rock: 'Ⅴ级', scheme: '预留核心土法 · S5d (I20a双层小导管)' },
 ];
 
 /* 支护体系与优选方案库 */
@@ -64,14 +64,14 @@ const SCHEMES: SupportScheme[] = [
   { no: 1, rock: 'Ⅳ级', type: 'S4a', depth: '200~600', advType: 'Φ22药卷锚杆', advRing: '40cm', advLen: '4.5m', advScope: '拱顶120°', anchor: '120×80cm (Φ22, 3.0m)', steel: 'I16 @80cm', shot: 'C25, 22cm', conc: 'C30', thick: '35cm', mode: '台阶法', advRate: '2.0m', benchLen: '3~5m' },
   { no: 2, rock: 'Ⅳ级', type: 'S4b', depth: '600~900', advType: 'Φ22药卷锚杆', advRing: '40cm', advLen: '4.5m', advScope: '拱顶120°', anchor: '120×100cm (Φ22, 3.0m)', steel: 'I16 @100cm', shot: 'C25, 22cm', conc: 'C30', thick: '35cm', mode: '台阶法', advRate: '2.0m', benchLen: '3~5m' },
   { no: 3, rock: 'Ⅳ级', type: 'S4jt', depth: '400~800', advType: 'Φ22药卷锚杆', advRing: '40cm', advLen: '4.5m', advScope: '全断面加深', anchor: '120×80cm (Φ22, 3.5m)', steel: 'I18 @80cm', shot: 'C25, 24cm', conc: 'C35', thick: '40cm', mode: '台阶法加宽', advRate: '1.8m', benchLen: '4~6m' },
-  { no: 4, rock: 'Ⅴ级', type: 'S5a', depth: '400~900', advType: 'Φ42小导管注浆', advRing: '40cm', advLen: '4.5m', advScope: '拱部140°', anchor: '60×60cm (Φ25中孔, 3.5m)', steel: 'I20 @60cm', shot: 'C25, 26cm', conc: 'C35', thick: '45cm', mode: '环形核心土法', advRate: '0.8m', benchLen: '5~8m' },
-  { no: 5, rock: 'Ⅴ级', type: 'S5c', depth: '200~400', advType: 'Φ42小导管注浆', advRing: '40cm', advLen: '4.0m', advScope: '拱部140°', anchor: '75×80cm (Φ25中孔, 3.5m)', steel: 'I18 @80cm', shot: 'C25, 24cm', conc: 'C35', thick: '40cm', mode: '环形核心土法', advRate: '1.0m', benchLen: '5~8m' },
-  { no: 6, rock: 'Ⅴ级', type: 'S5d', depth: '600~900', advType: 'Φ42双层小导管', advRing: '40cm', advLen: '4.5m', advScope: '拱部全周加密', anchor: '60×75cm (Φ25中孔, 3.5m)', steel: 'I20a @60cm', shot: 'C25, 24cm', conc: 'C35', thick: '50cm', mode: '环形核心土法', advRate: '0.8m', benchLen: '5~8m' },
-  { no: 7, rock: 'Ⅴ级', type: 'S5jt', depth: '600~900', advType: 'Φ42小导管注浆', advRing: '40cm', advLen: '4.0m', advScope: '停车带加宽段', anchor: '80×80cm (Φ25中孔, 3.5m)', steel: 'I20a @60cm', shot: 'C25, 26cm', conc: 'C35', thick: '50cm', mode: '环形核心土法', advRate: '0.8m', benchLen: '6~8m' },
+  { no: 4, rock: 'Ⅴ级', type: 'S5a', depth: '400~900', advType: 'Φ42小导管注浆', advRing: '40cm', advLen: '4.5m', advScope: '拱部140°', anchor: '60×60cm (Φ25中孔, 3.5m)', steel: 'I20 @60cm', shot: 'C25, 26cm', conc: 'C35', thick: '45cm', mode: '预留核心土法', advRate: '0.8m', benchLen: '5~8m' },
+  { no: 5, rock: 'Ⅴ级', type: 'S5c', depth: '200~400', advType: 'Φ42小导管注浆', advRing: '40cm', advLen: '4.0m', advScope: '拱部140°', anchor: '75×80cm (Φ25中孔, 3.5m)', steel: 'I18 @80cm', shot: 'C25, 24cm', conc: 'C35', thick: '40cm', mode: '预留核心土法', advRate: '1.0m', benchLen: '5~8m' },
+  { no: 6, rock: 'Ⅴ级', type: 'S5d', depth: '600~900', advType: 'Φ42双层小导管', advRing: '40cm', advLen: '4.5m', advScope: '拱部全周加密', anchor: '60×75cm (Φ25中孔, 3.5m)', steel: 'I20a @60cm', shot: 'C25, 24cm', conc: 'C35', thick: '50cm', mode: '预留核心土法', advRate: '0.8m', benchLen: '5~8m' },
+  { no: 7, rock: 'Ⅴ级', type: 'S5jt', depth: '600~900', advType: 'Φ42小导管注浆', advRing: '40cm', advLen: '4.0m', advScope: '停车带加宽段', anchor: '80×80cm (Φ25中孔, 3.5m)', steel: 'I20a @60cm', shot: 'C25, 26cm', conc: 'C35', thick: '50cm', mode: '预留核心土法', advRate: '0.8m', benchLen: '6~8m' },
 ];
 
 export const knowledgeData: KnowledgeData = {
-  equipmentTitle: '隧道机械化施工 9 种核心装备配置表',
+  equipmentTitle: '核心施工机械装备配置台账',
   equipment: EQUIPMENT,
   methodTitle: '标准工法库',
   methods: METHODS,

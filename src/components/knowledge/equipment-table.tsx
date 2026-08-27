@@ -12,62 +12,50 @@ const STAGE_TONE: Record<string, string> = {
   "防排水施工": "tag tag-purple",
 };
 
-  const COLUMNS: DataColumn<EquipmentItem>[] = [
-    {
-      key: "id",
-      title: "序号",
-      className: "text-center tabular-nums",
-      headerClassName: "text-center",
-      render: (r) => r.id,
-    },
-    { key: "name", title: "装备名称", className: "whitespace-nowrap font-medium text-ink" },
-    { key: "model", title: "规格型号", className: "whitespace-nowrap" },
-    {
-      key: "num",
-      title: "配置数量",
-      className: "text-center tabular-nums whitespace-nowrap",
-      headerClassName: "text-center",
-    },
-    { key: "unit", title: "单位", className: "text-center whitespace-nowrap", headerClassName: "text-center" },
-    { key: "pos", title: "作业工序 / 主要功能" },
-    {
-      key: "stage",
-      title: "所属施工阶段",
-      className: "text-center whitespace-nowrap",
-      headerClassName: "text-center",
-      render: (r) => (
-        <span className={STAGE_TONE[r.stage] ?? "tag tag-teal"}>
-          {r.stage}
-        </span>
-      ),
-    },
-  ];
+const COLUMNS: DataColumn<EquipmentItem>[] = [
+  {
+    key: "id",
+    title: "序号",
+    className: "tabular-nums",
+    render: (r) => r.id,
+  },
+  { key: "name", title: "装备名称", className: "whitespace-nowrap" },
+  { key: "model", title: "规格型号", className: "whitespace-nowrap" },
+  {
+    key: "num",
+    title: "配置数量",
+    className: "tabular-nums whitespace-nowrap",
+  },
+  { key: "unit", title: "单位", className: "whitespace-nowrap" },
+  { key: "pos", title: "作业部位 / 主要用途" },
+  {
+    key: "stage",
+    title: "所属施工阶段",
+    className: "whitespace-nowrap",
+    render: (r) => (
+      <span className={STAGE_TONE[r.stage] ?? "tag tag-teal"}>{r.stage}</span>
+    ),
+  },
+];
 
 interface EquipmentTableProps {
   title: string;
-  tag: string;
   data: EquipmentItem[];
 }
 
-export function EquipmentTable({ title, tag, data }: EquipmentTableProps) {
+export function EquipmentTable({ title, data }: EquipmentTableProps) {
   return (
-    <div className="card">
-      <div className="mb-3 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <span
-            className="flex h-[30px] w-[30px] shrink-0 items-center justify-center rounded-lg"
-            style={{ background: "rgba(247,185,85,.12)" }}
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f7b955" strokeWidth="2" aria-hidden>
-              <path d="M9 3h6v4h4v6h-4v4H9v-4H5V7h4V3z" />
-              <path d="M9 17v4M15 17v4M5 21h14" />
-            </svg>
-          </span>
-          <h3 className="m-0 text-[15px] font-semibold tracking-wide text-ink">{title}</h3>
-          <span className="tag tag-teal ml-2">
-            {tag}
-          </span>
-        </div>
+    <div className="card" style={{ padding: 0, overflow: "hidden" }}>
+      <div
+        style={{
+          padding: "10px 14px",
+          borderBottom: "1px solid rgba(56, 189, 248, 0.16)",
+          fontSize: 13,
+          fontWeight: 700,
+          color: "#fff",
+        }}
+      >
+        {title} ({data.length} 种)
       </div>
       <DataTable<EquipmentItem>
         columns={COLUMNS}

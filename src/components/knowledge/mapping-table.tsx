@@ -24,7 +24,7 @@ const COLUMNS: DataColumn<KnowledgeMapping>[] = [
   },
   {
     key: 'code',
-    title: '知识方案编号',
+    title: '方案编号',
     render: (row) => <b className="font-semibold">{row.code}</b>,
     className: 'whitespace-nowrap',
   },
@@ -59,25 +59,22 @@ const COLUMNS: DataColumn<KnowledgeMapping>[] = [
 
 interface MappingTableProps {
   title: string;
-  tag: string;
   data: KnowledgeMapping[];
 }
 
-export function MappingTable({ title, tag, data }: MappingTableProps) {
+export function MappingTable({ title, data }: MappingTableProps) {
   return (
     <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
       <div
         style={{
           padding: '10px 14px',
           borderBottom: '1px solid rgba(56, 189, 248, 0.16)',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '8px',
+          fontSize: 13,
+          fontWeight: 700,
+          color: '#fff',
         }}
       >
-        <span className="inline-block h-3.5 w-2 rounded-[2px] bg-brand" />
-        <h3 className="m-0 text-[15px] font-semibold tracking-wide text-ink">{title}</h3>
-        <span className="tag tag-teal">{tag}</span>
+        {title}
       </div>
       <DataTable columns={COLUMNS} data={data} rowKey={(r) => r.code} />
     </div>

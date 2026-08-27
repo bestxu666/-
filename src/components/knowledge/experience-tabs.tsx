@@ -20,31 +20,38 @@ export function ExperienceTabs({ data }: { data: KnowledgeData }) {
 
   return (
     <div>
-      {/* 二级胶囊切换条（复用决策中心已有的 mode-capsule-switch / mc-item 样式） */}
-      <div className="mode-capsule-switch mb-5">
-        {TABS.map((t) => (
-          <div
-            key={t.key}
-            className={`mc-item ${active === t.key ? "active" : ""}`}
-            onClick={() => setActive(t.key)}
-          >
-            {t.label}
-          </div>
-        ))}
+      {/* 页面头部：标题 + 二级胶囊切换（照搬 123 .page-head 结构） */}
+      <div
+        className="mb-3 flex flex-wrap items-center justify-between gap-3"
+      >
+        <h1 className="m-0 text-[20px] font-bold tracking-[.3px] text-white">
+          经验数据库
+        </h1>
+        <div className="sub-tab-capsule">
+          {TABS.map((t) => (
+            <div
+              key={t.key}
+              className={`st-btn ${active === t.key ? "active" : ""}`}
+              onClick={() => setActive(t.key)}
+            >
+              {t.label}
+            </div>
+          ))}
+        </div>
       </div>
 
-      <div className="space-y-5">
+      <div className="space-y-3">
         {active === "methods" && (
           <>
-            <MethodLibrary title={data.methodTitle} data={data.methods} />
-            <MappingTable title={data.mappingTitle} tag="规则映射" data={data.mappings} />
+            <MethodLibrary data={data.methods} />
+            <MappingTable title={data.mappingTitle} data={data.mappings} />
           </>
         )}
         {active === "support" && (
           <SchemeLibrary title={data.schemeTitle} data={data.schemes} />
         )}
         {active === "equipment" && (
-          <EquipmentTable title={data.equipmentTitle} tag="配置台账" data={data.equipment} />
+          <EquipmentTable title={data.equipmentTitle} data={data.equipment} />
         )}
       </div>
     </div>
