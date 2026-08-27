@@ -65,11 +65,19 @@ interface MappingTableProps {
 
 export function MappingTable({ title, tag, data }: MappingTableProps) {
   return (
-    <div>
-      <div className="mb-3 flex items-center gap-2">
+    <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
+      <div
+        style={{
+          padding: '10px 14px',
+          borderBottom: '1px solid rgba(56, 189, 248, 0.16)',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+        }}
+      >
         <span className="inline-block h-3.5 w-2 rounded-[2px] bg-brand" />
         <h3 className="m-0 text-[15px] font-semibold tracking-wide text-ink">{title}</h3>
-        <span className="tag tag-teal ml-2">{tag}</span>
+        <span className="tag tag-teal">{tag}</span>
       </div>
       <DataTable columns={COLUMNS} data={data} rowKey={(r) => r.code} />
     </div>
