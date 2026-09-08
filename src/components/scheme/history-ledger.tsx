@@ -4,7 +4,7 @@ import { Fragment, useMemo, useState } from 'react';
 import { cn } from '@/lib/utils';
 import type { HistoryRecord } from '@/lib/types';
 import { Field, Modal, Toast, useBriefToast } from '@/components/knowledge/modal';
-import { createSchemeHistory, deleteSchemeHistory, fetchSchemeHistory, importSchemeHistory } from '@/lib/api';
+import { createSchemeHistory, fetchSchemeHistory, importSchemeHistory } from '@/lib/api';
 
 interface HistoryLedgerProps {
   title: string;
@@ -13,7 +13,7 @@ interface HistoryLedgerProps {
   records: HistoryRecord[];
 }
 
-/** 取 "YYYY-MM-DD HH:mm:ss" 的日期部分用于范围比较 */
+/** 取日期部分（YYYY-MM-DD）用于范围比较 */
 function datePart(time: string): string {
   return time.slice(0, 10);
 }
@@ -36,15 +36,14 @@ const ROCK_OPTS = ['Ⅳ级', 'Ⅳ级(加强)', 'Ⅴ级', 'Ⅴ级(深埋)'];
 const METHOD_OPTS = ['台阶法', '预留核心土法', '全断面法', '双侧壁导坑法'];
 
 /**
- * 历史决策台账：起止日期 + 工作面筛选，决策记录表，点击 [+] 展开单次决策全参数明细；
- * 支持新增记录与 JSON 批量导入。
+ * 历史决策台账：起止日期 + 工作面筛选，决策记录表，点击 [+] 展开循环进尺与总时长明细；
+ * 支持新增记录与 JSON 批量导入（数据落 Supabase）。
  */
 export function HistoryLedger({ faces, records: seed }: HistoryLedgerProps) {
   const { msg, show } = useBriefToast();
-  // 本地可变台账（新增/导入/删除仅内存生效，刷新回种子，与参考行为一致）
   const [rows, setRows] = useState<HistoryRecord[]>(seed);
-  const [start, setStart] = useState('2026-08-01');
-  const [end, setEnd] = useState('2026-08-19');
+  const [start, setStart] = useState('2026-06-01');
+  const [end, setEnd] = useState('2026-07-31');
   const faceOptions = ['全部工作面', ...faces.filter((f) => f && f !== '全部工作面')];
   const [face, setFace] = useState(faceOptions[0]);
   // 已应用的筛选条件（点击「查询」后才生效）
@@ -55,9 +54,10 @@ export function HistoryLedger({ faces, records: seed }: HistoryLedgerProps) {
   const [openImport, setOpenImport] = useState(false);
   const [importText, setImportText] = useState('');
   const [form, setForm] = useState({
-    time: '2026-08-20 10:00:00',
-    face: faceOptions[1] ?? '',
-    mile: '',
+    time: '2026-07-08',
+    face: faceOptions[1] ?? '沙益1号隧道主洞掌子面',
+    startMile: '',
+    endMile: '',
     rock: 'Ⅳ级',
     method: METHOD_OPTS[0],
     type: '',
@@ -83,8 +83,8 @@ export function HistoryLedger({ faces, records: seed }: HistoryLedgerProps) {
   }
 
   function resetFilter() {
-    const s = '2026-08-01';
-    const e = '2026-08-19';
+    const s = '2026-06-01';
+    const e = '2026-07-31';
     const f = faceOptions[0];
     setStart(s);
     setEnd(e);
@@ -102,35 +102,26 @@ export function HistoryLedger({ faces, records: seed }: HistoryLedgerProps) {
     });
   }
 
-  async function deleteRow(id: number) {
-    try {
-      await deleteSchemeHistory(id);
-      setRows((prev) => prev.filter((r) => r.id !== id));
-      show('已删除决策记录');
-    } catch (e) {
-      show((e as Error).message || '删除失败');
-    }
-  }
-
   async function saveNew() {
-    if (!form.mile.trim() || !form.type.trim()) {
-      show('里程桩号与衬砌类型不能为空');
+    if (!form.startMile.trim() || !form.endMile.trim() || !form.type.trim()) {
+      show('起止桩号与衬砌类型不能为空');
       return;
     }
     try {
       const item = await createSchemeHistory({
         time: form.time,
         face: form.face || faceOptions[1] || '',
-        mile: form.mile.trim(),
+        startMile: form.startMile.trim(),
+        endMile: form.endMile.trim(),
         rock: form.rock,
         method: form.method,
         type: form.type.trim(),
         score: Math.max(0, Math.min(100, Number(form.score) || 0)),
-        detail: form.detail.trim() || '人工录入手动推演方案（无智能推荐明细）',
+        detail: form.detail.trim() || '人工录入方案（循环进尺与总时长明细）',
       });
       setRows((prev) => [...prev, { ...item, custom: true }]);
       setOpenAdd(false);
-      setForm((f) => ({ ...f, mile: '', type: '', detail: '' }));
+      setForm((f) => ({ ...f, startMile: '', endMile: '', type: '', detail: '' }));
       show('已新增决策记录');
     } catch (e) {
       show((e as Error).message || '新增失败');
@@ -217,7 +208,7 @@ export function HistoryLedger({ faces, records: seed }: HistoryLedgerProps) {
             重置
           </button>
           <span className="ml-auto hidden text-[11.5px] text-ink-3 md:inline">
-            点击序号左侧 [+] 展开查看超前支护、钢架间距与机械调度明细
+            点击序号左侧 [+] 展开查看该循环进尺与循环总时长明细
           </span>
         </div>
 
@@ -229,7 +220,7 @@ export function HistoryLedger({ faces, records: seed }: HistoryLedgerProps) {
                 <th className="w-[52px] whitespace-nowrap border-b border-line px-3 py-2.5 text-center font-semibold text-ink-2">
                   展开
                 </th>
-                <th className="whitespace-nowrap border-b border-line px-3 py-2.5 text-left font-semibold text-ink-2">
+                <th className="whitespace-nowrap border-b border-line px-3 py-2.5 text-center font-semibold text-ink-2">
                   序号
                 </th>
                 <th className="whitespace-nowrap border-b border-line px-3 py-2.5 text-left font-semibold text-ink-2">
@@ -239,29 +230,26 @@ export function HistoryLedger({ faces, records: seed }: HistoryLedgerProps) {
                   隧道工作面
                 </th>
                 <th className="whitespace-nowrap border-b border-line px-3 py-2.5 text-left font-semibold text-ink-2">
-                  开挖里程
+                  里程桩号（起始 ~ 终止）
                 </th>
-                <th className="whitespace-nowrap border-b border-line px-3 py-2.5 text-left font-semibold text-ink-2">
+                <th className="whitespace-nowrap border-b border-line px-3 py-2.5 text-center font-semibold text-ink-2">
                   围岩
                 </th>
                 <th className="whitespace-nowrap border-b border-line px-3 py-2.5 text-left font-semibold text-ink-2">
                   开挖工法
                 </th>
-                <th className="whitespace-nowrap border-b border-line px-3 py-2.5 text-left font-semibold text-ink-2">
+                <th className="whitespace-nowrap border-b border-line px-3 py-2.5 text-center font-semibold text-ink-2">
                   衬砌类型
                 </th>
-                <th className="whitespace-nowrap border-b border-line px-3 py-2.5 text-left font-semibold text-ink-2">
+                <th className="whitespace-nowrap border-b border-line px-3 py-2.5 text-center font-semibold text-ink-2">
                   安全度
-                </th>
-                <th className="whitespace-nowrap border-b border-line px-3 py-2.5 text-left font-semibold text-ink-2">
-                  操作
                 </th>
               </tr>
             </thead>
             <tbody>
               {list.length === 0 ? (
                 <tr>
-                  <td colSpan={10} className="px-3 py-8 text-center text-ink-3">
+                  <td colSpan={9} className="px-3 py-8 text-center text-ink-3">
                     当前筛选条件下暂无决策记录
                   </td>
                 </tr>
@@ -281,23 +269,27 @@ export function HistoryLedger({ faces, records: seed }: HistoryLedgerProps) {
                             {open ? '[-]' : '[+]'}
                           </button>
                         </td>
-                        <td className="px-3 py-2.5 align-middle text-ink-2 tabular-nums">
+                        <td className="px-3 py-2.5 text-center align-middle text-ink-2 tabular-nums">
                           {h.id}
                         </td>
-                        <td className="px-3 py-2.5 align-middle text-[11.5px] text-ink-3 tabular-nums">
+                        <td className="px-3 py-2.5 align-middle text-[12px] text-ink tabular-nums">
                           {h.time}
                         </td>
                         <td className="px-3 py-2.5 text-left align-middle">
                           <b className="font-medium text-ink">{h.face}</b>
                         </td>
-                        <td className="px-3 py-2.5 align-middle">
-                          <b className="font-semibold text-brand tabular-nums">{h.mile}</b>
+                        <td className="px-3 py-2.5 text-left align-middle">
+                          <b className="font-semibold text-brand tabular-nums">
+                            {h.startMile}
+                            <span className="mx-1 text-ink-3">~</span>
+                            {h.endMile}
+                          </b>
                         </td>
-                        <td className="px-3 py-2.5 align-middle">
+                        <td className="px-3 py-2.5 text-center align-middle">
                           <RockTag rock={h.rock} />
                         </td>
                         <td className="px-3 py-2.5 align-middle text-ink-2">{h.method}</td>
-                        <td className="px-3 py-2.5 align-middle">
+                        <td className="px-3 py-2.5 text-center align-middle">
                           <b className="font-semibold text-ink">
                             {h.type}
                             {h.custom && (
@@ -307,23 +299,14 @@ export function HistoryLedger({ faces, records: seed }: HistoryLedgerProps) {
                             )}
                           </b>
                         </td>
-                        <td className="px-3 py-2.5 align-middle">
+                        <td className="px-3 py-2.5 text-center align-middle">
                           <b className="font-semibold text-ok tabular-nums">{h.score}</b>
-                        </td>
-                        <td className="px-3 py-2.5 align-middle">
-                          {h.custom ? (
-                            <button className="btn btn-sm btn-danger" onClick={() => deleteRow(h.id)}>
-                              删除
-                            </button>
-                          ) : (
-                            <span style={{ color: '#567092' }}>入库</span>
-                          )}
                         </td>
                       </tr>
                       {open && (
                         <tr className="border-b border-line/40 bg-[rgba(45,212,191,0.04)]">
-                          <td colSpan={10} className="px-3 py-3 text-left align-top text-[12px] leading-[1.7] text-ink-2">
-                            <b className="text-brand">【单次决策完整配置参数】</b> {h.detail}
+                          <td colSpan={9} className="px-3 py-3 text-left align-top text-[12px] leading-[1.7] text-ink-2">
+                            <b className="text-brand">【单次决策循环明细】</b> {h.detail}
                           </td>
                         </tr>
                       )}
@@ -353,8 +336,8 @@ export function HistoryLedger({ faces, records: seed }: HistoryLedgerProps) {
         }
       >
         <div className="form-grid">
-          <Field label="决策时间">
-            <input type="text" value={form.time} onChange={(e) => setForm({ ...form, time: e.target.value })} />
+          <Field label="决策时间（日期）">
+            <input type="date" value={form.time} onChange={(e) => setForm({ ...form, time: e.target.value })} />
           </Field>
           <Field label="隧道工作面">
             <select value={form.face} onChange={(e) => setForm({ ...form, face: e.target.value })}>
@@ -365,8 +348,11 @@ export function HistoryLedger({ faces, records: seed }: HistoryLedgerProps) {
               ))}
             </select>
           </Field>
-          <Field label="开挖里程桩号">
-            <input type="text" value={form.mile} placeholder="如 K3601+200" onChange={(e) => setForm({ ...form, mile: e.target.value })} />
+          <Field label="起始里程桩号">
+            <input type="text" value={form.startMile} placeholder="如 K3600+717.80" onChange={(e) => setForm({ ...form, startMile: e.target.value })} />
+          </Field>
+          <Field label="终止里程桩号">
+            <input type="text" value={form.endMile} placeholder="如 K3600+720.80" onChange={(e) => setForm({ ...form, endMile: e.target.value })} />
           </Field>
           <Field label="围岩级别">
             <select value={form.rock} onChange={(e) => setForm({ ...form, rock: e.target.value })}>
@@ -392,8 +378,8 @@ export function HistoryLedger({ faces, records: seed }: HistoryLedgerProps) {
           <Field label="安全度评分(0~100)">
             <input type="number" min={0} max={100} value={form.score} onChange={(e) => setForm({ ...form, score: Number(e.target.value) })} />
           </Field>
-          <Field label="单次决策配置明细" span>
-            <textarea rows={3} value={form.detail} placeholder="超前支护、初支、装备调度等配置参数摘要" onChange={(e) => setForm({ ...form, detail: e.target.value })} />
+          <Field label="循环进尺 / 总时长明细" span>
+            <textarea rows={3} value={form.detail} placeholder="如 循环进尺 3.0m | 循环总时长 24小时" onChange={(e) => setForm({ ...form, detail: e.target.value })} />
           </Field>
         </div>
       </Modal>
@@ -416,12 +402,12 @@ export function HistoryLedger({ faces, records: seed }: HistoryLedgerProps) {
       >
         <textarea
           style={{ width: '100%', minHeight: 220, fontFamily: 'monospace', fontSize: 11.5 }}
-          placeholder='[{"time":"2026-08-20 09:00:00","face":"沙益1号隧道主洞掌子面","mile":"K3601+300","rock":"Ⅳ级","method":"台阶法","type":"S4a","score":91.0,"detail":"..."}]'
+          placeholder='[{"time":"2026-07-08","face":"沙益1号隧道主洞掌子面","startMile":"K3600+717.80","endMile":"K3600+720.80","rock":"Ⅳ级","method":"台阶法","type":"S4a","score":90.5,"detail":"循环进尺 3.0m | 循环总时长 24小时"}]'
           value={importText}
           onChange={(e) => setImportText(e.target.value)}
         />
         <div style={{ marginTop: 8, fontSize: 11, color: '#7189a8' }}>
-          支持字段：time / face / mile / rock / method / type / score / detail
+          支持字段：time / face / startMile / endMile / rock / method / type / score / detail
         </div>
       </Modal>
 

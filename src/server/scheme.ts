@@ -7,35 +7,39 @@ import { getSupabaseClient, loadEnv } from "@/storage/database/supabase-client";
  * 后端服务层 —— 方案报告与历史决策台账业务逻辑（Supabase 持久化）。
  *
  * - 读取：scheme_history 表（首次为空时以 src/data/scheme.ts 惰性种籽入库）
- * - 写入：新增 / 批量导入 / 删除 均落库，刷新不丢失
+ * - 写入：新增 / 批量导入 均落库，刷新不丢失
  */
 loadEnv();
 
-function toRecord(row: {
+interface SchemeHistoryRow {
   id: number;
   time: string;
   face: string;
-  mile: string;
+  start_mile: string;
+  end_mile: string;
   rock: string;
   method: string;
   type: string;
   score: string | number;
   detail: string;
-  is_custom: boolean;
-}): HistoryRecord {
+  custom: boolean;
+}
+
+function toRecord(row: SchemeHistoryRow): HistoryRecord {
   const record: HistoryRecord = {
     id: row.id,
     time: row.time,
     face: row.face,
-    mile: row.mile,
+    startMile: row.start_mile,
+    endMile: row.end_mile,
     rock: row.rock,
     method: row.method,
     type: row.type,
     score: Number(row.score),
     detail: row.detail,
   };
-  // 种籽行 is_custom=false → 同标准入库；用户新增行 is_custom=true → 可删除
-  if (row.is_custom) record.custom = true;
+  // 用户新增行 custom=true
+  if (row.custom) record.custom = true;
   return record;
 }
 
@@ -49,13 +53,14 @@ async function ensureSeeded(client: SupabaseClient): Promise<void> {
     const rows = schemeHistoryData.records.map((r) => ({
       time: r.time,
       face: r.face,
-      mile: r.mile,
+      start_mile: r.startMile,
+      end_mile: r.endMile,
       rock: r.rock,
       method: r.method,
       type: r.type,
       score: String(r.score),
       detail: r.detail,
-      is_custom: false,
+      custom: false,
     }));
     const { error: insertErr } = await client
       .from("scheme_history")
@@ -64,16 +69,16 @@ async function ensureSeeded(client: SupabaseClient): Promise<void> {
   }
 }
 
-/** 查询台账列表（含统一次种子数据） */
+/** 查询台账列表（首次读取自动种籽入库） */
 export async function listSchemeHistory(): Promise<SchemeHistoryData> {
   const client = getSupabaseClient();
   await ensureSeeded(client);
   const { data, error } = await client
     .from("scheme_history")
     .select("*")
-    .order("time", { ascending: false });
+    .order("time", { ascending: true });
   if (error) throw error;
-  const records = (data ?? []).map((r) => toRecord(r));
+  const records = (data ?? []).map((r) => toRecord(r as SchemeHistoryRow));
   return { ...schemeHistoryData, records };
 }
 
@@ -87,18 +92,19 @@ export async function createSchemeHistory(
     .insert({
       time: input.time,
       face: input.face,
-      mile: input.mile,
+      start_mile: input.startMile,
+      end_mile: input.endMile,
       rock: input.rock,
       method: input.method,
       type: input.type,
       score: String(input.score),
       detail: input.detail,
-      is_custom: true,
+      custom: true,
     })
     .select("*")
     .single();
   if (error) throw error;
-  return toRecord(data);
+  return toRecord(data as SchemeHistoryRow);
 }
 
 /** 批量导入决策记录，返回入库条数 */
@@ -109,13 +115,14 @@ export async function importSchemeHistory(
   const rows = list.map((r) => ({
     time: r.time,
     face: r.face,
-    mile: r.mile,
+    start_mile: r.startMile,
+    end_mile: r.endMile,
     rock: r.rock,
     method: r.method,
     type: r.type,
     score: String(r.score),
     detail: r.detail,
-    is_custom: true,
+    custom: true,
   }));
   if (rows.length === 0) return 0;
   const { error } = await client.from("scheme_history").insert(rows);

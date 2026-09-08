@@ -351,12 +351,14 @@ export interface KnowledgeData {
 /** 单次历史决策记录（对应参考 HTML 的 HISTORY_DB_DATA） */
 export interface HistoryRecord {
   id: number;
-  /** 决策时间，格式 YYYY-MM-DD HH:mm:ss */
+  /** 决策时间，格式 YYYY-MM-DD（日期） */
   time: string;
   /** 隧道工作面 */
   face: string;
-  /** 开挖里程桩号 */
-  mile: string;
+  /** 起始里程桩号 */
+  startMile: string;
+  /** 终止里程桩号 */
+  endMile: string;
   /** 围岩级别，如 "Ⅳ级" / "Ⅴ级" */
   rock: string;
   /** 开挖工法 */
