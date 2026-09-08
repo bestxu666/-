@@ -79,24 +79,24 @@ export const overviewData: OverviewData = {
   achievementTitle: '智能配置系统成效指标看板',
   achievements: [
     {
-      label: '累计完成智能决策循环',
-      value: '1,862',
+      label: '累计示范段应用决策循环',
+      value: '246',
       unit: '个循环',
-      sub: '主洞 1,180 环 + 平导 682 环',
+      sub: '主洞应用 158 环 · 平导应用 88 环',
       tone: 'brand',
     },
     {
       label: '施工现场方案采纳率',
-      value: '97.4',
+      value: '96.7',
       unit: '%',
-      sub: '采纳 1,814 次 / 优化微调 48 次',
-      tone: 'ok',
+      sub: '采纳 238 次 / 优化微调 8 次',
+      tone: 'brand',
     },
     {
       label: '单次决策生成平均耗时',
-      value: '< 3.0',
+      value: '< 10.0',
       unit: '秒',
-      sub: '较传统人工计算(45min)提速 90%+',
+      sub: '较传统人工计算(45min)提速 95%+',
       tone: 'info',
     },
     {
