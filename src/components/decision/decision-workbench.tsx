@@ -44,8 +44,6 @@ const NUM_FIELDS_GROUP3: NumField[] = [
   { key: 'poisson', label: '泊松比 μ', unit: '-', step: 0.01, required: true },
   { key: 'stressV', label: '竖向应力 σv', unit: 'MPa', step: 0.1, required: true },
   { key: 'stressH', label: '水平应力 σh', unit: 'MPa', step: 0.1 },
-  { key: 'stressL', label: '纵向应力 σl', unit: 'MPa', step: 0.1 },
-  { key: 'tensile', label: '抗拉强度 σt', unit: 'MPa', step: 0.05 },
 ];
 
 const SELECT_FIELDS: {

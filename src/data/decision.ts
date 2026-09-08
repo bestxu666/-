@@ -53,31 +53,21 @@ export const CONSTRUCTION_METHODS: ConstructionMethod[] = [
 export const DECISION_META: DecisionMeta = {
   workfaces: [
     {
-      value: 'shayi_main_iv',
-      label: '沙益1号隧道 主洞正洞掌子面 (Ⅳ级围岩段 · S4a · K3601+048~K3601+848)',
+      value: 'shayi_main',
+      label: '沙益1号隧道主洞掌子面',
       grade: 'IV',
     },
     {
-      value: 'shayi_main_v',
-      label: '沙益1号隧道 主洞正洞掌子面 (Ⅴ级深埋大变形段 · S5a/S5d · K3600+213~K3600+675)',
-      grade: 'V',
-    },
-    {
-      value: 'shayi_pilot_iv',
-      label: '沙益1号隧道 平行导洞掌子面 (Ⅳ级围岩段 · PD4a · K3601+162~K3601+862)',
+      value: 'shayi_pilot',
+      label: '沙益1号隧道平导掌子面',
       grade: 'IV',
-    },
-    {
-      value: 'shayi_pilot_v',
-      label: '沙益1号隧道 平行导洞掌子面 (Ⅴ级围岩段 · PD5b · K3600+212~K3600+692)',
-      grade: 'V',
     },
   ],
   mileages: [
-    { value: 'm1', label: 'K3601+200 (Ⅳ级中风化变质灰岩 · 埋深 620m)', mile: 'K3601+200' },
-    { value: 'm2', label: 'K3600+450 (Ⅴ级变质灰岩夹千枚岩 · 埋深 897.8m 最大埋深段)', mile: 'K3600+450' },
-    { value: 'm3', label: 'K3599+050 (Ⅴ级双层超前小导管加强段)', mile: 'K3599+050' },
-    { value: 'm4', label: 'K3601+900 (Ⅳ级紧急停车带加深段 S4jt)', mile: 'K3601+900' },
+    { value: 'm1', label: 'K3601+200', mile: 'K3601+200' },
+    { value: 'm2', label: 'K3600+450', mile: 'K3600+450' },
+    { value: 'm3', label: 'K3599+050', mile: 'K3599+050' },
+    { value: 'm4', label: 'K3601+900', mile: 'K3601+900' },
   ],
 };
 
@@ -99,8 +89,6 @@ export const DEFAULT_GEO_PARAMS_IV: GeoParams = {
   poisson: 0.28,
   stressV: 21.5,
   stressH: 13.2,
-  stressL: 12.8,
-  tensile: 2.1,
 };
 
 /** Ⅴ 级围岩默认地质参数（深埋大变形段） */
@@ -121,8 +109,6 @@ export const DEFAULT_GEO_PARAMS_V: GeoParams = {
   poisson: 0.32,
   stressV: 31.2,
   stressH: 18.6,
-  stressL: 16.4,
-  tensile: 1.25,
 };
 
 /**

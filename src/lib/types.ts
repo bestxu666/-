@@ -224,8 +224,6 @@ export interface GeoParams {
   poisson: number;
   stressV: number;
   stressH: number;
-  stressL: number;
-  tensile: number;
 }
 
 /** 工作面与里程元数据 */

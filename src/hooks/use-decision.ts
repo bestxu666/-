@@ -55,7 +55,7 @@ export interface DecisionState {
  */
 export function useDecision() {
   const [mode, setMode] = useState<DecisionMode>('joint');
-  const [workface, setWorkface] = useState('shayi_main_iv');
+  const [workface, setWorkface] = useState('shayi_main');
   const [mileage, setMileage] = useState('K3601+200');
   const [params, setParams] = useState<GeoParams>(DEFAULT_GEO_PARAMS_IV);
 
