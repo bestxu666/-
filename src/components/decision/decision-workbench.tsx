@@ -128,7 +128,7 @@ export function DecisionWorkbench({
           ) : (
             <>
               <b>【手动决策模式】</b>{' '}
-              开放自定义权限，工程师可根据现场地质观察与试验结果，自由修改微调下方 18 项地质力学参数进行推演
+              开放自定义权限，工程师可根据现场地质观察与试验结果，自由修改微调下方 16 项地质力学参数进行推演
             </>
           )}
         </div>
@@ -274,9 +274,7 @@ export function DecisionWorkbench({
           </div>
           {NUM_FIELDS_GROUP3.map((f) => (
             <div key={f.key} className="pg-item">
-              <span className="pg-lbl">
-                {f.required && <span className="star">*</span>} {f.label}
-              </span>
+              <span className="pg-lbl">{f.label}</span>
               <div className="pg-val">
                 <input
                   type="number"
