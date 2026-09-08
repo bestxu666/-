@@ -2,6 +2,12 @@
 
 import { useMemo, useState } from "react";
 import type { SupportScheme } from "@/lib/types";
+import {
+  createSupportScheme,
+  deleteSupportScheme,
+  fetchKnowledge,
+  importSupportSchemes,
+} from "@/lib/api";
 import { Field, Modal, Toast, useBriefToast, downloadJson } from "./modal";
 
 type Filter = "all" | "IV" | "V" | "custom";
@@ -58,27 +64,36 @@ export function SchemeLibrary({ title, data }: { title: string; data: SupportSch
     };
   }, [list]);
 
-  function del(no: number) {
-    setList((prev) => prev.filter((s) => s.no !== no));
-    show("已删除方案");
+  async function del(no: number) {
+    try {
+      await deleteSupportScheme(no);
+      setList((prev) => prev.filter((s) => s.no !== no));
+      show("已删除方案");
+    } catch {
+      show("删除失败，请重试");
+    }
   }
 
-  function reset() {
-    setList(data.map((d) => ({ ...d, custom: false })));
-    setFilter("all");
-    show("已恢复标准方案");
+  async function reset() {
+    try {
+      const fresh = await fetchKnowledge();
+      setList(fresh.schemes.map((d) => ({ ...d, custom: false })));
+      setFilter("all");
+      show("已恢复标准方案");
+    } catch {
+      setList(data.map((d) => ({ ...d, custom: false })));
+      setFilter("all");
+      show("已恢复标准方案");
+    }
   }
 
-  function saveNew() {
+  async function saveNew() {
     if (!form.type.trim()) {
       show("衬砌类型代号不能为空");
       return;
     }
-    const no = Math.max(0, ...list.map((s) => s.no)) + 1;
-    setList((prev) => [
-      ...prev,
-      {
-        no,
+    try {
+      const item = await createSupportScheme({
         rock: form.rock,
         type: form.type.trim(),
         depth: form.depth,
@@ -94,23 +109,23 @@ export function SchemeLibrary({ title, data }: { title: string; data: SupportSch
         mode: form.mode,
         advRate: form.advRate,
         benchLen: form.benchLen,
-        custom: true,
-      },
-    ]);
-    setOpenAdd(false);
-    show("方案已增添至数据库");
+      });
+      setList((prev) => [...prev, { ...item, custom: true }]);
+      setOpenAdd(false);
+      show("方案已增添至数据库");
+    } catch {
+      show("添加失败，请重试");
+    }
   }
 
-  function applyImport() {
+  async function applyImport() {
     try {
       const arr = JSON.parse(importText);
       if (!Array.isArray(arr) || arr.length === 0) {
         show("请粘贴 JSON 数组");
         return;
       }
-      const base = Math.max(0, ...list.map((s) => s.no));
-      const next: SupportScheme[] = arr.map((r, i) => ({
-        no: base + i + 1,
+      const next = arr.map((r) => ({
         rock: String(r.rock ?? "Ⅳ级"),
         type: String(r.type ?? ""),
         depth: String(r.depth ?? ""),
@@ -126,15 +141,16 @@ export function SchemeLibrary({ title, data }: { title: string; data: SupportSch
         mode: String(r.mode ?? ""),
         advRate: String(r.advRate ?? ""),
         benchLen: String(r.benchLen ?? ""),
-        custom: true,
       }));
-      setList((prev) => [...prev, ...next]);
+      const count = await importSupportSchemes(next);
+      const fresh = await fetchKnowledge();
+      setList(fresh.schemes.map((d) => ({ ...d, custom: d.custom })));
       setOpenImport(false);
       setImportText("");
       setFilter("custom");
-      show(`已导入 ${next.length} 条方案`);
+      show(`已导入 ${count} 条方案`);
     } catch {
-      show("JSON 解析失败，请检查格式");
+      show("JSON 解析失败或导入出错，请检查格式");
     }
   }
 

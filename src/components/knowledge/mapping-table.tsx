@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import type { KnowledgeMapping } from '@/lib/types';
+import { createMapping, deleteMapping } from '@/lib/api';
 import { DataTable, type DataColumn } from './data-table';
 import { Field, Modal, Toast, useBriefToast } from './modal';
 
@@ -55,21 +56,23 @@ export function MappingTable({ title, data }: MappingTableProps) {
     );
   }, [list, kw]);
 
-  function deleteItem(code: string) {
-    setList((prev) => prev.filter((k) => k.code !== code));
-    show('已删除知识规则');
+  async function deleteItem(code: string) {
+    try {
+      await deleteMapping(code);
+      setList((prev) => prev.filter((k) => k.code !== code));
+      show('已删除知识规则');
+    } catch {
+      show('删除失败，请重试');
+    }
   }
 
-  function save() {
+  async function save() {
     if (!form.code.trim() || !form.scheme.trim()) {
       show('方案编号与匹配工法衬砌不能为空');
       return;
     }
-    const no = Math.max(0, ...list.map((k) => k.no)) + 1;
-    setList((prev) => [
-      ...prev,
-      {
-        no,
+    try {
+      const item = await createMapping({
         code: form.code.trim(),
         hard: form.hard,
         intact: form.intact,
@@ -78,12 +81,14 @@ export function MappingTable({ title, data }: MappingTableProps) {
         stress: form.stress,
         rock: form.rock,
         scheme: form.scheme.trim(),
-        custom: true,
-      },
-    ]);
-    setOpen(false);
-    setForm((f) => ({ ...f, code: '', scheme: '' }));
-    show('已添加知识规则');
+      });
+      setList((prev) => [...prev, { ...item, custom: true }]);
+      setOpen(false);
+      setForm((f) => ({ ...f, code: '', scheme: '' }));
+      show('已添加知识规则');
+    } catch {
+      show('添加失败，请重试');
+    }
   }
 
   const columns: DataColumn<KnowledgeMapping>[] = [

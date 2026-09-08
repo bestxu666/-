@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { DataTable, type DataColumn } from "./data-table";
 import { Field, Modal, Toast, useBriefToast } from "./modal";
 import type { EquipmentItem } from "@/lib/types";
+import { createEquipment, deleteEquipment } from "@/lib/api";
 
 const STAGE_TONE: Record<string, string> = {
   "开挖与出渣运输": "tag tag-teal",
@@ -42,33 +43,37 @@ export function EquipmentTable({ title, data }: EquipmentTableProps) {
     );
   }, [list, kw]);
 
-  function deleteItem(id: number) {
-    setList((prev) => prev.filter((e) => e.id !== id));
-    show("已删除装备台账");
+  async function deleteItem(id: number) {
+    try {
+      await deleteEquipment(id);
+      setList((prev) => prev.filter((e) => e.id !== id));
+      show("已删除装备台账");
+    } catch (e) {
+      show((e as Error).message || "删除失败");
+    }
   }
 
-  function save() {
+  async function save() {
     if (!form.name.trim()) {
       show("请输入装备名称");
       return;
     }
-    const id = Math.max(0, ...list.map((e) => e.id)) + 1;
-    setList((prev) => [
-      ...prev,
-      {
-        id,
+    try {
+      const created = await createEquipment({
         name: form.name.trim(),
         model: form.model.trim(),
         num: Number(form.num) || 1,
         unit: form.unit.trim() || "台",
         pos: form.pos.trim(),
         stage: form.stage,
-        custom: true,
-      },
-    ]);
-    setOpen(false);
-    setForm({ name: "", model: "", num: 1, unit: "台", pos: "", stage: STAGES[0] });
-    show("已登记新装备");
+      });
+      setList((prev) => [...prev, { ...created, custom: true }]);
+      setOpen(false);
+      setForm({ name: "", model: "", num: 1, unit: "台", pos: "", stage: STAGES[0] });
+      show("已登记新装备");
+    } catch (e) {
+      show((e as Error).message || "登记失败");
+    }
   }
 
   const columns: DataColumn<EquipmentItem>[] = [

@@ -1,16 +1,34 @@
-import { overviewData } from '@/data/overview';
-import { knowledgeData } from '@/data/knowledge';
 import type {
   DecisionMeta,
+  EquipmentItem,
   GeoParams,
+  HistoryRecord,
   KnowledgeData,
+  KnowledgeMapping,
   MethodMatch,
   OverviewData,
   SafetyAssessment,
   SchemeHistoryData,
   SchemeReport,
   SupportComponent,
+  SupportScheme,
 } from './types';
+
+/**
+ * 构造请求基址：
+ * - 客户端（浏览器）：同源相对路径即可；
+ * - 服务端（Next.js Server Component/Route）：必须使用绝对地址，
+ *   否则 Node 环境以相对路径发起 fetch 会抛出 ERR_INVALID_URL。
+ */
+function apiBase(): string {
+  if (typeof window !== 'undefined') return '';
+  const port = process.env.DEPLOY_RUN_PORT || process.env.PORT || '5000';
+  return `http://localhost:${port}`;
+}
+
+async function apiFetch(path: string, init?: RequestInit): Promise<Response> {
+  return fetch(`${apiBase()}${path}`, init);
+}
 
 /**
  * 数据访问层 —— 预留与后端交互的统一接口。
@@ -27,37 +45,144 @@ import type {
  *   Python 后端服务，实现前后端解耦、同源访问。
  */
 export async function fetchOverview(): Promise<OverviewData> {
-  // 后端就绪后启用以下实现：
-  // const res = await fetch('/api/overview', { cache: 'no-store' });
-  // if (!res.ok) {
-  //   throw new Error(`加载总览数据失败：${res.status}`);
-  // }
-  // return (await res.json()) as OverviewData;
-
-  return overviewData;
+  const res = await apiFetch('/api/overview', { cache: 'no-store' });
+  if (!res.ok) {
+    throw new Error(`加载总览数据失败：${res.status}`);
+  }
+  return (await res.json()) as OverviewData;
 }
 
 /**
  * 获取经验数据库数据（装备 / 工法 / 知识映射 / 支护方案）。
- *
- * 后端就绪后：
- * const res = await fetch('/api/knowledge', { cache: 'no-store' });
- * return (await res.json()) as KnowledgeData;
+ * 数据源：Supabase 持久化（首次为空时由服务层以种子数据入库）。
  */
 export async function fetchKnowledge(): Promise<KnowledgeData> {
-  return knowledgeData;
+  const res = await apiFetch('/api/knowledge', { cache: 'no-store' });
+  if (!res.ok) {
+    throw new Error(`加载经验数据库失败：${res.status}`);
+  }
+  return (await res.json()) as KnowledgeData;
 }
 
 /**
  * 获取方案报告与历史决策台账数据。
- *
- * 后端就绪后：
- * const res = await fetch('/api/scheme', { cache: 'no-store' });
- * return (await res.json()) as SchemeHistoryData;
+ * 数据源：Supabase 持久化（首次为空时由服务层以种子数据入库）。
  */
 export async function fetchSchemeHistory(): Promise<SchemeHistoryData> {
-  const { schemeHistoryData } = await import('@/data/scheme');
-  return schemeHistoryData;
+  const res = await apiFetch('/api/scheme', { cache: 'no-store' });
+  if (!res.ok) {
+    throw new Error(`加载历史台账失败：${res.status}`);
+  }
+  return (await res.json()) as SchemeHistoryData;
+}
+
+/* ============================================================
+   通用写接口封装
+   ============================================================ */
+
+async function postJSON<T>(url: string, body: unknown): Promise<T> {
+  const res = await apiFetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+    cache: 'no-store',
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error((err as { message?: string }).message ?? `请求失败：${res.status}`);
+  }
+  return (await res.json()) as T;
+}
+
+async function delJSON(url: string): Promise<void> {
+  const res = await apiFetch(url, { method: 'DELETE', cache: 'no-store' });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error((err as { message?: string }).message ?? `删除失败：${res.status}`);
+  }
+}
+
+/* ---- 方案台账 ---- */
+
+/** 新增单条决策记录，返回落库后的完整记录 */
+export async function createSchemeHistory(
+  input: Omit<HistoryRecord, 'id' | 'custom'>
+): Promise<HistoryRecord> {
+  const res = await postJSON<{ item: HistoryRecord }>('/api/scheme', input);
+  return res.item;
+}
+
+/** 批量导入决策记录，返回入库数量 */
+export async function importSchemeHistory(
+  list: Array<Omit<HistoryRecord, 'id' | 'custom'>>
+): Promise<number> {
+  const res = await postJSON<{ count: number }>('/api/scheme/import', list);
+  return res.count;
+}
+
+/** 删除台账记录（按 DB id） */
+export async function deleteSchemeHistory(id: number): Promise<void> {
+  await delJSON(`/api/scheme?id=${id}`);
+}
+
+/* ---- 经验数据库：装备 ---- */
+
+export async function createEquipment(
+  input: Omit<EquipmentItem, 'id' | 'custom'>
+): Promise<EquipmentItem> {
+  const res = await postJSON<{ item: EquipmentItem }>('/api/knowledge/equipment', input);
+  return res.item;
+}
+
+export async function importEquipment(
+  list: Array<Omit<EquipmentItem, 'id' | 'custom'>>
+): Promise<number> {
+  const res = await postJSON<{ count: number }>('/api/knowledge/equipment/import', list);
+  return res.count;
+}
+
+export async function deleteEquipment(id: number): Promise<void> {
+  await delJSON(`/api/knowledge/equipment?id=${id}`);
+}
+
+/* ---- 经验数据库：知识映射 ---- */
+
+export async function createMapping(
+  input: Omit<KnowledgeMapping, 'no' | 'custom'>
+): Promise<KnowledgeMapping> {
+  const res = await postJSON<{ item: KnowledgeMapping }>('/api/knowledge/mappings', input);
+  return res.item;
+}
+
+export async function importMappings(
+  list: Array<Omit<KnowledgeMapping, 'no' | 'custom'>>
+): Promise<number> {
+  const res = await postJSON<{ count: number }>('/api/knowledge/mappings/import', list);
+  return res.count;
+}
+
+export async function deleteMapping(code: string): Promise<void> {
+  await delJSON(`/api/knowledge/mappings?code=${encodeURIComponent(code)}`);
+}
+
+/* ---- 经验数据库：支护方案 ---- */
+
+export async function createSupportScheme(
+  input: Omit<SupportScheme, 'no' | 'custom'>
+): Promise<SupportScheme> {
+  const res = await postJSON<{ item: SupportScheme }>('/api/knowledge/schemes', input);
+  return res.item;
+}
+
+export async function importSupportSchemes(
+  list: Array<Omit<SupportScheme, 'no' | 'custom'>>
+): Promise<number> {
+  const res = await postJSON<{ count: number }>('/api/knowledge/schemes/import', list);
+  return res.count;
+}
+
+export async function deleteSupportScheme(no: number): Promise<void> {
+  await delJSON(`/api/knowledge/schemes?no=${no}`);
 }
 
 /* ============================================================

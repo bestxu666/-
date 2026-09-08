@@ -1,12 +1,15 @@
-import { NextResponse } from 'next/server';
-import { getKnowledge } from '@/server/knowledge';
+import { NextResponse } from "next/server";
+import { getKnowledge } from "@/server/knowledge";
 
-/**
- * GET /api/knowledge
- *
- * 经验数据库接口（后端 HTTP 入口）：装备配置 / 标准工法 / 知识映射 / 支护方案。
- * 仅负责请求解析与响应封装，业务逻辑下沉到 src/server/ 服务层。
- */
+/** GET /api/knowledge —— 返回经验数据库全部数据 */
 export async function GET() {
-  return NextResponse.json(getKnowledge());
+  try {
+    const data = await getKnowledge();
+    return NextResponse.json(data);
+  } catch (e) {
+    return NextResponse.json(
+      { error: "经验库读取失败", message: (e as Error).message },
+      { status: 500 }
+    );
+  }
 }

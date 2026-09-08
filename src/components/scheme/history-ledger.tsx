@@ -4,6 +4,7 @@ import { Fragment, useMemo, useState } from 'react';
 import { cn } from '@/lib/utils';
 import type { HistoryRecord } from '@/lib/types';
 import { Field, Modal, Toast, useBriefToast } from '@/components/knowledge/modal';
+import { createSchemeHistory, deleteSchemeHistory, fetchSchemeHistory, importSchemeHistory } from '@/lib/api';
 
 interface HistoryLedgerProps {
   title: string;
@@ -101,21 +102,23 @@ export function HistoryLedger({ faces, records: seed }: HistoryLedgerProps) {
     });
   }
 
-  function deleteRow(id: number) {
-    setRows((prev) => prev.filter((r) => r.id !== id));
-    show('已删除决策记录');
+  async function deleteRow(id: number) {
+    try {
+      await deleteSchemeHistory(id);
+      setRows((prev) => prev.filter((r) => r.id !== id));
+      show('已删除决策记录');
+    } catch (e) {
+      show((e as Error).message || '删除失败');
+    }
   }
 
-  function saveNew() {
+  async function saveNew() {
     if (!form.mile.trim() || !form.type.trim()) {
       show('里程桩号与衬砌类型不能为空');
       return;
     }
-    const id = Math.max(0, ...rows.map((r) => r.id)) + 1;
-    setRows((prev) => [
-      ...prev,
-      {
-        id,
+    try {
+      const item = await createSchemeHistory({
         time: form.time,
         face: form.face || faceOptions[1] || '',
         mile: form.mile.trim(),
@@ -124,40 +127,31 @@ export function HistoryLedger({ faces, records: seed }: HistoryLedgerProps) {
         type: form.type.trim(),
         score: Math.max(0, Math.min(100, Number(form.score) || 0)),
         detail: form.detail.trim() || '人工录入手动推演方案（无智能推荐明细）',
-        custom: true,
-      },
-    ]);
-    setOpenAdd(false);
-    setForm((f) => ({ ...f, mile: '', type: '', detail: '' }));
-    show('已新增决策记录');
+      });
+      setRows((prev) => [...prev, { ...item, custom: true }]);
+      setOpenAdd(false);
+      setForm((f) => ({ ...f, mile: '', type: '', detail: '' }));
+      show('已新增决策记录');
+    } catch (e) {
+      show((e as Error).message || '新增失败');
+    }
   }
 
-  function applyImport() {
+  async function applyImport() {
     try {
       const arr = JSON.parse(importText);
       if (!Array.isArray(arr) || arr.length === 0) {
         show('请粘贴 JSON 数组');
         return;
       }
-      const base = Math.max(0, ...rows.map((r) => r.id));
-      const next: HistoryRecord[] = arr.map((r, i) => ({
-        id: base + i + 1,
-        time: String(r.time ?? '2026-08-20 10:00:00'),
-        face: String(r.face ?? (faceOptions[1] ?? '')),
-        mile: String(r.mile ?? ''),
-        rock: String(r.rock ?? 'Ⅳ级'),
-        method: String(r.method ?? '台阶法'),
-        type: String(r.type ?? ''),
-        score: Number(r.score ?? 0),
-        detail: String(r.detail ?? ''),
-        custom: true,
-      }));
-      setRows((prev) => [...prev, ...next]);
+      const count = await importSchemeHistory(arr);
+      const fresh = await fetchSchemeHistory();
+      setRows(fresh.records);
       setOpenImport(false);
       setImportText('');
-      show(`已导入 ${next.length} 条决策记录`);
-    } catch {
-      show('JSON 解析失败，请检查格式');
+      show(`已导入 ${count} 条决策记录`);
+    } catch (e) {
+      show((e as Error).message || '导入失败，请检查 JSON 格式');
     }
   }
 
