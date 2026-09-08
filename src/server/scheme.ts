@@ -21,6 +21,7 @@ interface SchemeHistoryRow {
   method: string;
   type: string;
   score: string | number;
+  advance: string;
   detail: string;
   custom: boolean;
 }
@@ -36,6 +37,7 @@ function toRecord(row: SchemeHistoryRow): HistoryRecord {
     method: row.method,
     type: row.type,
     score: Number(row.score),
+    advance: row.advance,
     detail: row.detail,
   };
   // 用户新增行 custom=true
@@ -44,12 +46,7 @@ function toRecord(row: SchemeHistoryRow): HistoryRecord {
 }
 
 async function ensureSeeded(client: SupabaseClient): Promise<void> {
-  const { data, error } = await client
-    .from("scheme_history")
-    .select("id")
-    .limit(1);
-  if (error) throw error;
-  if (!data || data.length === 0) {
+  {
     const rows = schemeHistoryData.records.map((r) => ({
       time: r.time,
       face: r.face,
@@ -59,12 +56,13 @@ async function ensureSeeded(client: SupabaseClient): Promise<void> {
       method: r.method,
       type: r.type,
       score: String(r.score),
+      advance: r.advance,
       detail: r.detail,
       custom: false,
     }));
     const { error: insertErr } = await client
       .from("scheme_history")
-      .insert(rows);
+      .upsert(rows, { onConflict: "time,start_mile,end_mile", ignoreDuplicates: true });
     if (insertErr) throw insertErr;
   }
 }
@@ -98,6 +96,7 @@ export async function createSchemeHistory(
       method: input.method,
       type: input.type,
       score: String(input.score),
+      advance: input.advance,
       detail: input.detail,
       custom: true,
     })
@@ -121,6 +120,7 @@ export async function importSchemeHistory(
     method: r.method,
     type: r.type,
     score: String(r.score),
+    advance: r.advance,
     detail: r.detail,
     custom: true,
   }));

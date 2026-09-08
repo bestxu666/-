@@ -14,6 +14,7 @@ export const schemeHistory = pgTable("scheme_history", {
 	face: varchar("face", { length: 200 }).notNull(),
 	startMile: varchar("start_mile", { length: 40 }).notNull(),
 	endMile: varchar("end_mile", { length: 40 }).notNull(),
+	advance: varchar("advance", { length: 20 }).notNull(),
 	rock: varchar("rock", { length: 20 }).notNull(),
 	method: varchar("method", { length: 60 }).notNull(),
 	type: varchar("type", { length: 20 }).notNull(),

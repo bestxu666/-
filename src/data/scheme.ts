@@ -28,7 +28,8 @@ export const schemeHistoryData: SchemeHistoryData = {
       method: '预留核心土法',
       type: 'S5a',
       score: 83.8,
-      detail: '循环进尺 3.0m | 循环总时长 26小时',
+      advance: '3.0m',
+      detail: '循环总时长 26小时',
     },
     {
       id: 2,
@@ -40,7 +41,8 @@ export const schemeHistoryData: SchemeHistoryData = {
       method: '预留核心土法',
       type: 'S5a',
       score: 84.6,
-      detail: '循环进尺 3.0m | 循环总时长 25小时04分',
+      advance: '3.0m',
+      detail: '循环总时长 25小时04分',
     },
     {
       id: 3,
@@ -52,7 +54,8 @@ export const schemeHistoryData: SchemeHistoryData = {
       method: '台阶法',
       type: 'S4a',
       score: 91.2,
-      detail: '循环进尺 3.0m | 循环总时长 18小时26分',
+      advance: '3.0m',
+      detail: '循环总时长 18小时26分',
     },
     {
       id: 4,
@@ -64,7 +67,8 @@ export const schemeHistoryData: SchemeHistoryData = {
       method: '台阶法',
       type: 'S4a',
       score: 92.4,
-      detail: '循环进尺 3.0m | 循环总时长 18小时',
+      advance: '3.0m',
+      detail: '循环总时长 18小时',
     },
     {
       id: 5,
@@ -76,7 +80,8 @@ export const schemeHistoryData: SchemeHistoryData = {
       method: '预留核心土法',
       type: 'S5d',
       score: 85.3,
-      detail: '循环进尺 3.0m | 循环总时长 25小时15分',
+      advance: '3.0m',
+      detail: '循环总时长 25小时15分',
     },
     {
       id: 6,
@@ -88,7 +93,8 @@ export const schemeHistoryData: SchemeHistoryData = {
       method: '预留核心土法',
       type: 'S5a',
       score: 86.1,
-      detail: '循环进尺 3.0m | 循环总时长 24小时10分',
+      advance: '3.0m',
+      detail: '循环总时长 24小时10分',
     },
     {
       id: 7,
@@ -100,7 +106,8 @@ export const schemeHistoryData: SchemeHistoryData = {
       method: '预留核心土法',
       type: 'S5d',
       score: 83.5,
-      detail: '循环进尺 1.8m | 循环总时长 29小时35分',
+      advance: '1.8m',
+      detail: '循环总时长 29小时35分',
     },
     {
       id: 8,
@@ -112,7 +119,8 @@ export const schemeHistoryData: SchemeHistoryData = {
       method: '预留核心土法',
       type: 'S5d',
       score: 83.9,
-      detail: '循环进尺 3.3m | 循环总时长 29小时35分',
+      advance: '3.3m',
+      detail: '循环总时长 29小时35分',
     },
     {
       id: 9,
@@ -124,7 +132,8 @@ export const schemeHistoryData: SchemeHistoryData = {
       method: '预留核心土法',
       type: 'S5a',
       score: 85.7,
-      detail: '循环进尺 3.0m | 循环总时长 25小时30分',
+      advance: '3.0m',
+      detail: '循环总时长 25小时30分',
     },
     {
       id: 10,
@@ -136,7 +145,8 @@ export const schemeHistoryData: SchemeHistoryData = {
       method: '台阶法',
       type: 'S4a',
       score: 90.4,
-      detail: '循环进尺 3.0m | 循环总时长 22小时45分',
+      advance: '3.0m',
+      detail: '循环总时长 22小时45分',
     },
     {
       id: 11,
@@ -148,7 +158,8 @@ export const schemeHistoryData: SchemeHistoryData = {
       method: '预留核心土法',
       type: 'S5a',
       score: 84.2,
-      detail: '循环进尺 3.6m | 循环总时长 29小时25分',
+      advance: '3.6m',
+      detail: '循环总时长 29小时25分',
     },
     {
       id: 12,
@@ -160,7 +171,8 @@ export const schemeHistoryData: SchemeHistoryData = {
       method: '台阶法',
       type: 'S4a',
       score: 90.8,
-      detail: '循环进尺 2.5m | 循环总时长 22小时40分',
+      advance: '2.5m',
+      detail: '循环总时长 22小时40分',
     },
     {
       id: 13,
@@ -172,7 +184,8 @@ export const schemeHistoryData: SchemeHistoryData = {
       method: '预留核心土法',
       type: 'S5d',
       score: 83.2,
-      detail: '循环进尺 2.7m | 循环总时长 30小时55分',
+      advance: '2.7m',
+      detail: '循环总时长 30小时55分',
     },
     {
       id: 14,
@@ -184,7 +197,8 @@ export const schemeHistoryData: SchemeHistoryData = {
       method: '台阶法',
       type: 'S4a',
       score: 90.1,
-      detail: '循环进尺 3.0m | 循环总时长 23小时05分',
+      advance: '3.0m',
+      detail: '循环总时长 23小时05分',
     },
     {
       id: 15,
@@ -196,7 +210,8 @@ export const schemeHistoryData: SchemeHistoryData = {
       method: '台阶法',
       type: 'S4a',
       score: 91.6,
-      detail: '循环进尺 3.2m | 循环总时长 20小时50分',
+      advance: '3.2m',
+      detail: '循环总时长 20小时50分',
     },
     {
       id: 16,
@@ -208,7 +223,8 @@ export const schemeHistoryData: SchemeHistoryData = {
       method: '预留核心土法',
       type: 'S5d',
       score: 86.4,
-      detail: '循环进尺 2.0m | 循环总时长 24小时10分',
+      advance: '2.0m',
+      detail: '循环总时长 24小时10分',
     },
     {
       id: 17,
@@ -220,7 +236,8 @@ export const schemeHistoryData: SchemeHistoryData = {
       method: '预留核心土法',
       type: 'S5d',
       score: 86.9,
-      detail: '循环进尺 2.0m | 循环总时长 24小时',
+      advance: '2.0m',
+      detail: '循环总时长 24小时',
     },
     {
       id: 18,
@@ -232,7 +249,8 @@ export const schemeHistoryData: SchemeHistoryData = {
       method: '预留核心土法',
       type: 'S5d',
       score: 87.2,
-      detail: '循环进尺 2.0m | 循环总时长 21小时10分',
+      advance: '2.0m',
+      detail: '循环总时长 21小时10分',
     },
     {
       id: 19,
@@ -244,7 +262,8 @@ export const schemeHistoryData: SchemeHistoryData = {
       method: '预留核心土法',
       type: 'S5d',
       score: 86.0,
-      detail: '循环进尺 2.0m | 循环总时长 24小时',
+      advance: '2.0m',
+      detail: '循环总时长 24小时',
     },
     {
       id: 20,
@@ -256,7 +275,8 @@ export const schemeHistoryData: SchemeHistoryData = {
       method: '台阶法',
       type: 'S4a',
       score: 89.8,
-      detail: '循环进尺 2.7m | 循环总时长 24小时',
+      advance: '2.7m',
+      detail: '循环总时长 24小时',
     },
     {
       id: 21,
@@ -268,7 +288,8 @@ export const schemeHistoryData: SchemeHistoryData = {
       method: '台阶法',
       type: 'S4a',
       score: 90.6,
-      detail: '循环进尺 2.7m | 循环总时长 23小时20分',
+      advance: '2.7m',
+      detail: '循环总时长 23小时20分',
     },
     {
       id: 22,
@@ -280,7 +301,8 @@ export const schemeHistoryData: SchemeHistoryData = {
       method: '台阶法',
       type: 'S4a',
       score: 91.0,
-      detail: '循环进尺 2.7m | 循环总时长 22小时45分',
+      advance: '2.7m',
+      detail: '循环总时长 22小时45分',
     },
     {
       id: 23,
@@ -292,7 +314,8 @@ export const schemeHistoryData: SchemeHistoryData = {
       method: '预留核心土法',
       type: 'S5d',
       score: 84.8,
-      detail: '循环进尺 2.7m | 循环总时长 28小时05分',
+      advance: '2.7m',
+      detail: '循环总时长 28小时05分',
     },
   ],
 };

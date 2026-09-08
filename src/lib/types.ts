@@ -359,6 +359,8 @@ export interface HistoryRecord {
   startMile: string;
   /** 终止里程桩号 */
   endMile: string;
+  /** 循环进尺，如 "3.0m" */
+  advance: string;
   /** 围岩级别，如 "Ⅳ级" / "Ⅴ级" */
   rock: string;
   /** 开挖工法 */

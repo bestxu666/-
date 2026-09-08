@@ -58,6 +58,7 @@ export function HistoryLedger({ faces, records: seed }: HistoryLedgerProps) {
     face: faceOptions[1] ?? '沙益1号隧道主洞掌子面',
     startMile: '',
     endMile: '',
+    advance: '',
     rock: 'Ⅳ级',
     method: METHOD_OPTS[0],
     type: '',
@@ -113,15 +114,16 @@ export function HistoryLedger({ faces, records: seed }: HistoryLedgerProps) {
         face: form.face || faceOptions[1] || '',
         startMile: form.startMile.trim(),
         endMile: form.endMile.trim(),
+        advance: form.advance.trim() || '—',
         rock: form.rock,
         method: form.method,
         type: form.type.trim(),
         score: Math.max(0, Math.min(100, Number(form.score) || 0)),
-        detail: form.detail.trim() || '人工录入方案（循环进尺与总时长明细）',
+        detail: form.detail.trim() || '人工录入（循环总时长明细）',
       });
       setRows((prev) => [...prev, { ...item, custom: true }]);
       setOpenAdd(false);
-      setForm((f) => ({ ...f, startMile: '', endMile: '', type: '', detail: '' }));
+      setForm((f) => ({ ...f, startMile: '', endMile: '', advance: '', type: '', detail: '' }));
       show('已新增决策记录');
     } catch (e) {
       show((e as Error).message || '新增失败');
@@ -230,7 +232,10 @@ export function HistoryLedger({ faces, records: seed }: HistoryLedgerProps) {
                   隧道工作面
                 </th>
                 <th className="whitespace-nowrap border-b border-line px-3 py-2.5 text-left font-semibold text-ink-2">
-                  里程桩号（起始 ~ 终止）
+                  里程桩号（起始 / 终止）
+                </th>
+                <th className="whitespace-nowrap border-b border-line px-3 py-2.5 text-center font-semibold text-ink-2">
+                  循环进尺
                 </th>
                 <th className="whitespace-nowrap border-b border-line px-3 py-2.5 text-center font-semibold text-ink-2">
                   围岩
@@ -249,7 +254,7 @@ export function HistoryLedger({ faces, records: seed }: HistoryLedgerProps) {
             <tbody>
               {list.length === 0 ? (
                 <tr>
-                  <td colSpan={9} className="px-3 py-8 text-center text-ink-3">
+                  <td colSpan={10} className="px-3 py-8 text-center text-ink-3">
                     当前筛选条件下暂无决策记录
                   </td>
                 </tr>
@@ -278,12 +283,18 @@ export function HistoryLedger({ faces, records: seed }: HistoryLedgerProps) {
                         <td className="px-3 py-2.5 text-left align-middle">
                           <b className="font-medium text-ink">{h.face}</b>
                         </td>
-                        <td className="px-3 py-2.5 text-left align-middle">
-                          <b className="font-semibold text-brand tabular-nums">
-                            {h.startMile}
-                            <span className="mx-1 text-ink-3">~</span>
-                            {h.endMile}
-                          </b>
+                        <td className="whitespace-nowrap px-3 py-2.5 text-left align-middle leading-[1.8]">
+                          <div className="text-ink">
+                            <span className="mr-1.5 text-[10px] text-ink-3">起始</span>
+                            <span className="font-semibold text-brand tabular-nums">{h.startMile}</span>
+                          </div>
+                          <div className="text-ink">
+                            <span className="mr-1.5 text-[10px] text-ink-3">终止</span>
+                            <span className="font-semibold text-brand tabular-nums">{h.endMile}</span>
+                          </div>
+                        </td>
+                        <td className="px-3 py-2.5 text-center align-middle">
+                          <span className="font-medium text-ink tabular-nums">{h.advance ?? "-"}</span>
                         </td>
                         <td className="px-3 py-2.5 text-center align-middle">
                           <RockTag rock={h.rock} />
@@ -305,7 +316,7 @@ export function HistoryLedger({ faces, records: seed }: HistoryLedgerProps) {
                       </tr>
                       {open && (
                         <tr className="border-b border-line/40 bg-[rgba(45,212,191,0.04)]">
-                          <td colSpan={9} className="px-3 py-3 text-left align-top text-[12px] leading-[1.7] text-ink-2">
+                          <td colSpan={10} className="px-3 py-3 text-left align-top text-[12px] leading-[1.7] text-ink-2">
                             <b className="text-brand">【单次决策循环明细】</b> {h.detail}
                           </td>
                         </tr>
@@ -378,8 +389,11 @@ export function HistoryLedger({ faces, records: seed }: HistoryLedgerProps) {
           <Field label="安全度评分(0~100)">
             <input type="number" min={0} max={100} value={form.score} onChange={(e) => setForm({ ...form, score: Number(e.target.value) })} />
           </Field>
-          <Field label="循环进尺 / 总时长明细" span>
-            <textarea rows={3} value={form.detail} placeholder="如 循环进尺 3.0m | 循环总时长 24小时" onChange={(e) => setForm({ ...form, detail: e.target.value })} />
+          <Field label="循环进尺">
+            <input type="text" value={form.advance} placeholder="如 3.0m" onChange={(e) => setForm({ ...form, advance: e.target.value })} />
+          </Field>
+          <Field label="循环总时长明细">
+            <input type="text" value={form.detail} placeholder="如 循环总时长 24小时" onChange={(e) => setForm({ ...form, detail: e.target.value })} />
           </Field>
         </div>
       </Modal>
