@@ -278,6 +278,8 @@ export interface EquipmentItem {
   unit: string;
   pos: string;
   stage: string;
+  /** 是否为用户新增/导入的记录（非内置标准项） */
+  custom?: boolean;
 }
 
 /** 标准工法库卡片 */
@@ -301,6 +303,8 @@ export interface KnowledgeMapping {
   stress: string;
   rock: string;
   scheme: string;
+  /** 是否为用户新增/导入的记录（非内置标准项） */
+  custom?: boolean;
 }
 
 /** 围岩级别筛选值（支护方案库） */
@@ -324,6 +328,8 @@ export interface SupportScheme {
   mode: string;
   advRate: string;
   benchLen: string;
+  /** 是否为用户新增/导入的方案（非内置标准项） */
+  custom?: boolean;
 }
 
 /** 经验数据库聚合数据 */
@@ -361,6 +367,8 @@ export interface HistoryRecord {
   score: number;
   /** 单次决策完整配置参数明细 */
   detail: string;
+  /** 是否为用户新增/导入的记录（非内置标准项） */
+  custom?: boolean;
 }
 
 /** 历史决策台账聚合数据 */
