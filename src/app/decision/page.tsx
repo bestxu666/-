@@ -3,6 +3,7 @@
 import { useRef } from 'react';
 import { toast } from 'sonner';
 import { DecisionPlaceholder } from '@/components/decision/decision-placeholder';
+import { DecisionLoadingModal } from '@/components/decision/decision-loading-modal';
 import { DecisionWorkbench } from '@/components/decision/decision-workbench';
 import { FlowBar } from '@/components/decision/flow-bar';
 import { MethodSelect } from '@/components/decision/method-select';
@@ -82,9 +83,9 @@ export default function DecisionPage() {
             onMileageChange={d.changeMileage}
             onParamChange={d.updateParam}
             onResetParams={d.resetParams}
-            onRunInfer={() => {
-              d.runInfer();
-              setTimeout(() => scrollTo(methodRef.current), 80);
+            onRunInfer={async () => {
+              await d.runInfer();
+              scrollTo(methodRef.current);
             }}
           />
         </div>
@@ -98,9 +99,9 @@ export default function DecisionPage() {
               methods={d.methods}
               selectedKey={d.selectedMethodKey}
               onSelect={d.selectMethod}
-              onConfirm={() => {
-                d.confirmMethod();
-                setTimeout(() => scrollTo(supportRef.current), 80);
+              onConfirm={async () => {
+                await d.confirmMethod();
+                scrollTo(supportRef.current);
               }}
               onReset={d.reset}
             />
@@ -131,6 +132,9 @@ export default function DecisionPage() {
           </div>
         )}
       </main>
+
+      {/* 决策工法 / 支护参数 推理等待弹窗 */}
+      <DecisionLoadingModal kind={d.loading} />
     </div>
   );
 }

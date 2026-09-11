@@ -8,11 +8,13 @@ import {
 import {
   applySupportValue,
   assessSafety,
-  designSupport,
   generateScheme,
-  inferMethods,
   recommendMethodKey,
 } from '@/lib/decision-engine';
+import {
+  designSupportCandidates,
+  inferMethodCandidates,
+} from '@/lib/decision-adapter';
 import type {
   DecisionMode,
   GeoParams,
@@ -24,6 +26,9 @@ import type {
 
 /** 决策流程四步 */
 export type DecisionStep = 1 | 2 | 3 | 4;
+
+/** 决策等待阶段：method=推理工法，support=设计支护参数，null=空闲 */
+export type DecisionLoadingPhase = 'method' | 'support' | null;
 
 export interface DecisionState {
   mode: DecisionMode;
@@ -66,6 +71,7 @@ export function useDecision() {
   const [safety, setSafety] = useState<ReturnType<typeof assessSafety> | null>(null);
   const [scheme, setScheme] = useState<SchemeReport | null>(null);
   const [adjusted, setAdjusted] = useState<Set<SupportComponent['key']>>(new Set());
+  const [loading, setLoading] = useState<DecisionLoadingPhase>(null);
 
   /** 切换决策模式 */
   const changeMode = useCallback((m: DecisionMode) => {
@@ -96,17 +102,23 @@ export function useDecision() {
 
   /**
    * Step 1 → Step 2：启动智能推理，计算候选工法匹配度。
+   * 推理期间展示「等待弹窗」；mock 通道模拟延迟，real 通道走后端算法接口。
    */
-  const runInfer = useCallback(() => {
-    const matched = inferMethods(params);
-    setMethods(matched);
-    setSelectedMethodKey(recommendMethodKey(params.grade));
-    // 重置后续步骤产物
-    setSupport([]);
-    setSafety(null);
-    setScheme(null);
-    setAdjusted(new Set());
-    setStep(2);
+  const runInfer = useCallback(async () => {
+    setLoading('method');
+    try {
+      const matched = await inferMethodCandidates(params);
+      setMethods(matched);
+      setSelectedMethodKey(recommendMethodKey(params.grade));
+      // 重置后续步骤产物
+      setSupport([]);
+      setSafety(null);
+      setScheme(null);
+      setAdjusted(new Set());
+      setStep(2);
+    } finally {
+      setLoading(null);
+    }
   }, [params]);
 
   /** Step 2：人工改选工法 */
@@ -116,14 +128,21 @@ export function useDecision() {
 
   /**
    * Step 2 → Step 3：确认推荐工法，生成初期支护设计并校核。
+   * 推理期间展示「等待弹窗」；mock 通道模拟延迟，real 通道走后端算法接口。
    */
-  const confirmMethod = useCallback(() => {
+  const confirmMethod = useCallback(async () => {
     if (!selectedMethodKey) return;
-    const nextSupport = designSupport(params, selectedMethodKey);
-    setSupport(nextSupport);
-    setSafety(assessSafety(params, nextSupport));
-    setScheme(null);
-    setStep(3);
+    setLoading('support');
+    try {
+      const { support: nextSupport, safety: nextSafety } =
+        await designSupportCandidates(params, selectedMethodKey);
+      setSupport(nextSupport);
+      setSafety(nextSafety);
+      setScheme(null);
+      setStep(3);
+    } finally {
+      setLoading(null);
+    }
   }, [params, selectedMethodKey]);
 
   /**
@@ -206,6 +225,7 @@ export function useDecision() {
     safety,
     scheme,
     adjusted,
+    loading,
     // actions
     changeMode,
     updateParam,
