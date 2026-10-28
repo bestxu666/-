@@ -14,6 +14,8 @@ coze-dev dev
 
 开发服务器支持热更新，修改代码后页面会自动刷新。
 
+经验数据库和方案报告与决策台账在未配置 Supabase 时使用内置种子数据，可直接浏览。新增、导入、删除操作需要在 `.env.local` 中配置 `COZE_SUPABASE_URL` 和 `COZE_SUPABASE_ANON_KEY`，并准备对应数据库表；配置后重启服务。
+
 ### 构建生产版本
 
 ```bash

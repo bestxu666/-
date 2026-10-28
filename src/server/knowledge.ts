@@ -6,7 +6,7 @@ import type {
   SupportScheme,
 } from "@/lib/types";
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { getSupabaseClient, loadEnv } from "@/storage/database/supabase-client";
+import { getSupabaseClient, hasSupabaseCredentials, loadEnv } from "@/storage/database/supabase-client";
 
 /**
  * 后端服务层 —— 经验数据库业务逻辑（Supabase 持久化）。
@@ -162,6 +162,9 @@ async function seedIfEmpty(
 
 /** 读取经验数据库全部数据（种子 + 用户新增） */
 export async function getKnowledge(): Promise<KnowledgeData> {
+  // 本地开发未配置数据库时仍可浏览内置经验库；写操作继续要求数据库配置。
+  if (!hasSupabaseCredentials()) return structuredClone(knowledgeData);
+
   const client = getSupabaseClient();
   await ensureSeeded(client);
 

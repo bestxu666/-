@@ -54,7 +54,8 @@ export async function fetchOverview(): Promise<OverviewData> {
 
 /**
  * 获取经验数据库数据（装备 / 工法 / 知识映射 / 支护方案）。
- * 数据源：Supabase 持久化（首次为空时由服务层以种子数据入库）。
+ * 数据源：Supabase 持久化（首次为空时由服务层以种子数据入库）；
+ * 未配置 Supabase 时，服务层返回内置种子数据供本地浏览。
  */
 export async function fetchKnowledge(): Promise<KnowledgeData> {
   const res = await apiFetch('/api/knowledge', { cache: 'no-store' });
@@ -67,6 +68,7 @@ export async function fetchKnowledge(): Promise<KnowledgeData> {
 /**
  * 获取方案报告与历史决策台账数据。
  * 数据源：Supabase 持久化（首次为空时由服务层以种子数据入库）。
+ * 未配置 Supabase 时，服务层返回内置台账供本地浏览。
  */
 export async function fetchSchemeHistory(): Promise<SchemeHistoryData> {
   const res = await apiFetch('/api/scheme', { cache: 'no-store' });
