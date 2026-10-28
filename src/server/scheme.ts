@@ -1,7 +1,7 @@
 import { schemeHistoryData } from "@/data/scheme";
 import type { HistoryRecord, SchemeHistoryData } from "@/lib/types";
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { getSupabaseClient, loadEnv } from "@/storage/database/supabase-client";
+import { getSupabaseClient, hasSupabaseCredentials, loadEnv } from "@/storage/database/supabase-client";
 
 /**
  * 后端服务层 —— 方案报告与历史决策台账业务逻辑（Supabase 持久化）。
@@ -69,6 +69,9 @@ async function ensureSeeded(client: SupabaseClient): Promise<void> {
 
 /** 查询台账列表（首次读取自动种籽入库） */
 export async function listSchemeHistory(): Promise<SchemeHistoryData> {
+  // 未配置数据库时提供内置台账供本地浏览；写操作仍需数据库。
+  if (!hasSupabaseCredentials()) return structuredClone(schemeHistoryData);
+
   const client = getSupabaseClient();
   await ensureSeeded(client);
   const { data, error } = await client
